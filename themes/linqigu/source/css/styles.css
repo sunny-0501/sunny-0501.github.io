@@ -402,9 +402,11 @@ body { background: var(--dashboard-bg); color: var(--forest); }
   min-height: 390px;
   overflow: hidden;
   padding: 42px 38px;
-  background: var(--peach);
+  background: #bcd2c3 url("../images/forest-rest.png") 50% 44% / cover no-repeat;
   color: var(--deep-forest);
 }
+.quote-card::before { content: ""; position: absolute; inset: 0; background: rgba(255,253,247,.72); }
+.quote-card > * { position: relative; z-index: 1; }
 .quote-card::after {
   content: "";
   position: absolute;
@@ -415,6 +417,7 @@ body { background: var(--dashboard-bg); color: var(--forest); }
   border: 1px solid rgba(47,94,80,.42);
   border-radius: 50%;
   box-shadow: -18px -16px 0 rgba(255,253,247,.2), -34px -30px 0 rgba(47,94,80,.12);
+  z-index: 1;
 }
 .quote-dots { color: rgba(47,94,80,.65); letter-spacing: 6px; font-size: 13px; margin-bottom: 57px; }
 .quote-card .eyebrow { color: rgba(47,94,80,.7); margin-bottom: 22px; }
