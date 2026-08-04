@@ -348,9 +348,16 @@ body { background: var(--dashboard-bg); color: var(--forest); }
   box-shadow: 3px 3px 0 rgba(47,94,80,.16);
 }
 .totoro-track { position: relative; flex: 1 1 270px; align-self: stretch; min-width: 200px; height: 76px; overflow: hidden; pointer-events: none; }
-.totoro-walker { position: absolute; bottom: 0; left: 6px; width: 76px; height: 76px; animation: totoro-roam 17s linear infinite alternate; }
-.totoro-gif { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: drop-shadow(0 3px 2px rgba(36,74,64,.14)); }
-@keyframes totoro-roam { 0%, 8% { left: 6px; transform: scaleX(1); } 42% { left: calc(100% - 82px); transform: scaleX(1); } 50% { left: calc(100% - 82px); transform: scaleX(-1); } 92%, 100% { left: 6px; transform: scaleX(-1); } }
+.totoro-walker { position: absolute; bottom: 0; left: 6px; width: 76px; height: 76px; animation: totoro-roam 17s linear infinite; }
+.totoro-gif { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; transform-origin: center 68%; animation: totoro-turn 17s linear infinite; filter: drop-shadow(0 3px 2px rgba(36,74,64,.14)); will-change: transform, filter; }
+@keyframes totoro-roam { 0%, 7% { left: 6px; } 41%, 51% { left: calc(100% - 82px); } 92%, 100% { left: 6px; } }
+@keyframes totoro-turn {
+  0%, 42% { transform: perspective(280px) translateZ(0) rotateY(0deg); filter: drop-shadow(0 3px 2px rgba(36,74,64,.14)); }
+  46% { transform: perspective(280px) translateZ(12px) rotateY(90deg) scale(.9); filter: drop-shadow(0 7px 5px rgba(36,74,64,.22)); }
+  50%, 92% { transform: perspective(280px) translateZ(0) rotateY(180deg); filter: drop-shadow(0 3px 2px rgba(36,74,64,.14)); }
+  96% { transform: perspective(280px) translateZ(12px) rotateY(270deg) scale(.9); filter: drop-shadow(0 7px 5px rgba(36,74,64,.22)); }
+  100% { transform: perspective(280px) translateZ(0) rotateY(360deg); filter: drop-shadow(0 3px 2px rgba(36,74,64,.14)); }
+}
 .main-nav { gap: 28px; font-size: 13px; }
 .main-nav a { color: var(--soft-ink); padding: 7px 2px; border-bottom-width: 2px; }
 .main-nav a:hover, .main-nav a.active { color: var(--deep-forest); border-color: var(--peach); }
@@ -571,7 +578,7 @@ body.dark .search-box { background: var(--card); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .totoro-walker, .home-page::before { animation: none; }
+  .totoro-walker, .totoro-gif, .home-page::before { animation: none; }
 }
 
 @media (max-width: 480px) {
