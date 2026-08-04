@@ -3,24 +3,30 @@
   <a class="brand" href="<%- url_for('/') %>" aria-label="&#x56DE;&#x5230;&#x9996;&#x9875;">
     <img class="brand-logo" src="<%- url_for('/images/linqigu-logo.svg') %>" alt="&#x6797;&#x6816;&#x8C37;" />
   </a>
-  <span class="cat-companion" role="img" aria-label="&#x4E00;&#x53EA;&#x767D;&#x8272;&#x7684;&#x732B;">
-    <svg class="cat-svg" viewBox="0 0 190 76" aria-hidden="true">
-      <g class="cat-tail"><path d="M151 49C173 52 184 40 179 28C176 21 168 20 163 25" fill="none" stroke="#fffdf7" stroke-width="8" stroke-linecap="round" /></g>
-      <ellipse class="cat-body" cx="105" cy="48" rx="51" ry="20" fill="#fffdf7" />
-      <ellipse class="cat-paw" cx="66" cy="58" rx="17" ry="7" fill="#fffdf7" />
-      <path class="cat-head" d="M27 46C25 33 28 20 38 13L49 23C60 18 72 19 82 25L94 13C102 23 105 36 101 47C96 60 78 67 59 67C42 67 30 59 27 46Z" fill="#fffdf7" />
-      <path class="cat-ear cat-ear-left" d="M30 24L38 13L48 24" fill="#f6d9d5" stroke="#23483c" stroke-width="2" stroke-linejoin="round" />
-      <path class="cat-ear cat-ear-right" d="M82 24L94 13L99 30" fill="#f6d9d5" stroke="#23483c" stroke-width="2" stroke-linejoin="round" />
-      <g class="cat-face">
-        <ellipse class="cat-eye cat-eye-left" cx="51" cy="40" rx="4" ry="6" fill="#23483c" />
-        <ellipse class="cat-eye cat-eye-right" cx="78" cy="40" rx="4" ry="6" fill="#23483c" />
-        <circle class="cat-eye-glint" cx="52" cy="38" r="1.4" fill="#fffdf7" />
-        <circle class="cat-eye-glint" cx="79" cy="38" r="1.4" fill="#fffdf7" />
-        <path d="M63 48L67 48L65 51Z" fill="#c98c4a" />
-        <path d="M65 51C62 55 59 54 57 52M65 51C68 55 71 54 73 52" fill="none" stroke="#23483c" stroke-width="1.5" stroke-linecap="round" />
-        <path d="M38 48L20 45M38 53L19 54M92 48L109 45M92 53L110 54" fill="none" stroke="#23483c" stroke-width="1" stroke-linecap="round" opacity=".72" />
-      </g>
-    </svg>
+  <span class="totoro-track" role="img" aria-label="&#x5728;&#x9876;&#x680F;&#x6563;&#x6B65;&#x7684;&#x9F99;&#x732B;">
+    <span class="totoro-walker">
+      <svg class="totoro-svg" viewBox="0 0 110 86" aria-hidden="true">
+        <path class="totoro-tail" d="M87 62C103 63 106 50 99 45" fill="none" stroke="#65716e" stroke-width="8" stroke-linecap="round" />
+        <ellipse class="totoro-body" cx="55" cy="56" rx="33" ry="25" fill="#65716e" />
+        <ellipse cx="57" cy="62" rx="23" ry="16" fill="#e9e4d5" />
+        <path d="M45 57L50 62L45 66M58 56L63 61L58 66M70 56L75 61L70 65" fill="none" stroke="#65716e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+        <path class="totoro-head" d="M25 48C23 34 27 18 39 10L49 23C55 20 63 20 70 23L81 10C89 21 92 36 87 49C83 60 70 65 56 65C41 65 29 59 25 48Z" fill="#65716e" />
+        <path d="M30 29L39 10L48 29M72 28L81 10L86 35" fill="#8f9b96" stroke="#4a5552" stroke-width="1.4" stroke-linejoin="round" />
+        <g class="totoro-face">
+          <ellipse cx="44" cy="39" rx="5" ry="7" fill="#fffdf7" />
+          <ellipse cx="69" cy="39" rx="5" ry="7" fill="#fffdf7" />
+          <circle class="totoro-eye" cx="45" cy="41" r="2.4" fill="#263a35" />
+          <circle class="totoro-eye" cx="70" cy="41" r="2.4" fill="#263a35" />
+          <path d="M55 48L61 48L58 52Z" fill="#2b3935" />
+          <path d="M58 52C55 56 50 55 48 53M58 52C61 56 66 55 68 53" fill="none" stroke="#263a35" stroke-width="1.5" stroke-linecap="round" />
+          <path d="M35 49L17 46M35 54L17 55M82 49L100 46M82 54L100 55" fill="none" stroke="#263a35" stroke-width="1.1" stroke-linecap="round" opacity=".72" />
+        </g>
+        <path class="totoro-arm totoro-arm-left" d="M32 59C22 63 21 68 26 71" fill="none" stroke="#65716e" stroke-width="7" stroke-linecap="round" />
+        <path class="totoro-arm totoro-arm-right" d="M81 59C91 62 93 67 88 71" fill="none" stroke="#65716e" stroke-width="7" stroke-linecap="round" />
+        <path class="totoro-foot totoro-foot-left" d="M39 76L50 76" stroke="#4a5552" stroke-width="7" stroke-linecap="round" />
+        <path class="totoro-foot totoro-foot-right" d="M64 76L75 76" stroke="#4a5552" stroke-width="7" stroke-linecap="round" />
+      </svg>
+    </span>
   </span>
   <nav class="main-nav" aria-label="&#x4E3B;&#x5BFC;&#x822A;">
     <a class="<%= activePath === '' ? 'active' : '' %>" href="<%- url_for('/') %>">&#x9996;&#x9875;</a>

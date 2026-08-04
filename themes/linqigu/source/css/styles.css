@@ -347,20 +347,22 @@ body { background: var(--dashboard-bg); color: var(--forest); }
   color: #fffdf7;
   box-shadow: 3px 3px 0 rgba(47,94,80,.16);
 }
-.cat-companion { display: block; flex: 0 0 112px; width: 112px; height: 58px; margin: 0 0 -1px 4px; overflow: visible; pointer-events: none; }
-.cat-svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 3px rgba(36,74,64,.16)); }
-.cat-body, .cat-head, .cat-paw { transform-box: fill-box; transform-origin: center; animation: cat-breathe 3.8s ease-in-out infinite; }
-.cat-tail { transform-box: fill-box; transform-origin: 88% 50%; animation: cat-tail-sway 2.8s ease-in-out infinite; }
-.cat-ear { transform-box: fill-box; transform-origin: 50% 100%; animation: cat-ear-twitch 5.6s ease-in-out infinite; }
-.cat-ear-right { animation-delay: .18s; }
-.cat-eye { transform-box: fill-box; transform-origin: center; animation: cat-blink 5.4s infinite; }
-.cat-eye-right { animation-delay: .05s; }
-.cat-eye-glint { animation: cat-glint 5.4s infinite; }
-@keyframes cat-breathe { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(1px) scaleY(1.025); } }
-@keyframes cat-tail-sway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(12deg); } }
-@keyframes cat-ear-twitch { 0%, 82%, 100% { transform: rotate(0); } 88% { transform: rotate(-8deg); } 94% { transform: rotate(4deg); } }
-@keyframes cat-blink { 0%, 44%, 48%, 100% { transform: scaleY(1); } 46% { transform: scaleY(.12); } }
-@keyframes cat-glint { 0%, 44%, 48%, 100% { opacity: 1; } 46% { opacity: 0; } }
+.totoro-track { position: relative; flex: 1 1 270px; align-self: stretch; min-width: 200px; height: 76px; overflow: hidden; pointer-events: none; }
+.totoro-walker { position: absolute; bottom: 0; left: 6px; width: 88px; height: 72px; animation: totoro-roam 13s ease-in-out infinite alternate; }
+.totoro-svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 3px rgba(36,74,64,.16)); }
+.totoro-body, .totoro-head { transform-box: fill-box; transform-origin: center; animation: totoro-bob .72s ease-in-out infinite alternate; }
+.totoro-tail { transform-box: fill-box; transform-origin: 0 50%; animation: totoro-tail-sway 1.2s ease-in-out infinite alternate; }
+.totoro-arm { transform-box: fill-box; transform-origin: 50% 0; animation: totoro-arm-swing .72s ease-in-out infinite alternate; }
+.totoro-arm-right { animation-delay: -.36s; }
+.totoro-foot { transform-box: fill-box; transform-origin: 50% 50%; animation: totoro-step .72s ease-in-out infinite alternate; }
+.totoro-foot-right { animation-delay: -.36s; }
+.totoro-eye { transform-box: fill-box; transform-origin: center; animation: totoro-blink 5.1s infinite; }
+@keyframes totoro-roam { 0%, 8% { left: 6px; transform: scaleX(1); } 42% { left: calc(100% - 92px); transform: scaleX(1); } 50% { left: calc(100% - 92px); transform: scaleX(-1); } 92%, 100% { left: 6px; transform: scaleX(-1); } }
+@keyframes totoro-bob { from { transform: translateY(0); } to { transform: translateY(-2px); } }
+@keyframes totoro-tail-sway { from { transform: rotate(-9deg); } to { transform: rotate(10deg); } }
+@keyframes totoro-arm-swing { from { transform: rotate(-12deg); } to { transform: rotate(12deg); } }
+@keyframes totoro-step { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+@keyframes totoro-blink { 0%, 45%, 49%, 100% { transform: scaleY(1); } 47% { transform: scaleY(.16); } }
 .main-nav { gap: 28px; font-size: 13px; }
 .main-nav a { color: var(--soft-ink); padding: 7px 2px; border-bottom-width: 2px; }
 .main-nav a:hover, .main-nav a.active { color: var(--deep-forest); border-color: var(--peach); }
@@ -564,7 +566,8 @@ body.dark .search-box { background: var(--card); }
 
 @media (max-width: 720px) {
   .site-header { height: auto; min-height: 78px; flex-wrap: wrap; padding: 16px 0; }
-  .cat-companion { flex-basis: 80px; width: 80px; height: 44px; margin-left: auto; }
+  .totoro-track { order: 2; flex: 1 1 138px; min-width: 138px; height: 48px; }
+  .totoro-walker { width: 58px; height: 50px; }
   .main-nav { order: 3; width: 100%; justify-content: space-between; margin-left: 0; border-top: 1px solid var(--card-border); padding-top: 12px; }
   .header-actions { margin-left: auto; }
   .dashboard-hero, .content-layout, .newsletter { grid-template-columns: 1fr; }
@@ -580,7 +583,7 @@ body.dark .search-box { background: var(--card); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cat-body, .cat-head, .cat-paw, .cat-tail, .cat-ear, .cat-eye, .cat-eye-glint, .home-page::before { animation: none; }
+  .totoro-walker, .totoro-body, .totoro-head, .totoro-tail, .totoro-arm, .totoro-foot, .totoro-eye, .home-page::before { animation: none; }
 }
 
 @media (max-width: 480px) {
