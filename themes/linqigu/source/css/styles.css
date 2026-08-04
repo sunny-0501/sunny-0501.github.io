@@ -348,21 +348,9 @@ body { background: var(--dashboard-bg); color: var(--forest); }
   box-shadow: 3px 3px 0 rgba(47,94,80,.16);
 }
 .totoro-track { position: relative; flex: 1 1 270px; align-self: stretch; min-width: 200px; height: 76px; overflow: hidden; pointer-events: none; }
-.totoro-walker { position: absolute; bottom: 0; left: 6px; width: 88px; height: 72px; animation: totoro-roam 13s ease-in-out infinite alternate; }
-.totoro-svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 3px rgba(36,74,64,.16)); }
-.totoro-body, .totoro-head { transform-box: fill-box; transform-origin: center; animation: totoro-bob .72s ease-in-out infinite alternate; }
-.totoro-tail { transform-box: fill-box; transform-origin: 0 50%; animation: totoro-tail-sway 1.2s ease-in-out infinite alternate; }
-.totoro-arm { transform-box: fill-box; transform-origin: 50% 0; animation: totoro-arm-swing .72s ease-in-out infinite alternate; }
-.totoro-arm-right { animation-delay: -.36s; }
-.totoro-foot { transform-box: fill-box; transform-origin: 50% 50%; animation: totoro-step .72s ease-in-out infinite alternate; }
-.totoro-foot-right { animation-delay: -.36s; }
-.totoro-eye { transform-box: fill-box; transform-origin: center; animation: totoro-blink 5.1s infinite; }
-@keyframes totoro-roam { 0%, 8% { left: 6px; transform: scaleX(1); } 42% { left: calc(100% - 92px); transform: scaleX(1); } 50% { left: calc(100% - 92px); transform: scaleX(-1); } 92%, 100% { left: 6px; transform: scaleX(-1); } }
-@keyframes totoro-bob { from { transform: translateY(0); } to { transform: translateY(-2px); } }
-@keyframes totoro-tail-sway { from { transform: rotate(-9deg); } to { transform: rotate(10deg); } }
-@keyframes totoro-arm-swing { from { transform: rotate(-12deg); } to { transform: rotate(12deg); } }
-@keyframes totoro-step { from { transform: translateY(0); } to { transform: translateY(-3px); } }
-@keyframes totoro-blink { 0%, 45%, 49%, 100% { transform: scaleY(1); } 47% { transform: scaleY(.16); } }
+.totoro-walker { position: absolute; bottom: 0; left: 6px; width: 76px; height: 76px; animation: totoro-roam 17s linear infinite alternate; }
+.totoro-gif { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; mix-blend-mode: multiply; filter: drop-shadow(0 3px 2px rgba(36,74,64,.14)); }
+@keyframes totoro-roam { 0%, 8% { left: 6px; transform: scaleX(1); } 42% { left: calc(100% - 82px); transform: scaleX(1); } 50% { left: calc(100% - 82px); transform: scaleX(-1); } 92%, 100% { left: 6px; transform: scaleX(-1); } }
 .main-nav { gap: 28px; font-size: 13px; }
 .main-nav a { color: var(--soft-ink); padding: 7px 2px; border-bottom-width: 2px; }
 .main-nav a:hover, .main-nav a.active { color: var(--deep-forest); border-color: var(--peach); }
@@ -567,7 +555,7 @@ body.dark .search-box { background: var(--card); }
 @media (max-width: 720px) {
   .site-header { height: auto; min-height: 78px; flex-wrap: wrap; padding: 16px 0; }
   .totoro-track { order: 2; flex: 1 1 138px; min-width: 138px; height: 48px; }
-  .totoro-walker { width: 58px; height: 50px; }
+  .totoro-walker { width: 52px; height: 52px; }
   .main-nav { order: 3; width: 100%; justify-content: space-between; margin-left: 0; border-top: 1px solid var(--card-border); padding-top: 12px; }
   .header-actions { margin-left: auto; }
   .dashboard-hero, .content-layout, .newsletter { grid-template-columns: 1fr; }
@@ -583,7 +571,7 @@ body.dark .search-box { background: var(--card); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .totoro-walker, .totoro-body, .totoro-head, .totoro-tail, .totoro-arm, .totoro-foot, .totoro-eye, .home-page::before { animation: none; }
+  .totoro-walker, .home-page::before { animation: none; }
 }
 
 @media (max-width: 480px) {
