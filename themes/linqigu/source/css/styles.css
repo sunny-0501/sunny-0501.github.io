@@ -604,6 +604,15 @@ body.dark .search-box { background: var(--card); }
 .page-hero-peach { background: var(--peach); }
 .page-hero-mint { background: var(--mint); }
 .page-hero-lilac { background: var(--lilac); }
+.archive-hero {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(90deg, rgba(255, 253, 247, .92) 0%, rgba(255, 253, 247, .77) 42%, rgba(255, 253, 247, .22) 100%),
+    url('../images/archive-howls-castle.png') center 48% / cover no-repeat;
+}
+.archive-hero > * { position: relative; z-index: 1; }
+.archive-hero .page-hero-symbol { background: rgba(255, 253, 247, .18); }
 .page-hero h1 { max-width: 720px; color: var(--deep-forest); font-size: clamp(38px, 5.4vw, 70px); line-height: 1.18; margin-bottom: 17px; }
 .page-hero .eyebrow { color: rgba(36,74,64,.7); margin-bottom: 22px; }
 .page-hero p:not(.eyebrow) { max-width: 530px; color: rgba(36,74,64,.8); font-size: 13px; line-height: 1.85; margin-bottom: 0; }
