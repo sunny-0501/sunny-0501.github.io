@@ -10,12 +10,13 @@
     </span>
   </span>
   <nav class="main-nav" aria-label="&#x4E3B;&#x5BFC;&#x822A;">
-    <a class="<%= activePath === '' ? 'active' : '' %>" href="<%- url_for('/') %>">&#x9996;&#x9875;</a>
+    <a class="<%= activePath === '' ? 'active' : '' %>" href="<%- url_for('/') %>">&#x4E3B;&#x9875;</a>
     <a class="<%= activePath.startsWith('archives') || activePath.startsWith('categories') || activePath.startsWith('tags') || is_post() ? 'active' : '' %>" href="<%- url_for('/archives/') %>">&#x6587;&#x7AE0;</a>
-    <a class="<%= activePath.startsWith('about') ? 'active' : '' %>" href="<%- url_for('/about/') %>">&#x5173;&#x4E8E;</a>
     <a class="<%= activePath.startsWith('links') ? 'active' : '' %>" href="<%- url_for('/links/') %>">&#x53CB;&#x94FE;</a>
+    <a class="<%= activePath.startsWith('about') ? 'active' : '' %>" href="<%- url_for('/about/') %>">&#x5173;&#x4E8E;</a>
   </nav>
   <div class="header-actions">
+    <a class="github-link" href="https://github.com/sunny-0501" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">&#x2197;</span></a>
     <label class="search-box" aria-label="&#x641C;&#x7D22;&#x6587;&#x7AE0;"><span aria-hidden="true">&#x2315;</span><input id="searchInput" type="search" placeholder="&#x641C;&#x7D22;&#x6587;&#x7AE0;" /></label>
     <button class="icon-button" id="themeToggle" type="button" aria-label="&#x5207;&#x6362;&#x989C;&#x8272;&#x4E3B;&#x9898;" title="&#x5207;&#x6362;&#x989C;&#x8272;&#x4E3B;&#x9898;">&#x2600;</button>
   </div>
