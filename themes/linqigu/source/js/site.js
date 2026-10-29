@@ -213,17 +213,31 @@
   const backToTop = document.querySelector('#backToTop');
   const readingProgress = document.querySelector('#readingProgressBar');
   const articleContent = document.querySelector('.article-content');
+  const siteHeader = document.querySelector('.site-header');
+  const routeProgress = document.querySelector('#routeProgress');
+  let previousScrollTop = window.scrollY;
   let scrollTicking = false;
 
   const updateScrollInterface = () => {
     const scrollTop = window.scrollY;
     if (backToTop) backToTop.classList.toggle('is-visible', scrollTop > 520);
+    if (siteHeader) {
+      const scrollingUp = scrollTop < previousScrollTop - 3;
+      const scrollingDown = scrollTop > previousScrollTop + 4;
+      if (scrollTop < 32 || scrollingUp || document.body.classList.contains('search-open')) {
+        siteHeader.classList.remove('navbar-hidden');
+      } else if (scrollingDown && scrollTop > 150) {
+        siteHeader.classList.add('navbar-hidden');
+      }
+      siteHeader.classList.toggle('navbar-sticky-shadow', scrollTop > 14);
+    }
     if (readingProgress && articleContent) {
       const start = articleContent.offsetTop;
       const distance = articleContent.offsetHeight - window.innerHeight * .35;
       const progress = Math.min(1, Math.max(0, (scrollTop - start + window.innerHeight * .35) / Math.max(distance, 1)));
       readingProgress.style.transform = `scaleX(${progress})`;
     }
+    previousScrollTop = scrollTop;
     scrollTicking = false;
   };
 
@@ -238,6 +252,47 @@
   updateScrollInterface();
   backToTop?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+  });
+
+  let pageLeaving = false;
+  const prefetchedPages = new Set();
+  const isInternalNavigation = (link) => {
+    if (!link || link.target === '_blank' || link.hasAttribute('download')) return null;
+    const url = new URL(link.href, window.location.href);
+    if (url.origin !== window.location.origin) return null;
+    if (url.pathname === window.location.pathname) return null;
+    return url;
+  };
+
+  document.addEventListener('pointerover', (event) => {
+    const link = event.target.closest?.('a[href]');
+    const url = isInternalNavigation(link);
+    if (!url || prefetchedPages.has(url.pathname)) return;
+    prefetchedPages.add(url.pathname);
+    const prefetch = document.createElement('link');
+    prefetch.rel = 'prefetch';
+    prefetch.href = url.href;
+    prefetch.as = 'document';
+    document.head.append(prefetch);
+  });
+
+  document.addEventListener('click', (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    const link = event.target.closest?.('a[href]');
+    const url = isInternalNavigation(link);
+    if (!url || pageLeaving) return;
+    if (reducedMotion.matches) return;
+    event.preventDefault();
+    pageLeaving = true;
+    document.documentElement.classList.add('is-page-leaving');
+    routeProgress?.classList.add('is-loading');
+    window.setTimeout(() => window.location.assign(url.href), 155);
+  });
+
+  window.addEventListener('pageshow', () => {
+    pageLeaving = false;
+    document.documentElement.classList.remove('is-page-leaving');
+    routeProgress?.classList.remove('is-loading');
   });
 
   const tocLinks = [...document.querySelectorAll('.article-toc a')];
