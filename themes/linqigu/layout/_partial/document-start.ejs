@@ -8,9 +8,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=20261030-sidebar-left" />
+    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=20261030-loader" />
     <link rel="stylesheet" href="<%- url_for('/css/hexo.css') %>" />
   </head>
   <body class="<%= is_home() ? 'home-page' : '' %>">
+    <% if (is_home()) { %>
+      <div class="page-loader" aria-hidden="true">
+        <div class="page-loader__ring"></div>
+        <div class="page-loader__mark"><img src="<%- url_for('/images/linqigu-logo.svg') %>" alt="" /></div>
+        <p class="page-loader__name">林栖谷</p>
+        <p class="page-loader__note">正在打开一片安静的角落</p>
+        <span class="page-loader__line"></span>
+        <p class="page-loader__quote">在有限的时间里，保持好奇。</p>
+      </div>
+    <% } %>
     <div class="site-shell">
       <%- partial('_partial/header') %>
