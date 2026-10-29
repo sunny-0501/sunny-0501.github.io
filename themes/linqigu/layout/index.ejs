@@ -4,7 +4,25 @@
 <main id="top">
   <div class="status-bar"><span>近期状态</span><strong>写下来的每一个字，都在慢慢变成自己的路</strong><a href="#articles" aria-label="查看最新文章">→</a></div>
   <section class="dashboard-hero" aria-label="博客首页">
-    <article class="quote-card"><div class="quote-dots" aria-hidden="true">•••</div><p class="eyebrow">PERSONAL NOTES</p><h1>念念不忘，<br />必有回响。</h1><p class="quote-site">LINQIGU NOTES</p><span class="quote-mark" aria-hidden="true">“</span></article>
+    <article class="quote-card" aria-roledescription="carousel" aria-label="林栖谷随笔">
+      <div class="quote-controls" role="tablist" aria-label="切换随笔">
+        <button class="quote-control is-active" id="quote-tab-1" type="button" role="tab" aria-selected="true" aria-controls="quote-slide-1" aria-label="显示第一则随笔"><span></span></button>
+        <button class="quote-control" id="quote-tab-2" type="button" role="tab" aria-selected="false" aria-controls="quote-slide-2" aria-label="显示第二则随笔" tabindex="-1"><span></span></button>
+      </div>
+      <div class="quote-slides" aria-live="polite">
+        <section class="quote-slide is-active" id="quote-slide-1" role="tabpanel" aria-labelledby="quote-tab-1">
+          <p class="eyebrow">PERSONAL NOTES</p>
+          <h1 class="quote-text">念念不忘，<br />必有回响。</h1>
+          <p class="quote-site">LINQIGU NOTES</p>
+        </section>
+        <section class="quote-slide quote-slide--long" id="quote-slide-2" role="tabpanel" aria-labelledby="quote-tab-2" aria-hidden="true" inert>
+          <p class="eyebrow">PERSONAL NOTES</p>
+          <h1 class="quote-text">身如柳絮随风扬，<br />无论云泥意贯一。</h1>
+          <p class="quote-site">LINQIGU NOTES</p>
+        </section>
+      </div>
+      <span class="quote-mark" aria-hidden="true">“</span>
+    </article>
     <% if (featured) { %>
       <a class="photo-card" href="<%- url_for(featured.path) %>" aria-label="阅读最新文章"><img src="<%- url_for('/images/header-landscape.png') %>" alt="晴天下的草坡与画画的人" /><div class="photo-shade"></div><div class="photo-copy"><span>最新文章 · <%= featured.categories.length ? featured.categories.first().name : '随笔' %></span><h2><%= featured.title %></h2></div><span class="recommend">↗ 阅读全文</span></a>
     <% } %>
