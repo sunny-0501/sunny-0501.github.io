@@ -8,10 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=20261030-motion" />
+    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=20261030-reading-experience" />
     <link rel="stylesheet" href="<%- url_for('/css/hexo.css') %>" />
+    <link rel="alternate" type="application/atom+xml" title="林栖谷" href="<%- url_for('/atom.xml') %>" />
   </head>
   <body class="<%= is_home() ? 'home-page' : '' %>">
+    <% if (is_post()) { %>
+      <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
+    <% } %>
     <% if (is_home()) { %>
       <div class="page-loader" aria-hidden="true">
         <div class="page-loader__ring"></div>
@@ -22,5 +26,24 @@
         <p class="page-loader__quote">在有限的时间里，保持好奇。</p>
       </div>
     <% } %>
+    <dialog class="search-dialog" id="siteSearchDialog" aria-labelledby="siteSearchTitle" data-search-url="<%- url_for('/search.xml') %>">
+      <div class="search-dialog__panel">
+        <header class="search-dialog__header">
+          <div>
+            <p class="eyebrow">SEARCH THE JOURNAL</p>
+            <h2 id="siteSearchTitle">搜索林栖谷</h2>
+          </div>
+          <button class="search-dialog__close" type="button" data-search-close aria-label="关闭搜索">×</button>
+        </header>
+        <label class="search-command">
+          <span aria-hidden="true">⌕</span>
+          <input id="siteSearchInput" type="search" placeholder="搜索标题与正文…" autocomplete="off" spellcheck="false" />
+          <kbd>ESC</kbd>
+        </label>
+        <p class="search-dialog__status" id="siteSearchStatus" aria-live="polite">输入关键词，搜索全部文章。</p>
+        <div class="search-results" id="siteSearchResults"></div>
+        <footer class="search-dialog__footer"><span>全站静态索引</span><span>Ctrl / ⌘ + K 快速打开</span></footer>
+      </div>
+    </dialog>
     <div class="site-shell">
       <%- partial('_partial/header') %>

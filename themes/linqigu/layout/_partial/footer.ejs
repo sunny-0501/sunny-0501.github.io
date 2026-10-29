@@ -1,5 +1,5 @@
 <footer class="site-footer">
   <span>© <%= date(new Date(), 'YYYY') %> 林栖谷</span>
   <span>在有限的时间里，保持好奇。</span>
-  <a href="#top">回到顶部 ↗</a>
+  <span><a href="<%- url_for('/atom.xml') %>">RSS</a> · <a href="#top">回到顶部 ↗</a></span>
 </footer>

@@ -1,8 +1,60 @@
-<% const category = page.categories && page.categories.length ? page.categories.first().name : '随笔'; %>
+<%
+  const category = page.categories && page.categories.length ? page.categories.first().name : '随笔';
+  const tags = page.tags ? page.tags.toArray() : [];
+  const plainText = page.content.replace(/<[^>]*>/g, ' ').replace(/&[^;]+;/g, ' ').replace(/\s+/g, ' ').trim();
+  const readingMinutes = Math.max(1, Math.ceil(plainText.length / 400));
+  const tocHtml = toc(page.content, { list_number: false, min_depth: 2, max_depth: 3 });
+  const posts = site.posts.sort('date', -1).toArray();
+  const currentIndex = posts.findIndex(function (post) { return post.path === page.path; });
+  const newerPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
+  const olderPost = currentIndex >= 0 && currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
+%>
 <%- partial('_partial/document-start') %>
 <main class="inner-page article-detail-page" id="top">
   <div class="status-bar"><span>文章详情</span><strong>慢慢读完一篇文章，也是一种抵达</strong><a href="<%- url_for('/archives/') %>" aria-label="返回文章归档">↗</a></div>
-  <article class="article-detail"><div class="article-detail-meta"><a class="tag" href="<%- url_for('/categories/' + category + '/') %>"><%= category %></a><time><%= date(page.date, 'YYYY.MM.DD') %></time></div><h1><%= page.title %></h1><% if (page.description) { %><p class="article-detail-description"><%= page.description %></p><% } %><div class="article-content"><%- page.content %></div></article>
-  <section class="comments-section"><div class="section-heading"><div class="section-label"><span>03</span><span>继续阅读</span><span class="line"></span></div></div><p class="static-note">这是静态 Hexo 博客。文章通过 Markdown 在本地维护和发布。</p></section>
+  <div class="article-detail-layout">
+    <article class="article-detail">
+      <div class="article-detail-meta">
+        <a class="tag" href="<%- url_for('/categories/' + category + '/') %>"><%= category %></a>
+        <time datetime="<%= date(page.date, 'YYYY-MM-DD') %>"><%= date(page.date, 'YYYY.MM.DD') %></time>
+        <span><%= readingMinutes %> MIN READ</span>
+      </div>
+      <h1><%= page.title %></h1>
+      <% if (page.description) { %><p class="article-detail-description"><%= page.description %></p><% } %>
+      <div class="article-content"><%- page.content %></div>
+      <% if (tags.length) { %>
+        <div class="article-tags" aria-label="文章标签">
+          <% tags.forEach(function (tag) { %><a class="button-tag" href="<%- url_for('/tags/' + tag.name + '/') %>"># <%= tag.name %></a><% }); %>
+        </div>
+      <% } %>
+    </article>
+    <aside class="article-rail" aria-label="文章辅助信息">
+      <div class="article-rail-card">
+        <p class="mini-heading">READING NOTES</p>
+        <div class="reading-stat"><strong><%= readingMinutes %></strong><span>分钟阅读</span></div>
+        <p>把注意力留给眼前这一段，不急着抵达结论。</p>
+      </div>
+      <% if (tocHtml && tocHtml.trim()) { %>
+        <nav class="article-rail-card article-toc" aria-label="文章目录">
+          <p class="mini-heading">ON THIS PAGE</p>
+          <%- tocHtml %>
+        </nav>
+      <% } %>
+      <a class="article-rail-card article-rss" href="<%- url_for('/atom.xml') %>">
+        <span>订阅后续文字</span><strong>RSS ↗</strong>
+      </a>
+    </aside>
+  </div>
+  <% if (newerPost || olderPost) { %>
+    <nav class="post-navigation" aria-label="前后文章">
+      <% if (newerPost) { %>
+        <a class="post-nav-card post-nav-newer" href="<%- url_for(newerPost.path) %>"><span>更新一篇</span><strong><%= newerPost.title %></strong><i aria-hidden="true">←</i></a>
+      <% } %>
+      <% if (olderPost) { %>
+        <a class="post-nav-card post-nav-older" href="<%- url_for(olderPost.path) %>"><span>更早一篇</span><strong><%= olderPost.title %></strong><i aria-hidden="true">→</i></a>
+      <% } %>
+    </nav>
+  <% } %>
+  <section class="article-endnote"><div><p class="eyebrow">READING COMPLETE</p><h2>读到这里，谢谢你。</h2><p>文字是缓慢的交流。如果这篇文章留下了什么，欢迎继续在归档里散步。</p></div><a class="read-link" href="<%- url_for('/archives/') %>">继续阅读 <span>↗</span></a></section>
 </main>
 <%- partial('_partial/document-end') %>

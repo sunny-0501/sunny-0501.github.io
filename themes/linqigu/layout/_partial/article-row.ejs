@@ -2,10 +2,11 @@
 <% posts.forEach(function(post) { %>
   <% const category = post.categories && post.categories.length ? post.categories.first().name : '随笔'; %>
   <% const summary = (post.excerpt || post.content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim(); %>
+  <% const readingMinutes = Math.max(1, Math.ceil(summary.length / 400)); %>
   <article class="article-row" data-category="<%= category %>" data-title="<%= post.title %> <%= summary %>">
     <div class="article-thumb <%= thumbMap[category] || 'thumb-tool' %>"><span><%= category.toUpperCase() %><br />NOTE</span></div>
     <div class="article-body">
-      <div class="article-meta"><span class="tag"><%= category %></span><span><%= date(post.date, 'YYYY.MM.DD') %></span></div>
+      <div class="article-meta"><span class="tag"><%= category %></span><time datetime="<%= date(post.date, 'YYYY-MM-DD') %>"><%= date(post.date, 'YYYY.MM.DD') %></time><span><%= readingMinutes %> MIN</span></div>
       <h3><a href="<%- url_for(post.path) %>"><%= post.title %></a></h3>
       <p><%= summary %></p>
     </div>
