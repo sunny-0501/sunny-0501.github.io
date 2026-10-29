@@ -3,12 +3,6 @@
   <a class="brand" href="<%- url_for('/') %>" aria-label="&#x56DE;&#x5230;&#x9996;&#x9875;">
     <img class="brand-logo" src="<%- url_for('/images/linqigu-logo.svg') %>" alt="&#x6797;&#x6816;&#x8C37;" />
   </a>
-  <span class="totoro-track" role="img" aria-label="&#x5728;&#x9876;&#x680F;&#x6563;&#x6B65;&#x7684;&#x9F99;&#x732B;">
-    <span class="totoro-walker">
-      <img class="totoro-gif" src="<%- url_for('/images/totoro-walking-transparent.gif') %>" alt="&#x7F13;&#x6162;&#x8D70;&#x8DEF;&#x7684;&#x9F99;&#x732B;" />
-      <span class="totoro-turn-sprite" aria-hidden="true"></span>
-    </span>
-  </span>
   <nav class="main-nav" aria-label="&#x4E3B;&#x5BFC;&#x822A;">
     <a class="<%= activePath === '' ? 'active' : '' %>" href="<%- url_for('/') %>">&#x4E3B;&#x9875;</a>
     <a class="<%= activePath.startsWith('archives') || activePath.startsWith('categories') || activePath.startsWith('tags') || is_post() ? 'active' : '' %>" href="<%- url_for('/archives/') %>">&#x6587;&#x7AE0;</a>
