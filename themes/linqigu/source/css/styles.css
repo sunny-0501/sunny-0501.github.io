@@ -459,7 +459,7 @@ body { background: var(--dashboard-bg); color: var(--forest); }
 .category-share { background: var(--butter); }
 .category-life { background: var(--lilac); }
 
-.content-layout { display: grid; grid-template-columns: minmax(0, 1fr) 286px; gap: 36px; padding: 12px 0 56px; }
+.content-layout { display: grid; grid-template-columns: 286px minmax(0, 1fr); gap: 36px; padding: 12px 0 56px; }
 .articles-column { min-width: 0; }
 .content-tabs { display: flex; align-items: center; gap: 22px; border-bottom: 1px solid var(--card-border); padding: 0 0 14px; margin-bottom: 18px; }
 .content-tabs a { color: var(--soft-ink); font-size: 12px; }
@@ -573,7 +573,7 @@ body.dark .search-box { background: var(--card); }
   .main-nav { gap: 17px; }
   .dashboard-hero { grid-template-columns: 1fr 1.25fr; }
   .quote-card, .photo-card { min-height: 350px; }
-  .content-layout { grid-template-columns: minmax(0,1fr) 240px; gap: 22px; }
+  .content-layout { grid-template-columns: 240px minmax(0,1fr); gap: 22px; }
   .article-row { grid-template-columns: 88px minmax(0, 1fr) 22px; }
 }
 
