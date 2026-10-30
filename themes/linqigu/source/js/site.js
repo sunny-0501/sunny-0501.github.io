@@ -13,8 +13,8 @@
   const wallpaperTitleToggle = document.querySelector('#wallpaperTitleToggle');
   const wallpaperCarouselToggle = document.querySelector('#wallpaperCarouselToggle');
   const wallpaperGradientToggle = document.querySelector('#wallpaperGradientToggle');
-  const sakuraToggle = document.querySelector('#sakuraToggle');
-  const sakuraLayer = document.querySelector('#sakuraLayer');
+  const windToggle = document.querySelector('#windToggle');
+  const windLayer = document.querySelector('#windLayer');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const wallpaperImages = [
     '/images/header-landscape.png',
@@ -96,24 +96,26 @@
     startWallpaperRotation();
   };
 
-  const createSakura = () => {
-    if (!sakuraLayer || sakuraLayer.childElementCount) return;
-    const petalCount = window.innerWidth < 720 ? 9 : 16;
-    for (let index = 0; index < petalCount; index += 1) {
-      const petal = document.createElement('span');
-      petal.className = 'sakura-petal';
-      petal.style.setProperty('--petal-left', `${Math.random() * 100}%`);
-      petal.style.setProperty('--petal-size', `${7 + Math.random() * 6}px`);
-      petal.style.setProperty('--petal-drift', `${-80 + Math.random() * 160}px`);
-      petal.style.setProperty('--petal-duration', `${7 + Math.random() * 7}s`);
-      petal.style.setProperty('--petal-delay', `${-Math.random() * 12}s`);
-      sakuraLayer.append(petal);
+  const createWind = () => {
+    if (!windLayer || windLayer.childElementCount) return;
+    const streakCount = window.innerWidth < 720 ? 10 : 20;
+    for (let index = 0; index < streakCount; index += 1) {
+      const streak = document.createElement('span');
+      streak.className = `wind-streak${index % 3 === 0 ? ' soft' : ''}`;
+      streak.style.setProperty('--wind-top', `${8 + Math.random() * 84}%`);
+      streak.style.setProperty('--wind-width', `${50 + Math.random() * 170}px`);
+      streak.style.setProperty('--wind-drift', `${-30 + Math.random() * 60}px`);
+      streak.style.setProperty('--wind-angle', `${-3 + Math.random() * 6}deg`);
+      streak.style.setProperty('--wind-opacity', String(.22 + Math.random() * .3));
+      streak.style.setProperty('--wind-duration', `${5 + Math.random() * 6}s`);
+      streak.style.setProperty('--wind-delay', `${-Math.random() * 10}s`);
+      windLayer.append(streak);
     }
   };
-  const applySakura = (enabled) => {
-    if (!sakuraLayer) return;
-    createSakura();
-    document.body.classList.toggle('sakura-on', enabled && !reducedMotion.matches);
+  const applyWind = (enabled) => {
+    if (!windLayer) return;
+    createWind();
+    document.body.classList.toggle('wind-on', enabled && !reducedMotion.matches);
   };
   const applyLayout = (mode) => {
     const grid = mode === 'grid';
@@ -125,10 +127,10 @@
   if (wallpaperTitleToggle) wallpaperTitleToggle.checked = readToggle('blog-wallpaper-title', true);
   if (wallpaperCarouselToggle) wallpaperCarouselToggle.checked = readToggle('blog-wallpaper-carousel', true);
   if (wallpaperGradientToggle) wallpaperGradientToggle.checked = readToggle('blog-wallpaper-gradient', true);
-  if (sakuraToggle) sakuraToggle.checked = readToggle('blog-sakura', true);
+  if (windToggle) windToggle.checked = readToggle('blog-wind', true);
   applyLayout(localStorage.getItem('blog-layout') || 'list');
   applyWallpaperSettings();
-  applySakura(sakuraToggle?.checked);
+  applyWind(windToggle?.checked);
 
   wallpaperTitleToggle?.addEventListener('change', () => {
     localStorage.setItem('blog-wallpaper-title', String(wallpaperTitleToggle.checked));
@@ -142,9 +144,9 @@
     localStorage.setItem('blog-wallpaper-gradient', String(wallpaperGradientToggle.checked));
     applyWallpaperSettings();
   });
-  sakuraToggle?.addEventListener('change', () => {
-    localStorage.setItem('blog-sakura', String(sakuraToggle.checked));
-    applySakura(sakuraToggle.checked);
+  windToggle?.addEventListener('change', () => {
+    localStorage.setItem('blog-wind', String(windToggle.checked));
+    applyWind(windToggle.checked);
   });
   layoutOptions.forEach((option) => option.addEventListener('click', () => applyLayout(option.dataset.layoutMode)));
   document.addEventListener('visibilitychange', () => {

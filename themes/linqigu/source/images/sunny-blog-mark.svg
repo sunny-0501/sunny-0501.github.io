@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="420" viewBox="100 200 840 420" fill="none">
+  <title>sunny blog mark</title>
+  <g transform="translate(140 178) scale(.82)">
+    <path d="M328 78C286 136 248 197 215 260C180 328 139 406 92 492H214L286 346L354 480H440L328 78Z" fill="#23483C"/>
+    <path d="M600 78C642 136 680 197 713 260C748 328 789 406 836 492H714L642 346L574 480H488L600 78Z" fill="#23483C"/>
+    <path d="M328 78L464 388L600 78" stroke="#23483C" stroke-width="42" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M464 388V514" stroke="#23483C" stroke-width="42" stroke-linecap="round"/>
+    <path d="M416 250C431 235 449 235 464 250C479 235 497 235 512 250C497 263 479 268 464 268C449 268 431 263 416 250Z" fill="#C98C4A"/>
+    <circle cx="464" cy="225" r="15" fill="#C98C4A"/>
+    <path d="M434 283H494" stroke="#C98C4A" stroke-width="12" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,7 +1,8 @@
 <% const activePath = page.path || ''; %>
 <header class="site-header">
   <a class="brand" href="<%- url_for('/') %>" aria-label="&#x56DE;&#x5230;&#x9996;&#x9875;">
-    <img class="brand-logo" src="<%- url_for('/images/linqigu-logo.svg') %>" alt="&#x6797;&#x6816;&#x8C37;" />
+    <img class="brand-logo" src="<%- url_for('/images/sunny-blog-mark.svg') %>" alt="" />
+    <span class="brand-wordmark">sunny blog</span>
   </a>
   <nav class="main-nav" aria-label="&#x4E3B;&#x5BFC;&#x822A;">
     <a class="<%= activePath === '' ? 'active' : '' %>" href="<%- url_for('/') %>">&#x4E3B;&#x9875;</a>
@@ -36,7 +37,7 @@
         </div>
         <div class="appearance-group">
           <span>特效设置</span>
-          <label class="setting-row"><span><i>✿</i>樱花特效</span><input class="setting-toggle" id="sakuraToggle" type="checkbox" /><b class="switch" aria-hidden="true"></b></label>
+          <label class="setting-row"><span><i>≋</i>风吹特效</span><input class="setting-toggle" id="windToggle" type="checkbox" /><b class="switch" aria-hidden="true"></b></label>
         </div>
         <div class="appearance-group">
           <span>文章布局</span>
