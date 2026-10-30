@@ -17,6 +17,20 @@ body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(
 a { color: inherit; text-decoration: none; }
 button, input { font: inherit; }
 button { cursor: pointer; }
+.site-cursor { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  html.custom-cursor-ready, html.custom-cursor-ready * { cursor: none !important; }
+  .site-cursor { position: fixed; z-index: 10000; top: 0; left: 0; display: block; width: 0; height: 0; pointer-events: none; opacity: 0; transition: opacity .18s ease; }
+  .site-cursor.is-visible { opacity: 1; }
+  .site-cursor__dot, .site-cursor__ring { position: fixed; top: 0; left: 0; pointer-events: none; will-change: transform; }
+  .site-cursor__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--peach); box-shadow: 0 0 0 3px rgba(255,253,247,.44); transform: translate3d(-20px,-20px,0) translate(-50%,-50%); }
+  .site-cursor__ring { width: 32px; height: 32px; border: 1px solid rgba(47,94,80,.58); border-radius: 50%; background: rgba(255,253,247,.08); backdrop-filter: blur(1px); transform: translate3d(-20px,-20px,0) translate(-50%,-50%); transition: width .2s ease, height .2s ease, border-color .2s ease, background-color .2s ease; }
+  .site-cursor.is-interactive .site-cursor__ring { width: 48px; height: 48px; border-color: rgba(53,191,162,.76); background: rgba(53,191,162,.08); }
+  .site-cursor.is-interactive .site-cursor__dot { background: #35bfa2; }
+  .site-cursor.is-pressing .site-cursor__ring { width: 23px; height: 23px; background: rgba(53,191,162,.16); }
+  body.dark .site-cursor__ring { border-color: rgba(255,247,232,.68); background: rgba(255,255,255,.035); }
+  body.dark .site-cursor.is-interactive .site-cursor__ring { border-color: #71e0c2; }
+}
 .site-shell { max-width: 1440px; margin: 0 auto; padding: 0 58px; overflow: hidden; }
 
 .site-header { height: 92px; border-bottom: 1px solid var(--ink); display: flex; align-items: center; justify-content: space-between; gap: 36px; }
@@ -972,6 +986,7 @@ body.dark .search-box:hover, body.dark .search-box:focus-visible { background: r
   .search-dialog__panel { animation: none; }
   .wind-on .wind-layer { display: none; }
   .site-shell, .site-header, .route-progress, .back-to-top { transition: none !important; }
+  .site-cursor__ring { transition: none; }
   a, button, input, select { transition: none !important; }
   .page-loader { display: none; }
 }
