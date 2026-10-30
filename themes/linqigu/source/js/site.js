@@ -32,34 +32,19 @@
   if (siteCursor && cursorDot && cursorRing && canUseCustomCursor) {
     let pointerX = -30;
     let pointerY = -30;
-    let ringX = pointerX;
-    let ringY = pointerY;
-    let cursorFrame = null;
-
-    const renderCursor = () => {
-      const ease = reducedMotion.matches ? 1 : .2;
-      ringX += (pointerX - ringX) * ease;
-      ringY += (pointerY - ringY) * ease;
-      cursorRing.style.transform = `translate3d(${ringX}px,${ringY}px,0) translate(-50%,-50%)`;
-      if (Math.abs(pointerX - ringX) > .1 || Math.abs(pointerY - ringY) > .1) {
-        cursorFrame = requestAnimationFrame(renderCursor);
-      } else {
-        cursorFrame = null;
-      }
-    };
 
     document.addEventListener('pointermove', (event) => {
       if (event.pointerType && event.pointerType !== 'mouse') return;
       pointerX = event.clientX;
       pointerY = event.clientY;
       cursorDot.style.transform = `translate3d(${pointerX}px,${pointerY}px,0) translate(-50%,-50%)`;
+      cursorRing.style.transform = `translate3d(${pointerX}px,${pointerY}px,0) translate(-50%,-50%)`;
       siteCursor.classList.add('is-visible');
       const target = event.target;
       siteCursor.classList.toggle(
         'is-interactive',
         target instanceof Element && Boolean(target.closest('a,button,input,textarea,select,label,.article-row,.photo-card,.gallery-item')),
       );
-      if (!cursorFrame) cursorFrame = requestAnimationFrame(renderCursor);
     }, { passive: true });
     document.addEventListener('pointerdown', () => siteCursor.classList.add('is-pressing'));
     document.addEventListener('pointerup', () => siteCursor.classList.remove('is-pressing'));
