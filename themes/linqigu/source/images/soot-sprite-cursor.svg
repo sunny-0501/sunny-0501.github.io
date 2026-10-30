@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <title>Soot sprite cursor</title>
+  <path d="M32 6L37 12L43 8L44 16L51 15L48 22L55 25L49 30L55 36L48 39L51 47L43 46L41 54L35 50L32 58L29 50L23 54L21 46L13 47L16 39L9 36L15 30L9 25L16 22L13 15L20 16L21 8L27 12L32 6Z" fill="#080b09"/>
+  <path d="M32 11C44 11 54 20 54 32C54 44 44 53 32 53C20 53 11 44 11 32C11 20 20 11 32 11Z" fill="#090c0a"/>
+  <path d="M22 20L20 14M28 14L27 8M36 14L38 8M43 19L49 14M49 25L56 22M51 32L58 31M49 40L55 43M43 47L47 53M35 51L37 58M27 51L24 58M19 47L13 52M15 39L8 43M13 31L6 30M15 24L9 19" stroke="#090c0a" stroke-width="2.2" stroke-linecap="round"/>
+  <ellipse cx="25" cy="30" rx="4.4" ry="6" transform="rotate(-4 25 30)" fill="#fffdf6"/>
+  <ellipse cx="40" cy="31" rx="4.1" ry="5.8" transform="rotate(5 40 31)" fill="#fffdf6"/>
+  <ellipse cx="26" cy="31" rx="1.65" ry="2.5" fill="#101512"/>
+  <ellipse cx="39" cy="32" rx="1.55" ry="2.4" fill="#101512"/>
+  <circle cx="24.8" cy="28.8" r=".65" fill="#fff"/>
+  <circle cx="37.9" cy="29.8" r=".6" fill="#fff"/>
+  <path d="M25 49C23 52 22 55 19 57M39 49C41 52 42 55 45 57" stroke="#111612" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M19 57L16 58M45 57L48 58" stroke="#111612" stroke-width="1.7" stroke-linecap="round"/>
+</svg>
