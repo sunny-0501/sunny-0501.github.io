@@ -32,16 +32,24 @@
       <a class="photo-card" href="<%- url_for(featured.path) %>" aria-label="阅读最新文章"><img src="<%- url_for('/images/header-landscape.png') %>" alt="晴天下的草坡与画画的人" /><div class="photo-shade"></div><div class="photo-copy"><span>最新文章 · <%= featured.categories.length ? featured.categories.first().name : '随笔' %></span><h2><%= featured.title %></h2></div><span class="recommend">↗ 阅读全文</span></a>
     <% } %>
   </section>
-  <section class="category-grid" id="topics" aria-label="文章分类">
-    <a class="category-card category-geek" href="<%- url_for('/categories/项目/') %>"><strong>项目</strong><span>正在做的事与实践记录</span><i>↗</i></a>
-    <a class="category-card category-share" href="<%- url_for('/categories/阅读/') %>"><strong>阅读</strong><span>书、电影与一些想法</span><i>↗</i></a>
-    <a class="category-card category-life" href="<%- url_for('/categories/随笔/') %>"><strong>随笔</strong><span>散步、旅行和微小感受</span><i>↗</i></a>
-  </section>
   <section class="content-layout" id="articles">
-    <aside class="sidebar"><div class="sidebar-card profile-card"><div class="avatar"><img src="<%- url_for('/images/avatar.png') %>" alt="sunny 的头像" /></div><p class="mini-heading">ABOUT THE AUTHOR</p><h2>你好，我是 sunny</h2><p>一个在互联网行业工作、下班后写字的人。相信好奇心、长期主义，还有一杯热茶。</p><a class="side-link" href="<%- url_for('/about/') %>">认识我更多 ↗</a></div><div class="sidebar-card"><p class="mini-heading">按主题浏览</p><a class="topic-link" href="<%- url_for('/categories/项目/') %>">项目与实践 <span><%= site.categories.find({ name: '项目' }).length %></span></a><a class="topic-link" href="<%- url_for('/categories/阅读/') %>">阅读与思考 <span><%= site.categories.find({ name: '阅读' }).length %></span></a><a class="topic-link" href="<%- url_for('/categories/随笔/') %>">随笔与日常 <span><%= site.categories.find({ name: '随笔' }).length %></span></a></div></aside>
+    <aside class="sidebar">
+      <div class="sidebar-card profile-card">
+        <div class="profile-avatar"><img src="<%- url_for('/images/avatar.png') %>" alt="sunny 的头像" /></div>
+        <div class="profile-identity"><p class="mini-heading">ABOUT THE AUTHOR</p><h2>sunny</h2><i></i><span>INFJ</span><p>一个在互联网行业工作、下班后写字的人。相信好奇心、长期主义，还有一杯热茶。</p></div>
+        <div class="profile-socials" aria-label="联系 sunny">
+          <a href="https://github.com/sunny-0501" target="_blank" rel="noreferrer" aria-label="GitHub"><span aria-hidden="true">&lt;/&gt;</span></a>
+          <a href="mailto:hello@example.com" aria-label="发送邮件"><span aria-hidden="true">✉</span></a>
+          <a href="<%- url_for('/rss/') %>" aria-label="RSS 订阅"><span aria-hidden="true">◉</span></a>
+        </div>
+        <a class="profile-more" href="<%- url_for('/about/') %>">认识我更多 <span>↗</span></a>
+      </div>
+      <div class="sidebar-card announcement-card" id="announcementCard"><button type="button" id="announcementClose" aria-label="关闭公告">×</button><p class="mini-heading">公告</p><h2>欢迎来到 sunny blog</h2><p>把日常、阅读和正在做的事，慢慢写下来。</p><a class="side-link" href="<%- url_for('/explore/') %>">了解更多 ↗</a></div>
+      <div class="sidebar-card topics-card"><p class="mini-heading">按主题浏览</p><a class="topic-link" href="<%- url_for('/categories/项目/') %>">项目与实践 <span><%= site.categories.find({ name: '项目' }).length %></span></a><a class="topic-link" href="<%- url_for('/categories/阅读/') %>">阅读与思考 <span><%= site.categories.find({ name: '阅读' }).length %></span></a><a class="topic-link" href="<%- url_for('/categories/随笔/') %>">随笔与日常 <span><%= site.categories.find({ name: '随笔' }).length %></span></a></div>
+    </aside>
     <div class="articles-column">
-      <nav class="content-tabs" aria-label="文章视图"><a class="selected" href="<%- url_for('/') %>">首页</a><a href="<%- url_for('/categories/项目/') %>">项目</a><a href="<%- url_for('/categories/随笔/') %>">随笔</a><a href="<%- url_for('/categories/阅读/') %>">阅读</a><a href="<%- url_for('/archives/') %>">更多</a></nav>
-      <div class="section-heading"><div class="section-label"><span>02</span><span>最新文章</span><span class="line"></span></div><div class="filters" role="group" aria-label="文章分类"><button class="filter-button active" type="button" data-filter="all">全部</button><button class="filter-button" type="button" data-filter="项目">项目</button><button class="filter-button" type="button" data-filter="阅读">阅读</button><button class="filter-button" type="button" data-filter="随笔">随笔</button></div></div>
+      <nav class="content-tabs" aria-label="文章视图"><a class="selected" href="<%- url_for('/') %>"><span>首页</span><b><%= posts.length %></b></a><a href="<%- url_for('/categories/项目/') %>"><span>项目</span><b><%= site.categories.find({ name: '项目' }).length %></b></a><a href="<%- url_for('/categories/随笔/') %>"><span>随笔</span><b><%= site.categories.find({ name: '随笔' }).length %></b></a><a href="<%- url_for('/categories/阅读/') %>"><span>阅读</span><b><%= site.categories.find({ name: '阅读' }).length %></b></a><a class="more-tab" href="<%- url_for('/archives/') %>"><span>更多</span><b>→</b></a></nav>
+      <div class="section-heading"><div class="section-label"><span>02</span><span>最新文章</span><span class="line"></span></div><div class="filters" role="group" aria-label="文章分类"><button class="filter-button active" type="button" data-filter="all">全部 <b><%= posts.length %></b></button><button class="filter-button" type="button" data-filter="项目">项目 <b><%= site.categories.find({ name: '项目' }).length %></b></button><button class="filter-button" type="button" data-filter="阅读">阅读 <b><%= site.categories.find({ name: '阅读' }).length %></b></button><button class="filter-button" type="button" data-filter="随笔">随笔 <b><%= site.categories.find({ name: '随笔' }).length %></b></button></div></div>
       <div class="article-list" id="articleList"><%- partial('_partial/article-row', { posts: posts.slice(0, 6) }) %></div>
       <p class="empty-state" id="emptyState" hidden>没有找到匹配的文章。</p>
     </div>

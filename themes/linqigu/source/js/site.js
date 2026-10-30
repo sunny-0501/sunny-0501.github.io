@@ -154,6 +154,16 @@
     else startWallpaperRotation();
   });
 
+  const announcementCard = document.querySelector('#announcementCard');
+  const announcementClose = document.querySelector('#announcementClose');
+  if (announcementCard && sessionStorage.getItem('blog-announcement-closed') === 'true') {
+    announcementCard.hidden = true;
+  }
+  announcementClose?.addEventListener('click', () => {
+    if (announcementCard) announcementCard.hidden = true;
+    sessionStorage.setItem('blog-announcement-closed', 'true');
+  });
+
   const setAppearanceOpen = (open) => {
     if (!appearancePanel || !appearanceToggle) return;
     appearancePanel.hidden = !open;
