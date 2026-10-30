@@ -4,17 +4,63 @@
   const buttons = [...document.querySelectorAll('.filter-button')];
   const rows = [...document.querySelectorAll('.article-row')];
   const emptyState = document.querySelector('#emptyState');
+  const themeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+  const appearanceToggle = document.querySelector('#appearanceToggle');
+  const appearancePanel = document.querySelector('#appearancePanel');
+  const themeOptions = [...document.querySelectorAll('[data-theme-setting]')];
+  const accentOptions = [...document.querySelectorAll('[data-accent]')];
   let activeCategory = 'all';
 
-  const applyTheme = (dark) => {
+  const applyTheme = (mode) => {
+    const dark = mode === 'system' ? themeMedia.matches : mode === 'dark';
     document.body.classList.toggle('dark', dark);
     if (toggle) toggle.textContent = dark ? '◑' : '◐';
+    themeOptions.forEach((option) => option.setAttribute('aria-pressed', String(option.dataset.themeSetting === mode)));
   };
-  applyTheme(localStorage.getItem('blog-theme') === 'dark');
+  let themeMode = localStorage.getItem('blog-theme-mode') || (localStorage.getItem('blog-theme') === 'dark' ? 'dark' : 'light');
+  applyTheme(themeMode);
   toggle?.addEventListener('click', () => {
     const dark = !document.body.classList.contains('dark');
-    applyTheme(dark);
-    localStorage.setItem('blog-theme', dark ? 'dark' : 'light');
+    themeMode = dark ? 'dark' : 'light';
+    applyTheme(themeMode);
+    localStorage.setItem('blog-theme-mode', themeMode);
+  });
+  themeOptions.forEach((option) => option.addEventListener('click', () => {
+    themeMode = option.dataset.themeSetting;
+    applyTheme(themeMode);
+    localStorage.setItem('blog-theme-mode', themeMode);
+  }));
+  themeMedia.addEventListener('change', () => {
+    if (themeMode === 'system') applyTheme('system');
+  });
+
+  const applyAccent = (accent) => {
+    document.body.dataset.accent = accent;
+    accentOptions.forEach((option) => option.setAttribute('aria-pressed', String(option.dataset.accent === accent)));
+  };
+  applyAccent(localStorage.getItem('blog-accent') || 'forest');
+  accentOptions.forEach((option) => option.addEventListener('click', () => {
+    applyAccent(option.dataset.accent);
+    localStorage.setItem('blog-accent', option.dataset.accent);
+  }));
+
+  const setAppearanceOpen = (open) => {
+    if (!appearancePanel || !appearanceToggle) return;
+    appearancePanel.hidden = !open;
+    appearanceToggle.setAttribute('aria-expanded', String(open));
+  };
+  appearanceToggle?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    setAppearanceOpen(appearancePanel?.hidden !== false);
+  });
+  document.addEventListener('click', (event) => {
+    if (!appearancePanel || appearancePanel.hidden) return;
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+    if (!appearancePanel.contains(target) && !appearanceToggle?.contains(target)) setAppearanceOpen(false);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setAppearanceOpen(false);
   });
 
   const searchTrigger = document.querySelector('#searchTrigger');
@@ -131,6 +177,57 @@
       event.preventDefault();
       openSearch();
     }
+  });
+
+  const lightboxDialog = document.querySelector('#lightboxDialog');
+  const lightboxImage = document.querySelector('#lightboxImage');
+  const lightboxCaption = document.querySelector('#lightboxCaption');
+  const closeLightbox = () => {
+    if (lightboxDialog?.open) lightboxDialog.close();
+    document.body.classList.remove('lightbox-open');
+  };
+  const openLightbox = (source, caption, alt) => {
+    if (!lightboxDialog || !lightboxImage) return;
+    lightboxImage.src = source;
+    lightboxImage.alt = alt || caption || '';
+    if (lightboxCaption) lightboxCaption.textContent = caption || alt || '';
+    lightboxDialog.showModal();
+    document.body.classList.add('lightbox-open');
+  };
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const galleryItem = target.closest('.gallery-item');
+    if (galleryItem) {
+      openLightbox(
+        galleryItem.dataset.lightboxSrc,
+        galleryItem.dataset.lightboxCaption,
+        galleryItem.querySelector('img')?.alt,
+      );
+      return;
+    }
+    const articleImage = target.closest('.article-content img');
+    if (articleImage) {
+      event.preventDefault();
+      openLightbox(articleImage.src, articleImage.alt);
+    }
+  });
+  document.querySelector('[data-lightbox-close]')?.addEventListener('click', closeLightbox);
+  lightboxDialog?.addEventListener('close', () => document.body.classList.remove('lightbox-open'));
+  lightboxDialog?.addEventListener('click', (event) => {
+    if (event.target === lightboxDialog) closeLightbox();
+  });
+
+  const guestbookForm = document.querySelector('#guestbookForm');
+  guestbookForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const name = document.querySelector('#guestbookName')?.value.trim() || '一位访客';
+    const message = document.querySelector('#guestbookMessage')?.value.trim();
+    if (!message) return;
+    const title = `留言：来自 ${name}`;
+    const body = `**称呼**：${name}\n\n${message}`;
+    const issueUrl = `https://github.com/sunny-0501/sunny-0501.github.io/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+    window.open(issueUrl, '_blank', 'noopener,noreferrer');
   });
 
   const filterRows = () => {

@@ -1,0 +1,16 @@
+<%- partial('_partial/document-start') %>
+<main class="inner-page" id="top">
+  <div class="status-bar"><span>我的</span><strong>文章之外的收藏、入口与交流方式</strong><a href="<%- url_for('/') %>" aria-label="回到首页">↗</a></div>
+  <section class="page-hero page-hero-peach"><div><p class="eyebrow">EXPLORE LINQIGU</p><h1>在文章之外，<br />还有一些值得停留的地方。</h1><p>按主题找内容、看看相册，或者留下一句话。</p></div><div class="page-hero-symbol" aria-hidden="true">✦</div></section>
+  <section class="page-content">
+    <div class="explore-grid">
+      <a class="explore-card" href="<%- url_for('/categories/') %>"><span>01 · INDEX</span><strong>分类</strong><p>从项目、阅读与随笔进入内容。</p><i>↗</i></a>
+      <a class="explore-card" href="<%- url_for('/tags/') %>"><span>02 · INDEX</span><strong>标签</strong><p>用关键词连接零散的想法。</p><i>↗</i></a>
+      <a class="explore-card" href="<%- url_for('/archives/') %>"><span>03 · ARCHIVE</span><strong>归档</strong><p>按时间和主题回看全部文章。</p><i>↗</i></a>
+      <a class="explore-card" href="<%- url_for('/gallery/') %>"><span>04 · GALLERY</span><strong>相册</strong><p>动画、森林和沿途的风景。</p><i>↗</i></a>
+      <a class="explore-card" href="<%- url_for('/guestbook/') %>"><span>05 · GUESTBOOK</span><strong>留言</strong><p>通过 GitHub 留下想说的话。</p><i>↗</i></a>
+      <a class="explore-card" href="<%- url_for('/rss/') %>"><span>06 · FOLLOW</span><strong>订阅</strong><p>使用 RSS 跟随下一次更新。</p><i>↗</i></a>
+    </div>
+  </section>
+</main>
+<%- partial('_partial/document-end') %>

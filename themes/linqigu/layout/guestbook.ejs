@@ -1,0 +1,21 @@
+<%- partial('_partial/document-start') %>
+<main class="inner-page" id="top">
+  <div class="status-bar"><span>留言</span><strong>让一段偶然的相遇留下一点回声</strong><a href="<%- url_for('/explore/') %>" aria-label="返回我的页面">↗</a></div>
+  <section class="page-hero page-hero-mint"><div><p class="eyebrow">GUESTBOOK · SAY HELLO</p><h1>来过的话，<br />留下一句话吧。</h1><p>留言会通过 GitHub Issue 发布，需要登录 GitHub 账号。</p></div><div class="page-hero-symbol" aria-hidden="true">✉</div></section>
+  <section class="page-content guestbook-layout">
+    <form class="guestbook-form" id="guestbookForm">
+      <div><p class="mini-heading">LEAVE A NOTE</p><h2>写一条留言</h2></div>
+      <label>怎么称呼你<input id="guestbookName" type="text" maxlength="40" placeholder="昵称" required /></label>
+      <label>想说的话<textarea id="guestbookMessage" rows="6" maxlength="1200" placeholder="写下想交流的内容…" required></textarea></label>
+      <button class="publish-button" type="submit">前往 GitHub 发布 ↗</button>
+      <p class="static-note">提交后将打开 GitHub 新建 Issue 页面，你的内容不会直接发送到其他服务。</p>
+    </form>
+    <aside class="sidebar-card">
+      <p class="mini-heading">ELSEWHERE</p>
+      <h2>也可以这样找到我</h2>
+      <p>如果 GitHub 不方便，可以先从文章或友链开始。</p>
+      <a class="side-link" href="https://github.com/sunny-0501" target="_blank" rel="noreferrer">访问 GitHub ↗</a>
+    </aside>
+  </section>
+</main>
+<%- partial('_partial/document-end') %>

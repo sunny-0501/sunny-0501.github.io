@@ -7,6 +7,8 @@
     <a class="<%= activePath === '' ? 'active' : '' %>" href="<%- url_for('/') %>">&#x4E3B;&#x9875;</a>
     <a class="<%= activePath.startsWith('archives') || activePath.startsWith('categories') || activePath.startsWith('tags') || is_post() ? 'active' : '' %>" href="<%- url_for('/archives/') %>">&#x6587;&#x7AE0;</a>
     <a class="<%= activePath.startsWith('links') ? 'active' : '' %>" href="<%- url_for('/links/') %>">&#x53CB;&#x94FE;</a>
+    <a class="<%= activePath.startsWith('guestbook') ? 'active' : '' %>" href="<%- url_for('/guestbook/') %>">&#x7559;&#x8A00;</a>
+    <a class="<%= activePath.startsWith('explore') || activePath.startsWith('gallery') || activePath.startsWith('rss') ? 'active' : '' %>" href="<%- url_for('/explore/') %>">&#x6211;&#x7684;</a>
     <a class="<%= activePath.startsWith('about') ? 'active' : '' %>" href="<%- url_for('/about/') %>">&#x5173;&#x4E8E;</a>
   </nav>
   <div class="header-actions">
@@ -15,6 +17,23 @@
       <span class="search-box__icon" aria-hidden="true">&#x2315;</span>
       <span class="search-box__placeholder">&#x641C;&#x7D22;&#x6587;&#x7AE0;</span>
     </button>
+    <div class="appearance-control">
+      <button class="icon-button" id="appearanceToggle" type="button" aria-label="外观设置" aria-controls="appearancePanel" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-1.3-1.1-2-2.3-2h-1.1a2 2 0 0 1-2-2V7A4 4 0 0 0 12 3Z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="7.2" cy="10" r="1.2" fill="currentColor"/><circle cx="10" cy="6.8" r="1.2" fill="currentColor"/><circle cx="14.2" cy="6.8" r="1.2" fill="currentColor"/></svg>
+      </button>
+      <div class="appearance-panel" id="appearancePanel" hidden>
+        <p class="mini-heading">APPEARANCE</p>
+        <h2>调整阅读氛围</h2>
+        <div class="appearance-group">
+          <span>颜色模式</span>
+          <div class="appearance-options" role="group" aria-label="颜色模式"><button type="button" data-theme-setting="system">跟随系统</button><button type="button" data-theme-setting="light">浅色</button><button type="button" data-theme-setting="dark">深色</button></div>
+        </div>
+        <div class="appearance-group">
+          <span>强调色</span>
+          <div class="accent-options" role="group" aria-label="强调色"><button class="accent-swatch accent-forest" type="button" data-accent="forest" aria-label="森林绿"></button><button class="accent-swatch accent-coral" type="button" data-accent="coral" aria-label="珊瑚红"></button><button class="accent-swatch accent-lilac" type="button" data-accent="lilac" aria-label="丁香紫"></button><button class="accent-swatch accent-blue" type="button" data-accent="blue" aria-label="湖水蓝"></button></div>
+        </div>
+      </div>
+    </div>
     <button class="icon-button" id="themeToggle" type="button" aria-label="&#x5207;&#x6362;&#x989C;&#x8272;&#x4E3B;&#x9898;" title="&#x5207;&#x6362;&#x989C;&#x8272;&#x4E3B;&#x9898;">&#x2600;</button>
   </div>
 </header>

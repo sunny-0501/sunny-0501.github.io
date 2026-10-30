@@ -1,0 +1,18 @@
+<%
+  const tags = site.tags.toArray().sort(function (first, second) {
+    return String(first.name).localeCompare(String(second.name), 'zh-CN');
+  });
+%>
+<%- partial('_partial/document-start') %>
+<main class="inner-page" id="top">
+  <div class="status-bar"><span>内容索引</span><strong>从一个关键词出发，发现文章之间的联系</strong><a href="<%- url_for('/explore/') %>" aria-label="返回我的页面">↗</a></div>
+  <section class="page-hero page-hero-lilac"><div><p class="eyebrow">TAGS · <%= tags.length %></p><h1>顺着关键词，<br />遇见下一篇文章。</h1><p><%= page.description %></p></div><div class="page-hero-symbol" aria-hidden="true">#</div></section>
+  <section class="page-content">
+    <div class="tag-cloud">
+      <% tags.forEach(function (tag) { %>
+        <a class="tag-cloud__item" href="<%- url_for(tag.path) %>"><span># <%= tag.name %></span><b><%= tag.length %></b></a>
+      <% }); %>
+    </div>
+  </section>
+</main>
+<%- partial('_partial/document-end') %>

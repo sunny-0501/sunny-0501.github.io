@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=20261030-header-scroll" />
+    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=20261030-feature-pack" />
     <link rel="stylesheet" href="<%- url_for('/css/hexo.css') %>" />
     <link rel="alternate" type="application/atom+xml" title="林栖谷" href="<%- url_for('/atom.xml') %>" />
   </head>
@@ -45,6 +45,10 @@
         <div class="search-results" id="siteSearchResults"></div>
         <footer class="search-dialog__footer"><span>全站静态索引</span><span>Ctrl / ⌘ + K 快速打开</span></footer>
       </div>
+    </dialog>
+    <dialog class="lightbox" id="lightboxDialog" aria-label="图片预览">
+      <button class="lightbox__close" type="button" data-lightbox-close aria-label="关闭图片">×</button>
+      <figure><img id="lightboxImage" src="" alt="" /><figcaption id="lightboxCaption"></figcaption></figure>
     </dialog>
     <div class="site-shell">
       <%- partial('_partial/header') %>

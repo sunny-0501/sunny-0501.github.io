@@ -1,0 +1,13 @@
+<%
+  const posts = site.posts.sort('date', -1).toArray();
+%>
+<%- partial('_partial/document-start') %>
+<main class="inner-page" id="top">
+  <div class="status-bar"><span>订阅</span><strong>用喜欢的阅读器，收取下一次更新</strong><a href="<%- url_for('/explore/') %>" aria-label="返回我的页面">↗</a></div>
+  <section class="page-hero archive-hero"><div><p class="eyebrow">RSS · ATOM FEED</p><h1>不必反复回来，<br />让新文章自己抵达。</h1><p>把下面的地址添加到任意 RSS 阅读器，即可订阅林栖谷。</p></div><div class="page-hero-symbol" aria-hidden="true">RSS</div></section>
+  <section class="page-content rss-layout">
+    <div class="rss-feed-card"><p class="mini-heading">FEED URL</p><code>https://sunny-0501.github.io/atom.xml</code><a class="publish-button" href="<%- url_for('/atom.xml') %>">打开 Atom Feed ↗</a></div>
+    <div class="rss-recent"><p class="mini-heading">RECENT POSTS</p><% posts.slice(0, 6).forEach(function (post) { %><a href="<%- url_for(post.path) %>"><time><%= date(post.date, 'YYYY.MM.DD') %></time><strong><%= post.title %></strong><span>↗</span></a><% }); %></div>
+  </section>
+</main>
+<%- partial('_partial/document-end') %>

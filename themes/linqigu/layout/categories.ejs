@@ -1,0 +1,23 @@
+<%
+  const categories = site.categories.toArray().sort(function (first, second) {
+    return String(first.name).localeCompare(String(second.name), 'zh-CN');
+  });
+%>
+<%- partial('_partial/document-start') %>
+<main class="inner-page" id="top">
+  <div class="status-bar"><span>内容索引</span><strong>选择一个主题，沿着相关的文字继续阅读</strong><a href="<%- url_for('/explore/') %>" aria-label="返回我的页面">↗</a></div>
+  <section class="page-hero page-hero-mint"><div><p class="eyebrow">CATEGORIES · <%= categories.length %></p><h1>按主题，<br />找到想读的内容。</h1><p><%= page.description %></p></div><div class="page-hero-symbol" aria-hidden="true">C</div></section>
+  <section class="page-content">
+    <div class="taxonomy-grid">
+      <% categories.forEach(function (category) { %>
+        <a class="taxonomy-card" href="<%- url_for(category.path) %>">
+          <span>CATEGORY</span>
+          <strong><%= category.name %></strong>
+          <p><%= category.length %> 篇文章</p>
+          <i aria-hidden="true">↗</i>
+        </a>
+      <% }); %>
+    </div>
+  </section>
+</main>
+<%- partial('_partial/document-end') %>
