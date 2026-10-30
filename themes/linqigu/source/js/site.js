@@ -7,15 +7,28 @@
   const themeMedia = window.matchMedia('(prefers-color-scheme: dark)');
   const appearanceToggle = document.querySelector('#appearanceToggle');
   const appearancePanel = document.querySelector('#appearancePanel');
-  const themeOptions = [...document.querySelectorAll('[data-theme-setting]')];
-  const accentOptions = [...document.querySelectorAll('[data-accent]')];
+  const themeHue = document.querySelector('#themeHue');
+  const themeHueValue = document.querySelector('#themeHueValue');
+  const layoutOptions = [...document.querySelectorAll('[data-layout-mode]')];
+  const wallpaperTitleToggle = document.querySelector('#wallpaperTitleToggle');
+  const wallpaperCarouselToggle = document.querySelector('#wallpaperCarouselToggle');
+  const wallpaperGradientToggle = document.querySelector('#wallpaperGradientToggle');
+  const sakuraToggle = document.querySelector('#sakuraToggle');
+  const sakuraLayer = document.querySelector('#sakuraLayer');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const wallpaperImages = [
+    '/images/header-landscape.png',
+    '/images/forest-rest.png',
+    '/images/archive-howls-castle.png',
+  ];
+  let wallpaperIndex = 0;
+  let wallpaperTimer = null;
   let activeCategory = 'all';
 
   const applyTheme = (mode) => {
     const dark = mode === 'system' ? themeMedia.matches : mode === 'dark';
     document.body.classList.toggle('dark', dark);
     if (toggle) toggle.textContent = dark ? '◑' : '◐';
-    themeOptions.forEach((option) => option.setAttribute('aria-pressed', String(option.dataset.themeSetting === mode)));
   };
   let themeMode = localStorage.getItem('blog-theme-mode') || (localStorage.getItem('blog-theme') === 'dark' ? 'dark' : 'light');
   applyTheme(themeMode);
@@ -25,24 +38,119 @@
     applyTheme(themeMode);
     localStorage.setItem('blog-theme-mode', themeMode);
   });
-  themeOptions.forEach((option) => option.addEventListener('click', () => {
-    themeMode = option.dataset.themeSetting;
-    applyTheme(themeMode);
-    localStorage.setItem('blog-theme-mode', themeMode);
-  }));
   themeMedia.addEventListener('change', () => {
     if (themeMode === 'system') applyTheme('system');
   });
 
-  const applyAccent = (accent) => {
-    document.body.dataset.accent = accent;
-    accentOptions.forEach((option) => option.setAttribute('aria-pressed', String(option.dataset.accent === accent)));
+  const applyThemeHue = (value) => {
+    const hue = Number(value) || 0;
+    document.body.style.setProperty('--peach', `hsl(${hue} 57% 63%)`);
+    document.body.style.setProperty('--butter', `hsl(${hue} 62% 76%)`);
+    document.body.style.setProperty('--mint', `hsl(${hue} 36% 76%)`);
+    document.body.style.setProperty('--lilac', `hsl(${(hue + 42) % 360} 34% 78%)`);
+    if (themeHue) themeHue.value = String(hue);
+    if (themeHueValue) themeHueValue.value = String(hue);
   };
-  applyAccent(localStorage.getItem('blog-accent') || 'forest');
-  accentOptions.forEach((option) => option.addEventListener('click', () => {
-    applyAccent(option.dataset.accent);
-    localStorage.setItem('blog-accent', option.dataset.accent);
-  }));
+  applyThemeHue(localStorage.getItem('blog-hue') || '165');
+  themeHue?.addEventListener('input', () => {
+    applyThemeHue(themeHue.value);
+    localStorage.setItem('blog-hue', themeHue.value);
+  });
+
+  const isHomePage = document.body.classList.contains('home-page');
+  const readToggle = (key, fallback) => {
+    const stored = localStorage.getItem(key);
+    return stored === null ? fallback : stored === 'true';
+  };
+  const setWallpaper = (nextIndex, animate = true) => {
+    if (!isHomePage) return;
+    wallpaperIndex = (nextIndex + wallpaperImages.length) % wallpaperImages.length;
+    const applyImage = () => {
+      document.documentElement.style.setProperty('--wallpaper-image', `url("${wallpaperImages[wallpaperIndex]}")`);
+    };
+    const canFade = animate && wallpaperGradientToggle?.checked && !reducedMotion.matches;
+    if (!canFade) {
+      applyImage();
+      return;
+    }
+    document.body.classList.add('is-wallpaper-fading');
+    window.setTimeout(() => {
+      applyImage();
+      requestAnimationFrame(() => document.body.classList.remove('is-wallpaper-fading'));
+    }, 260);
+  };
+  const stopWallpaperRotation = () => {
+    window.clearInterval(wallpaperTimer);
+    wallpaperTimer = null;
+  };
+  const startWallpaperRotation = () => {
+    stopWallpaperRotation();
+    if (!isHomePage || !wallpaperCarouselToggle?.checked || reducedMotion.matches || document.hidden) return;
+    wallpaperTimer = window.setInterval(() => setWallpaper(wallpaperIndex + 1), 9000);
+  };
+  const applyWallpaperSettings = () => {
+    if (!isHomePage) return;
+    document.body.classList.toggle('hide-wallpaper-title', !wallpaperTitleToggle?.checked);
+    document.body.classList.toggle('wallpaper-no-gradient', !wallpaperGradientToggle?.checked);
+    setWallpaper(wallpaperIndex, false);
+    startWallpaperRotation();
+  };
+
+  const createSakura = () => {
+    if (!sakuraLayer || sakuraLayer.childElementCount) return;
+    const petalCount = window.innerWidth < 720 ? 9 : 16;
+    for (let index = 0; index < petalCount; index += 1) {
+      const petal = document.createElement('span');
+      petal.className = 'sakura-petal';
+      petal.style.setProperty('--petal-left', `${Math.random() * 100}%`);
+      petal.style.setProperty('--petal-size', `${7 + Math.random() * 6}px`);
+      petal.style.setProperty('--petal-drift', `${-80 + Math.random() * 160}px`);
+      petal.style.setProperty('--petal-duration', `${7 + Math.random() * 7}s`);
+      petal.style.setProperty('--petal-delay', `${-Math.random() * 12}s`);
+      sakuraLayer.append(petal);
+    }
+  };
+  const applySakura = (enabled) => {
+    if (!sakuraLayer) return;
+    createSakura();
+    document.body.classList.toggle('sakura-on', enabled && !reducedMotion.matches);
+  };
+  const applyLayout = (mode) => {
+    const grid = mode === 'grid';
+    document.body.classList.toggle('layout-grid', grid);
+    layoutOptions.forEach((option) => option.setAttribute('aria-pressed', String(option.dataset.layoutMode === mode)));
+    localStorage.setItem('blog-layout', grid ? 'grid' : 'list');
+  };
+
+  if (wallpaperTitleToggle) wallpaperTitleToggle.checked = readToggle('blog-wallpaper-title', true);
+  if (wallpaperCarouselToggle) wallpaperCarouselToggle.checked = readToggle('blog-wallpaper-carousel', true);
+  if (wallpaperGradientToggle) wallpaperGradientToggle.checked = readToggle('blog-wallpaper-gradient', true);
+  if (sakuraToggle) sakuraToggle.checked = readToggle('blog-sakura', true);
+  applyLayout(localStorage.getItem('blog-layout') || 'list');
+  applyWallpaperSettings();
+  applySakura(sakuraToggle?.checked);
+
+  wallpaperTitleToggle?.addEventListener('change', () => {
+    localStorage.setItem('blog-wallpaper-title', String(wallpaperTitleToggle.checked));
+    applyWallpaperSettings();
+  });
+  wallpaperCarouselToggle?.addEventListener('change', () => {
+    localStorage.setItem('blog-wallpaper-carousel', String(wallpaperCarouselToggle.checked));
+    startWallpaperRotation();
+  });
+  wallpaperGradientToggle?.addEventListener('change', () => {
+    localStorage.setItem('blog-wallpaper-gradient', String(wallpaperGradientToggle.checked));
+    applyWallpaperSettings();
+  });
+  sakuraToggle?.addEventListener('change', () => {
+    localStorage.setItem('blog-sakura', String(sakuraToggle.checked));
+    applySakura(sakuraToggle.checked);
+  });
+  layoutOptions.forEach((option) => option.addEventListener('click', () => applyLayout(option.dataset.layoutMode)));
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopWallpaperRotation();
+    else startWallpaperRotation();
+  });
 
   const setAppearanceOpen = (open) => {
     if (!appearancePanel || !appearanceToggle) return;
@@ -251,7 +359,6 @@
   const quoteCard = document.querySelector('.quote-card');
   const quoteSlides = [...document.querySelectorAll('.quote-slide')];
   const quoteControls = [...document.querySelectorAll('.quote-control')];
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let quoteIndex = 0;
   let quoteTimer = null;
 

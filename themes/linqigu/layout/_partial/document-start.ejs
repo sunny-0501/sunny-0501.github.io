@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=20261030-feature-pack" />
+    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=20261030-display-settings" />
     <link rel="stylesheet" href="<%- url_for('/css/hexo.css') %>" />
     <link rel="alternate" type="application/atom+xml" title="林栖谷" href="<%- url_for('/atom.xml') %>" />
   </head>
@@ -26,6 +26,7 @@
         <span class="page-loader__line"></span>
         <p class="page-loader__quote">在有限的时间里，保持好奇。</p>
       </div>
+      <div class="sakura-layer" id="sakuraLayer" aria-hidden="true"></div>
     <% } %>
     <dialog class="search-dialog" id="siteSearchDialog" aria-labelledby="siteSearchTitle" data-search-url="<%- url_for('/search.xml') %>">
       <div class="search-dialog__panel">

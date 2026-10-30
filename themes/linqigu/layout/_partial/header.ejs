@@ -23,14 +23,24 @@
       </button>
       <div class="appearance-panel" id="appearancePanel" hidden>
         <p class="mini-heading">APPEARANCE</p>
-        <h2>调整阅读氛围</h2>
+        <h2>页面设置</h2>
         <div class="appearance-group">
-          <span>颜色模式</span>
-          <div class="appearance-options" role="group" aria-label="颜色模式"><button type="button" data-theme-setting="system">跟随系统</button><button type="button" data-theme-setting="light">浅色</button><button type="button" data-theme-setting="dark">深色</button></div>
+          <div class="appearance-heading"><span>主题色相</span><output id="themeHueValue" for="themeHue">165</output></div>
+          <input class="theme-hue-slider" id="themeHue" type="range" min="0" max="360" value="165" aria-label="主题色相" />
         </div>
         <div class="appearance-group">
-          <span>强调色</span>
-          <div class="accent-options" role="group" aria-label="强调色"><button class="accent-swatch accent-forest" type="button" data-accent="forest" aria-label="森林绿"></button><button class="accent-swatch accent-coral" type="button" data-accent="coral" aria-label="珊瑚红"></button><button class="accent-swatch accent-lilac" type="button" data-accent="lilac" aria-label="丁香紫"></button><button class="accent-swatch accent-blue" type="button" data-accent="blue" aria-label="湖水蓝"></button></div>
+          <span>壁纸设置</span>
+          <label class="setting-row"><span><i>Tt</i>首页壁纸标题</span><input class="setting-toggle" id="wallpaperTitleToggle" type="checkbox" /><b class="switch" aria-hidden="true"></b></label>
+          <label class="setting-row"><span><i>▥</i>壁纸轮播</span><input class="setting-toggle" id="wallpaperCarouselToggle" type="checkbox" /><b class="switch" aria-hidden="true"></b></label>
+          <label class="setting-row"><span><i>◫</i>渐变过渡</span><input class="setting-toggle" id="wallpaperGradientToggle" type="checkbox" /><b class="switch" aria-hidden="true"></b></label>
+        </div>
+        <div class="appearance-group">
+          <span>特效设置</span>
+          <label class="setting-row"><span><i>✿</i>樱花特效</span><input class="setting-toggle" id="sakuraToggle" type="checkbox" /><b class="switch" aria-hidden="true"></b></label>
+        </div>
+        <div class="appearance-group">
+          <span>文章布局</span>
+          <div class="layout-options" role="group" aria-label="文章布局"><button type="button" data-layout-mode="list">≡ 列表</button><button type="button" data-layout-mode="grid">▦ 网格</button></div>
         </div>
       </div>
     </div>
