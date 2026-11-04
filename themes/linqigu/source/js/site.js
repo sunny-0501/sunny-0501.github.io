@@ -25,34 +25,6 @@
   let wallpaperTimer = null;
   let activeCategory = 'all';
 
-  const siteCursor = document.querySelector('#siteCursor');
-  const cursorDot = siteCursor?.querySelector('.site-cursor__dot');
-  const cursorRing = siteCursor?.querySelector('.site-cursor__ring');
-  const canUseCustomCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  if (siteCursor && cursorDot && cursorRing && canUseCustomCursor) {
-    let pointerX = -30;
-    let pointerY = -30;
-
-    document.addEventListener('pointermove', (event) => {
-      if (event.pointerType && event.pointerType !== 'mouse') return;
-      pointerX = event.clientX;
-      pointerY = event.clientY;
-      cursorDot.style.transform = `translate3d(${pointerX}px,${pointerY}px,0) translate(-50%,-50%)`;
-      cursorRing.style.transform = `translate3d(${pointerX}px,${pointerY}px,0) translate(-50%,-50%)`;
-      siteCursor.classList.add('is-visible');
-      const target = event.target;
-      siteCursor.classList.toggle(
-        'is-interactive',
-        target instanceof Element && Boolean(target.closest('a,button,input,textarea,select,label,.article-row,.photo-card,.gallery-item')),
-      );
-    }, { passive: true });
-    document.addEventListener('pointerdown', () => siteCursor.classList.add('is-pressing'));
-    document.addEventListener('pointerup', () => siteCursor.classList.remove('is-pressing'));
-    document.documentElement.addEventListener('mouseleave', () => siteCursor.classList.remove('is-visible'));
-    window.addEventListener('blur', () => siteCursor.classList.remove('is-visible'));
-    document.documentElement.classList.add('custom-cursor-ready');
-  }
-
   const applyTheme = (mode) => {
     const dark = mode === 'system' ? themeMedia.matches : mode === 'dark';
     document.body.classList.toggle('dark', dark);
@@ -126,10 +98,10 @@
 
   const createWind = () => {
     if (!windLayer || windLayer.childElementCount) return;
-    const streakCount = window.innerWidth < 720 ? 10 : 20;
+    const streakCount = window.innerWidth < 720 ? 6 : 9;
     for (let index = 0; index < streakCount; index += 1) {
       const streak = document.createElement('span');
-      streak.className = `wind-streak${index % 3 === 0 ? ' soft' : ''}`;
+      streak.className = 'wind-streak';
       streak.style.setProperty('--wind-top', `${8 + Math.random() * 84}%`);
       streak.style.setProperty('--wind-width', `${50 + Math.random() * 170}px`);
       streak.style.setProperty('--wind-drift', `${-30 + Math.random() * 60}px`);
@@ -178,6 +150,7 @@
   });
   layoutOptions.forEach((option) => option.addEventListener('click', () => applyLayout(option.dataset.layoutMode)));
   document.addEventListener('visibilitychange', () => {
+    document.body.classList.toggle('effects-paused', document.hidden);
     if (document.hidden) stopWallpaperRotation();
     else startWallpaperRotation();
   });
@@ -461,24 +434,35 @@
   const routeProgress = document.querySelector('#routeProgress');
   let previousScrollTop = window.scrollY;
   let scrollTicking = false;
+  let articleStart = 0;
+  let articleDistance = 1;
+
+  const setClass = (element, className, enabled) => {
+    if (!element || element.classList.contains(className) === enabled) return;
+    element.classList.toggle(className, enabled);
+  };
+
+  const refreshArticleMetrics = () => {
+    if (!articleContent) return;
+    articleStart = articleContent.offsetTop;
+    articleDistance = Math.max(articleContent.offsetHeight - window.innerHeight * .35, 1);
+  };
 
   const updateScrollInterface = () => {
     const scrollTop = window.scrollY;
-    if (backToTop) backToTop.classList.toggle('is-visible', scrollTop > 520);
+    setClass(backToTop, 'is-visible', scrollTop > 520);
     if (siteHeader) {
       const scrollingUp = scrollTop < previousScrollTop - 3;
       const scrollingDown = scrollTop > previousScrollTop + 4;
       if (scrollTop < 32 || scrollingUp || document.body.classList.contains('search-open')) {
-        siteHeader.classList.remove('navbar-hidden');
+        setClass(siteHeader, 'navbar-hidden', false);
       } else if (scrollingDown && scrollTop > 150) {
-        siteHeader.classList.add('navbar-hidden');
+        setClass(siteHeader, 'navbar-hidden', true);
       }
-      siteHeader.classList.toggle('navbar-sticky-shadow', scrollTop > 14);
+      setClass(siteHeader, 'navbar-sticky-shadow', scrollTop > 14);
     }
     if (readingProgress && articleContent) {
-      const start = articleContent.offsetTop;
-      const distance = articleContent.offsetHeight - window.innerHeight * .35;
-      const progress = Math.min(1, Math.max(0, (scrollTop - start + window.innerHeight * .35) / Math.max(distance, 1)));
+      const progress = Math.min(1, Math.max(0, (scrollTop - articleStart + window.innerHeight * .35) / articleDistance));
       readingProgress.style.transform = `scaleX(${progress})`;
     }
     previousScrollTop = scrollTop;
@@ -491,8 +475,12 @@
     requestAnimationFrame(updateScrollInterface);
   };
 
+  refreshArticleMetrics();
   window.addEventListener('scroll', requestScrollUpdate, { passive: true });
-  window.addEventListener('resize', requestScrollUpdate);
+  window.addEventListener('resize', () => {
+    refreshArticleMetrics();
+    requestScrollUpdate();
+  });
   updateScrollInterface();
   backToTop?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
@@ -524,13 +512,9 @@
     if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     const link = event.target.closest?.('a[href]');
     const url = isInternalNavigation(link);
-    if (!url || pageLeaving) return;
-    if (reducedMotion.matches) return;
-    event.preventDefault();
+    if (!url || pageLeaving || reducedMotion.matches) return;
     pageLeaving = true;
-    document.documentElement.classList.add('is-page-leaving');
     routeProgress?.classList.add('is-loading');
-    window.setTimeout(() => window.location.assign(url.href), 155);
   });
 
   window.addEventListener('pageshow', () => {
