@@ -1,8 +1,8 @@
 <% const activePath = page.path || ''; %>
 <header class="site-header">
   <a class="brand" href="<%- url_for('/') %>" aria-label="&#x56DE;&#x5230;&#x9996;&#x9875;">
-    <img class="brand-logo" src="<%- url_for('/images/sunny-blog-mark.svg') %>" alt="" />
-    <span class="brand-wordmark">sunny blog</span>
+    <img class="brand-logo" src="<%- url_for('/images/avatar.png') %>" alt="sunny 的头像" />
+    <span class="brand-wordmark">sunny's blog</span>
   </a>
   <nav class="main-nav" aria-label="&#x4E3B;&#x5BFC;&#x822A;">
     <a class="<%= activePath === '' ? 'active' : '' %>" href="<%- url_for('/') %>">&#x4E3B;&#x9875;</a>

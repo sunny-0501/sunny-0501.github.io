@@ -44,7 +44,7 @@
         </div>
         <a class="profile-more" href="<%- url_for('/about/') %>">认识我更多 <span>↗</span></a>
       </div>
-      <div class="sidebar-card announcement-card" id="announcementCard"><button type="button" id="announcementClose" aria-label="关闭公告">×</button><p class="mini-heading">公告</p><h2>欢迎来到 sunny blog</h2><p>把日常、阅读和正在做的事，慢慢写下来。</p><a class="side-link" href="<%- url_for('/explore/') %>">了解更多 ↗</a></div>
+      <div class="sidebar-card announcement-card" id="announcementCard"><button type="button" id="announcementClose" aria-label="关闭公告">×</button><p class="mini-heading">公告</p><h2>欢迎来到 sunny's blog</h2><p>把日常、阅读和正在做的事，慢慢写下来。</p><a class="side-link" href="<%- url_for('/explore/') %>">了解更多 ↗</a></div>
       <div class="sidebar-card topics-card"><p class="mini-heading">按主题浏览</p><a class="topic-link" href="<%- url_for('/categories/项目/') %>">项目与实践 <span><%= site.categories.find({ name: '项目' }).length %></span></a><a class="topic-link" href="<%- url_for('/categories/阅读/') %>">阅读与思考 <span><%= site.categories.find({ name: '阅读' }).length %></span></a><a class="topic-link" href="<%- url_for('/categories/随笔/') %>">随笔与日常 <span><%= site.categories.find({ name: '随笔' }).length %></span></a></div>
     </aside>
     <div class="articles-column">
