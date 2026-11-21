@@ -1,7 +1,5 @@
 (() => {
   const toggle = document.querySelector('#themeToggle');
-  const search = document.querySelector('#searchInput');
-  const buttons = [...document.querySelectorAll('.filter-button')];
   const rows = [...document.querySelectorAll('.article-row')];
   const emptyState = document.querySelector('#emptyState');
   const themeMedia = window.matchMedia('(prefers-color-scheme: dark)');
@@ -10,33 +8,51 @@
   const themeHue = document.querySelector('#themeHue');
   const themeHueValue = document.querySelector('#themeHueValue');
   const layoutOptions = [...document.querySelectorAll('[data-layout-mode]')];
-  const wallpaperTitleToggle = document.querySelector('#wallpaperTitleToggle');
-  const wallpaperCarouselToggle = document.querySelector('#wallpaperCarouselToggle');
-  const wallpaperGradientToggle = document.querySelector('#wallpaperGradientToggle');
-  const windToggle = document.querySelector('#windToggle');
-  const windLayer = document.querySelector('#windLayer');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const wallpaperImages = [
-    '/images/header-landscape.png',
-    '/images/forest-rest.png',
-    '/images/archive-howls-castle.png',
-  ];
-  let wallpaperIndex = 0;
-  let wallpaperTimer = null;
+  const reduceMotionToggle = document.querySelector('#reduceMotionToggle');
+  const motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const storage = {
+    getItem(key) { try { return window.localStorage.getItem(key); } catch { return null; } },
+    setItem(key, value) { try { window.localStorage.setItem(key, value); } catch {} },
+  };
+  const reducedMotion = { get matches() { return motionMedia.matches || storage.getItem('blog-reduce-motion') === 'true'; } };
   let activeCategory = 'all';
+  let revealObserver;
+
+  const applyMotionPreference = () => {
+    document.documentElement.dataset.motion = reducedMotion.matches ? 'reduced' : 'full';
+    if (reduceMotionToggle) {
+      reduceMotionToggle.checked = reducedMotion.matches;
+      reduceMotionToggle.disabled = motionMedia.matches;
+    }
+    if (reducedMotion.matches) {
+      revealObserver?.disconnect();
+      document.querySelectorAll('.reveal-pending').forEach((element) => element.classList.remove('reveal-pending'));
+      document.getAnimations().forEach((animation) => animation.cancel());
+    }
+  };
+  motionMedia.addEventListener('change', applyMotionPreference);
+  reduceMotionToggle?.addEventListener('change', () => {
+    storage.setItem('blog-reduce-motion', String(reduceMotionToggle.checked));
+    applyMotionPreference();
+  });
+  applyMotionPreference();
 
   const applyTheme = (mode) => {
     const dark = mode === 'system' ? themeMedia.matches : mode === 'dark';
     document.body.classList.toggle('dark', dark);
-    if (toggle) toggle.textContent = dark ? '◑' : '◐';
+    if (toggle) {
+      toggle.textContent = dark ? '◑' : '◐';
+      toggle.setAttribute('aria-label', dark ? '切换为浅色主题' : '切换为深色主题');
+      toggle.setAttribute('aria-pressed', String(dark));
+    }
   };
-  let themeMode = localStorage.getItem('blog-theme-mode') || (localStorage.getItem('blog-theme') === 'dark' ? 'dark' : 'light');
+  let themeMode = storage.getItem('blog-theme-mode') || (storage.getItem('blog-theme') === 'dark' ? 'dark' : 'light');
   applyTheme(themeMode);
   toggle?.addEventListener('click', () => {
     const dark = !document.body.classList.contains('dark');
     themeMode = dark ? 'dark' : 'light';
     applyTheme(themeMode);
-    localStorage.setItem('blog-theme-mode', themeMode);
+    storage.setItem('blog-theme-mode', themeMode);
   });
   themeMedia.addEventListener('change', () => {
     if (themeMode === 'system') applyTheme('system');
@@ -51,119 +67,21 @@
     if (themeHue) themeHue.value = String(hue);
     if (themeHueValue) themeHueValue.value = String(hue);
   };
-  applyThemeHue(localStorage.getItem('blog-hue') || '165');
+  applyThemeHue(storage.getItem('blog-hue') || '165');
   themeHue?.addEventListener('input', () => {
     applyThemeHue(themeHue.value);
-    localStorage.setItem('blog-hue', themeHue.value);
+    storage.setItem('blog-hue', themeHue.value);
   });
 
-  const isHomePage = document.body.classList.contains('home-page');
-  const readToggle = (key, fallback) => {
-    const stored = localStorage.getItem(key);
-    return stored === null ? fallback : stored === 'true';
-  };
-  const setWallpaper = (nextIndex, animate = true) => {
-    if (!isHomePage) return;
-    wallpaperIndex = (nextIndex + wallpaperImages.length) % wallpaperImages.length;
-    const applyImage = () => {
-      document.documentElement.style.setProperty('--wallpaper-image', `url("${wallpaperImages[wallpaperIndex]}")`);
-    };
-    const canFade = animate && wallpaperGradientToggle?.checked && !reducedMotion.matches;
-    if (!canFade) {
-      applyImage();
-      return;
-    }
-    document.body.classList.add('is-wallpaper-fading');
-    window.setTimeout(() => {
-      applyImage();
-      requestAnimationFrame(() => document.body.classList.remove('is-wallpaper-fading'));
-    }, 260);
-  };
-  const stopWallpaperRotation = () => {
-    window.clearInterval(wallpaperTimer);
-    wallpaperTimer = null;
-  };
-  const startWallpaperRotation = () => {
-    stopWallpaperRotation();
-    if (!isHomePage || !wallpaperCarouselToggle?.checked || reducedMotion.matches || document.hidden) return;
-    wallpaperTimer = window.setInterval(() => setWallpaper(wallpaperIndex + 1), 9000);
-  };
-  const applyWallpaperSettings = () => {
-    if (!isHomePage) return;
-    document.body.classList.toggle('hide-wallpaper-title', !wallpaperTitleToggle?.checked);
-    document.body.classList.toggle('wallpaper-no-gradient', !wallpaperGradientToggle?.checked);
-    setWallpaper(wallpaperIndex, false);
-    startWallpaperRotation();
-  };
-
-  const createWind = () => {
-    if (!windLayer || windLayer.childElementCount) return;
-    const streakCount = window.innerWidth < 720 ? 6 : 9;
-    for (let index = 0; index < streakCount; index += 1) {
-      const streak = document.createElement('span');
-      streak.className = 'wind-streak';
-      streak.style.setProperty('--wind-top', `${8 + Math.random() * 84}%`);
-      streak.style.setProperty('--wind-width', `${50 + Math.random() * 170}px`);
-      streak.style.setProperty('--wind-drift', `${-30 + Math.random() * 60}px`);
-      streak.style.setProperty('--wind-angle', `${-3 + Math.random() * 6}deg`);
-      streak.style.setProperty('--wind-opacity', String(.22 + Math.random() * .3));
-      streak.style.setProperty('--wind-duration', `${5 + Math.random() * 6}s`);
-      streak.style.setProperty('--wind-delay', `${-Math.random() * 10}s`);
-      windLayer.append(streak);
-    }
-  };
-  const applyWind = (enabled) => {
-    if (!windLayer) return;
-    createWind();
-    document.body.classList.toggle('wind-on', enabled && !reducedMotion.matches);
-  };
   const applyLayout = (mode) => {
     const grid = mode === 'grid';
     document.body.classList.toggle('layout-grid', grid);
     layoutOptions.forEach((option) => option.setAttribute('aria-pressed', String(option.dataset.layoutMode === mode)));
-    localStorage.setItem('blog-layout', grid ? 'grid' : 'list');
+    storage.setItem('blog-layout', grid ? 'grid' : 'list');
   };
 
-  if (wallpaperTitleToggle) wallpaperTitleToggle.checked = readToggle('blog-wallpaper-title', true);
-  if (wallpaperCarouselToggle) wallpaperCarouselToggle.checked = readToggle('blog-wallpaper-carousel', true);
-  if (wallpaperGradientToggle) wallpaperGradientToggle.checked = readToggle('blog-wallpaper-gradient', true);
-  if (windToggle) windToggle.checked = readToggle('blog-wind', true);
-  applyLayout(localStorage.getItem('blog-layout') || 'list');
-  applyWallpaperSettings();
-  applyWind(windToggle?.checked);
-
-  wallpaperTitleToggle?.addEventListener('change', () => {
-    localStorage.setItem('blog-wallpaper-title', String(wallpaperTitleToggle.checked));
-    applyWallpaperSettings();
-  });
-  wallpaperCarouselToggle?.addEventListener('change', () => {
-    localStorage.setItem('blog-wallpaper-carousel', String(wallpaperCarouselToggle.checked));
-    startWallpaperRotation();
-  });
-  wallpaperGradientToggle?.addEventListener('change', () => {
-    localStorage.setItem('blog-wallpaper-gradient', String(wallpaperGradientToggle.checked));
-    applyWallpaperSettings();
-  });
-  windToggle?.addEventListener('change', () => {
-    localStorage.setItem('blog-wind', String(windToggle.checked));
-    applyWind(windToggle.checked);
-  });
+  applyLayout(storage.getItem('blog-layout') || 'list');
   layoutOptions.forEach((option) => option.addEventListener('click', () => applyLayout(option.dataset.layoutMode)));
-  document.addEventListener('visibilitychange', () => {
-    document.body.classList.toggle('effects-paused', document.hidden);
-    if (document.hidden) stopWallpaperRotation();
-    else startWallpaperRotation();
-  });
-
-  const announcementCard = document.querySelector('#announcementCard');
-  const announcementClose = document.querySelector('#announcementClose');
-  if (announcementCard && sessionStorage.getItem('blog-announcement-closed') === 'true') {
-    announcementCard.hidden = true;
-  }
-  announcementClose?.addEventListener('click', () => {
-    if (announcementCard) announcementCard.hidden = true;
-    sessionStorage.setItem('blog-announcement-closed', 'true');
-  });
 
   const setAppearanceOpen = (open) => {
     if (!appearancePanel || !appearanceToggle) return;
@@ -181,7 +99,10 @@
     if (!appearancePanel.contains(target) && !appearanceToggle?.contains(target)) setAppearanceOpen(false);
   });
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') setAppearanceOpen(false);
+    if (event.key === 'Escape' && appearancePanel && !appearancePanel.hidden) {
+      setAppearanceOpen(false);
+      appearanceToggle?.focus();
+    }
   });
 
   const searchTrigger = document.querySelector('#searchTrigger');
@@ -283,6 +204,11 @@
   searchTrigger?.addEventListener('click', openSearch);
   document.querySelector('[data-search-close]')?.addEventListener('click', closeSearch);
   searchDialog?.addEventListener('close', () => document.body.classList.remove('search-open'));
+  searchDialog?.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    event.preventDefault();
+    closeSearch();
+  });
   searchDialog?.addEventListener('click', (event) => {
     if (event.target === searchDialog) closeSearch();
   });
@@ -351,30 +277,47 @@
     window.open(issueUrl, '_blank', 'noopener,noreferrer');
   });
 
+  const filterHint = document.querySelector('#filterHint');
   const filterRows = () => {
-    const query = (search?.value || '').trim().toLowerCase();
     let visible = 0;
     rows.forEach((row) => {
-      const matchesCategory = activeCategory === 'all' || row.dataset.category === activeCategory;
-      const matchesQuery = !query || row.dataset.title.toLowerCase().includes(query);
-      row.hidden = !(matchesCategory && matchesQuery);
-      if (!row.hidden) visible += 1;
+      const show = activeCategory === 'all' || row.dataset.category === activeCategory;
+      if (show) visible += 1;
+      const wasHidden = row.hidden;
+      row.hidden = !show;
+      if (show) {
+        revealObserver?.unobserve(row);
+        row.classList.remove('reveal-pending');
+        if (wasHidden && !reducedMotion.matches) {
+          row.getAnimations().forEach((animation) => animation.cancel());
+          row.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 200, easing: 'ease-out' });
+        }
+      }
     });
     if (emptyState) emptyState.hidden = visible > 0;
+    if (filterHint) filterHint.textContent = activeCategory === 'all' ? '共 ' + visible + ' 篇文章' : activeCategory + ' · ' + visible + ' 篇文章';
   };
-  search?.addEventListener('input', filterRows);
-  buttons.forEach((button) => button.addEventListener('click', () => {
-    activeCategory = button.dataset.filter || 'all';
-    buttons.forEach((item) => item.classList.toggle('active', item === button));
+  const tabFilters = [...document.querySelectorAll('.content-tabs [data-filter]')];
+  tabFilters.forEach((tab) => tab.addEventListener('click', (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    if (!document.querySelector('#articleList')) return;
+    event.preventDefault();
+    if (activeCategory === tab.dataset.filter) return;
+    activeCategory = tab.dataset.filter;
     filterRows();
+    tabFilters.forEach((item) => {
+      const selected = item === tab;
+      item.classList.toggle('selected', selected);
+      if (selected) item.setAttribute('aria-current', 'true');
+      else item.removeAttribute('aria-current');
+    });
   }));
+  tabFilters.find((tab) => tab.classList.contains('selected'))?.setAttribute('aria-current', 'true');
 
   const quoteCard = document.querySelector('.quote-card');
   const quoteSlides = [...document.querySelectorAll('.quote-slide')];
   const quoteControls = [...document.querySelectorAll('.quote-control')];
   let quoteIndex = 0;
-  let quoteTimer = null;
-
   const showQuote = (nextIndex) => {
     if (!quoteSlides.length) return;
     quoteIndex = (nextIndex + quoteSlides.length) % quoteSlides.length;
@@ -391,48 +334,19 @@
       control.tabIndex = active ? 0 : -1;
     });
   };
-
-  const stopQuoteRotation = () => {
-    window.clearInterval(quoteTimer);
-    quoteTimer = null;
-  };
-
-  const startQuoteRotation = () => {
-    stopQuoteRotation();
-    if (quoteSlides.length < 2 || reducedMotion.matches || document.hidden) return;
-    quoteTimer = window.setInterval(() => showQuote(quoteIndex + 1), 7000);
-  };
-
-  quoteControls.forEach((control, index) => {
-    control.addEventListener('click', () => {
-      showQuote(index);
-      startQuoteRotation();
-    });
-  });
-  quoteCard?.addEventListener('keydown', (event) => {
-    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+  quoteControls.forEach((control, index) => control.addEventListener('click', () => showQuote(index)));
+  quoteCard?.querySelector('[role="tablist"]')?.addEventListener('keydown', (event) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     event.preventDefault();
-    showQuote(quoteIndex + (event.key === 'ArrowRight' ? 1 : -1));
-    startQuoteRotation();
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? quoteSlides.length - 1 : quoteIndex + (event.key === 'ArrowRight' ? 1 : -1);
+    showQuote(next);
+    quoteControls[quoteIndex]?.focus();
   });
-  quoteCard?.addEventListener('mouseenter', stopQuoteRotation);
-  quoteCard?.addEventListener('mouseleave', startQuoteRotation);
-  quoteCard?.addEventListener('focusin', stopQuoteRotation);
-  quoteCard?.addEventListener('focusout', (event) => {
-    if (!quoteCard.contains(event.relatedTarget)) startQuoteRotation();
-  });
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stopQuoteRotation();
-    else startQuoteRotation();
-  });
-  startQuoteRotation();
 
   const backToTop = document.querySelector('#backToTop');
   const readingProgress = document.querySelector('#readingProgressBar');
   const articleContent = document.querySelector('.article-content');
   const siteHeader = document.querySelector('.site-header');
-  const routeProgress = document.querySelector('#routeProgress');
-  let previousScrollTop = window.scrollY;
   let scrollTicking = false;
   let articleStart = 0;
   let articleDistance = 1;
@@ -444,28 +358,19 @@
 
   const refreshArticleMetrics = () => {
     if (!articleContent) return;
-    articleStart = articleContent.offsetTop;
-    articleDistance = Math.max(articleContent.offsetHeight - window.innerHeight * .35, 1);
+    articleStart = articleContent.getBoundingClientRect().top + window.scrollY;
+    articleDistance = Math.max(articleContent.offsetHeight - window.innerHeight * .65, 1);
   };
 
   const updateScrollInterface = () => {
     const scrollTop = window.scrollY;
     setClass(backToTop, 'is-visible', scrollTop > 520);
-    if (siteHeader) {
-      const scrollingUp = scrollTop < previousScrollTop - 3;
-      const scrollingDown = scrollTop > previousScrollTop + 4;
-      if (scrollTop < 32 || scrollingUp || document.body.classList.contains('search-open')) {
-        setClass(siteHeader, 'navbar-hidden', false);
-      } else if (scrollingDown && scrollTop > 150) {
-        setClass(siteHeader, 'navbar-hidden', true);
-      }
-      setClass(siteHeader, 'navbar-sticky-shadow', scrollTop > 14);
-    }
+    if (backToTop) backToTop.inert = scrollTop <= 520;
+    setClass(siteHeader, 'navbar-sticky-shadow', scrollTop > 14);
     if (readingProgress && articleContent) {
       const progress = Math.min(1, Math.max(0, (scrollTop - articleStart + window.innerHeight * .35) / articleDistance));
       readingProgress.style.transform = `scaleX(${progress})`;
     }
-    previousScrollTop = scrollTop;
     scrollTicking = false;
   };
 
@@ -475,6 +380,9 @@
     requestAnimationFrame(updateScrollInterface);
   };
 
+  if (articleContent && 'ResizeObserver' in window) {
+    new ResizeObserver(() => { refreshArticleMetrics(); requestScrollUpdate(); }).observe(articleContent);
+  }
   refreshArticleMetrics();
   window.addEventListener('scroll', requestScrollUpdate, { passive: true });
   window.addEventListener('resize', () => {
@@ -486,56 +394,53 @@
     window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
   });
 
-  let pageLeaving = false;
-  const prefetchedPages = new Set();
-  const isInternalNavigation = (link) => {
-    if (!link || link.target === '_blank' || link.hasAttribute('download')) return null;
-    const url = new URL(link.href, window.location.href);
-    if (url.origin !== window.location.origin) return null;
-    if (url.pathname === window.location.pathname) return null;
-    return url;
-  };
-
-  document.addEventListener('pointerover', (event) => {
-    const link = event.target.closest?.('a[href]');
-    const url = isInternalNavigation(link);
-    if (!url || prefetchedPages.has(url.pathname)) return;
-    prefetchedPages.add(url.pathname);
-    const prefetch = document.createElement('link');
-    prefetch.rel = 'prefetch';
-    prefetch.href = url.href;
-    prefetch.as = 'document';
-    document.head.append(prefetch);
-  });
-
-  document.addEventListener('click', (event) => {
-    if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-    const link = event.target.closest?.('a[href]');
-    const url = isInternalNavigation(link);
-    if (!url || pageLeaving || reducedMotion.matches) return;
-    pageLeaving = true;
-    routeProgress?.classList.add('is-loading');
-  });
-
-  window.addEventListener('pageshow', () => {
-    pageLeaving = false;
-    document.documentElement.classList.remove('is-page-leaving');
-    routeProgress?.classList.remove('is-loading');
-  });
-
   const tocLinks = [...document.querySelectorAll('.article-toc a')];
-  const tocHeadings = tocLinks
-    .map((link) => document.querySelector(link.getAttribute('href')))
-    .filter(Boolean);
+  const headingForLink = (link) => {
+    try { return document.getElementById(decodeURIComponent(link.hash.slice(1))); } catch { return null; }
+  };
+  const tocHeadings = tocLinks.map(headingForLink).filter(Boolean);
   if (tocHeadings.length && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        tocLinks.forEach((link) => {
-          link.classList.toggle('is-active', link.getAttribute('href') === `#${entry.target.id}`);
-        });
+      const entry = entries.find((item) => item.isIntersecting);
+      if (!entry) return;
+      tocLinks.forEach((link) => {
+        const active = headingForLink(link) === entry.target;
+        link.classList.toggle('is-active', active);
+        if (active) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
       });
-    }, { rootMargin: '-18% 0px -68% 0px' });
+    }, { rootMargin: '-18% 0px -60% 0px' });
     tocHeadings.forEach((heading) => observer.observe(heading));
   }
+
+  // Reveal navigational cards once; article text always stays visible.
+  const revealSelector = '.article-row, .taxonomy-card, .explore-card, .link-card, .gallery-card, .post-nav-card';
+  if (!reducedMotion.matches && 'IntersectionObserver' in window) {
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.remove('reveal-pending');
+        if (!reducedMotion.matches) {
+          entry.target.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 320, easing: 'ease-out' });
+        }
+        revealObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px 40px 0px', threshold: 0 });
+    document.querySelectorAll(revealSelector).forEach((element) => {
+      if (element.getBoundingClientRect().top < window.innerHeight || element.hidden) return;
+      element.classList.add('reveal-pending');
+      revealObserver.observe(element);
+    });
+  }
+  window.addEventListener('pageshow', () => {
+    document.querySelectorAll('.reveal-pending').forEach((element) => {
+      const rect = element.getBoundingClientRect();
+      if (rect.bottom > 0 && rect.top < window.innerHeight) {
+        element.classList.remove('reveal-pending');
+        revealObserver?.unobserve(element);
+      }
+    });
+    refreshArticleMetrics();
+    requestScrollUpdate();
+  });
 })();

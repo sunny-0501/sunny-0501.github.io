@@ -3,13 +3,13 @@
   <% const category = post.categories && post.categories.length ? post.categories.first().name : '随笔'; %>
   <% const summary = (post.excerpt || post.content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim(); %>
   <% const readingMinutes = Math.max(1, Math.ceil(summary.length / 400)); %>
-  <article class="article-row" data-category="<%= category %>" data-title="<%= post.title %> <%= summary %>">
+  <article class="article-row" data-category="<%= category %>">
     <div class="article-thumb <%= thumbMap[category] || 'thumb-tool' %>"><span><%= category.toUpperCase() %><br />NOTE</span></div>
     <div class="article-body">
       <div class="article-meta"><span class="tag"><%= category %></span><time datetime="<%= date(post.date, 'YYYY-MM-DD') %>"><%= date(post.date, 'YYYY.MM.DD') %></time><span><%= readingMinutes %> MIN</span></div>
-      <h3><a href="<%- url_for(post.path) %>"><%= post.title %></a></h3>
-      <p><%= summary %></p>
+      <h3><a class="article-link" href="<%- url_for(post.path) %>"><%= post.title %></a></h3>
+      <p><%= summary.length > 100 ? summary.slice(0, 100) + '…' : summary %></p>
     </div>
-    <a class="row-arrow" href="<%- url_for(post.path) %>" aria-label="阅读文章">↗</a>
+    <span class="row-arrow" aria-hidden="true">↗</span>
   </article>
 <% }); %>

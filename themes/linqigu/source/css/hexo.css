@@ -6,6 +6,3 @@
 .article-content img { border-radius: 6px; height: auto; max-width: 100%; }
 .newsletter-link { align-self: center; color: var(--forest); font-weight: 700; }
 .static-note { color: var(--muted); font-size: 13px; }
-
-/* The original illustrated landscape remains the home-page backdrop. */
-.home-page::before { background-image: url("../images/header-landscape.png"); }
