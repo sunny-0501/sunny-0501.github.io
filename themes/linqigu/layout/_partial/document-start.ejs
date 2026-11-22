@@ -9,11 +9,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=20261122-editorial-header" />
+    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=20261122-ui-polish" />
     <link rel="stylesheet" href="<%- url_for('/css/hexo.css') %>" />
     <link rel="alternate" type="application/atom+xml" title="林栖谷" href="<%- url_for('/atom.xml') %>" />
   </head>
   <body class="<%= is_home() ? 'home-page' : '' %>">
+    <a class="skip-link" href="#top">跳到正文</a>
+    <script>try { if (localStorage.getItem('blog-theme-mode') === 'dark' || (!localStorage.getItem('blog-theme-mode') && localStorage.getItem('blog-theme') === 'dark')) document.body.classList.add('dark'); } catch {}</script>
     <% if (is_post()) { %>
       <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
     <% } %>
@@ -28,18 +30,18 @@
           <button class="search-dialog__close" type="button" data-search-close aria-label="关闭搜索">×</button>
         </header>
         <label class="search-command">
-          <span aria-hidden="true">⌕</span>
-          <input id="siteSearchInput" type="search" aria-label="搜索文章" placeholder="搜索标题与正文…" autocomplete="off" spellcheck="false" />
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg>
+          <input id="siteSearchInput" type="search" aria-label="搜索文章" aria-describedby="siteSearchStatus" placeholder="搜索标题与正文…" autocomplete="off" spellcheck="false" />
           <kbd>ESC</kbd>
         </label>
-        <p class="search-dialog__status" id="siteSearchStatus" aria-live="polite">输入关键词，搜索全部文章。</p>
+        <div class="search-feedback"><p class="search-dialog__status" id="siteSearchStatus" role="status" aria-live="polite">输入关键词，搜索全部文章。</p><button class="search-retry" id="searchRetry" type="button" hidden>重新加载</button></div>
         <div class="search-results" id="siteSearchResults"></div>
         <footer class="search-dialog__footer"><span>搜索全部文章</span><span>Ctrl / ⌘ + K 快速打开</span></footer>
       </div>
     </dialog>
     <dialog class="lightbox" id="lightboxDialog" aria-label="图片预览">
       <button class="lightbox__close" type="button" data-lightbox-close aria-label="关闭图片">×</button>
-      <figure><img id="lightboxImage" src="" alt="" /><figcaption id="lightboxCaption"></figcaption></figure>
+      <figure><img id="lightboxImage" alt="" /><figcaption id="lightboxCaption"></figcaption></figure>
     </dialog>
     <div class="site-shell">
       <%- partial('_partial/header') %>

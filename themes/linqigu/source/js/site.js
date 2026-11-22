@@ -86,8 +86,9 @@
     const dark = mode === 'system' ? themeMedia.matches : mode === 'dark';
     document.body.classList.toggle('dark', dark);
     if (toggle) {
-      toggle.textContent = dark ? '◑' : '◐';
-      toggle.setAttribute('aria-label', dark ? '切换为浅色主题' : '切换为深色主题');
+      const label = dark ? '切换为浅色主题' : '切换为深色主题';
+      toggle.setAttribute('aria-label', label);
+      toggle.setAttribute('title', label);
       toggle.setAttribute('aria-pressed', String(dark));
     }
   };
@@ -132,6 +133,7 @@
     if (!appearancePanel || !appearanceToggle) return;
     appearancePanel.hidden = !open;
     appearanceToggle.setAttribute('aria-expanded', String(open));
+    if (open) appearancePanel.querySelector('input:not(:disabled), button:not(:disabled), select:not(:disabled), textarea:not(:disabled), a[href]')?.focus();
   };
   appearanceToggle?.addEventListener('click', (event) => {
     event.stopPropagation();
@@ -143,8 +145,20 @@
     if (!(target instanceof Node)) return;
     if (!appearancePanel.contains(target) && !appearanceToggle?.contains(target)) setAppearanceOpen(false);
   });
+  appearancePanel?.addEventListener('keydown', (event) => {
+    if (event.key !== 'Tab') return;
+    requestAnimationFrame(() => {
+      if (!appearancePanel.contains(document.activeElement)) setAppearanceOpen(false);
+    });
+  });
+  appearancePanel?.addEventListener('focusout', () => {
+    queueMicrotask(() => {
+      if (!appearancePanel.contains(document.activeElement) && document.activeElement !== appearanceToggle) setAppearanceOpen(false);
+    });
+  });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && appearancePanel && !appearancePanel.hidden) {
+      event.preventDefault();
       setAppearanceOpen(false);
       appearanceToggle?.focus();
     }
@@ -155,7 +169,10 @@
   const searchInput = document.querySelector('#siteSearchInput');
   const searchStatus = document.querySelector('#siteSearchStatus');
   const searchResults = document.querySelector('#siteSearchResults');
+  const searchRetry = document.querySelector('#searchRetry');
   let searchIndexPromise = null;
+  let searchIndexLoaded = false;
+  let searchRevision = 0;
 
   const loadSearchIndex = () => {
     if (!searchDialog) return Promise.resolve([]);
@@ -168,6 +185,8 @@
         })
         .then((xml) => {
           const documentXml = new DOMParser().parseFromString(xml, 'application/xml');
+          if (documentXml.querySelector('parsererror')) throw new Error('Invalid search index');
+          searchIndexLoaded = true;
           return [...documentXml.querySelectorAll('entry')].map((entry) => {
             const rawContent = entry.querySelector('content')?.textContent || '';
             const contentDocument = new DOMParser().parseFromString(rawContent, 'text/html');
@@ -177,6 +196,11 @@
               content: contentDocument.body.textContent.replace(/\s+/g, ' ').trim(),
             };
           });
+        })
+        .catch((error) => {
+          searchIndexPromise = null;
+          searchIndexLoaded = false;
+          throw error;
         });
     }
     return searchIndexPromise;
@@ -188,7 +212,7 @@
     searchResults.replaceChildren();
 
     if (!query) {
-      searchStatus.textContent = '输入关键词，搜索全部文章。';
+      searchStatus.textContent = entries.length ? '输入关键词，搜索全部文章。' : '暂无可搜索的文章，稍后再来看看。';
       return;
     }
 
@@ -206,7 +230,7 @@
 
     searchStatus.textContent = matches.length
       ? `找到 ${matches.length} 篇相关文章`
-      : `没有找到与“${rawQuery.trim()}”相关的文章`;
+      : `没有找到与“${rawQuery.trim()}”相关的文章，试试其他关键词。`;
 
     matches.forEach((entry) => {
       const result = document.createElement('a');
@@ -229,26 +253,53 @@
     });
   };
 
-  const openSearch = () => {
-    if (!searchDialog) return;
-    if (!searchDialog.open) searchDialog.showModal();
-    document.body.classList.add('search-open');
-    requestAnimationFrame(() => searchInput?.focus());
+  const updateSearch = () => {
+    if (!searchDialog?.open) return;
+    const revision = ++searchRevision;
+    const query = searchInput?.value || '';
+    searchResults?.setAttribute('aria-busy', 'true');
+    if (searchRetry) searchRetry.hidden = true;
+    if (!searchIndexLoaded) {
+      searchResults?.replaceChildren();
+      if (searchStatus) searchStatus.textContent = '正在加载文章索引…';
+    }
     loadSearchIndex()
-      .then((entries) => renderSearchResults(entries, searchInput?.value || ''))
+      .then((entries) => {
+        if (revision === searchRevision && searchDialog.open) renderSearchResults(entries, query);
+      })
       .catch(() => {
-        if (searchStatus) searchStatus.textContent = '搜索索引暂时不可用，请稍后重试。';
+        if (revision !== searchRevision || !searchDialog.open) return;
+        searchResults?.replaceChildren();
+        if (searchStatus) searchStatus.textContent = '搜索暂时不可用，请检查网络后重试。';
+        if (searchRetry) searchRetry.hidden = false;
+      })
+      .finally(() => {
+        if (revision === searchRevision) searchResults?.setAttribute('aria-busy', 'false');
       });
   };
 
-  const closeSearch = () => {
-    if (searchDialog?.open) searchDialog.close();
+  const openSearch = () => {
+    if (!searchDialog) return;
+    setAppearanceOpen(false);
+    if (!searchDialog.open) searchDialog.showModal();
+    document.body.classList.add('search-open');
+    requestAnimationFrame(() => searchInput?.focus());
+    updateSearch();
+  };
+
+  const resetSearchState = () => {
+    searchRevision += 1;
+    searchResults?.setAttribute('aria-busy', 'false');
     document.body.classList.remove('search-open');
+  };
+  const closeSearch = () => {
+    resetSearchState();
+    if (searchDialog?.open) searchDialog.close();
   };
 
   searchTrigger?.addEventListener('click', openSearch);
   document.querySelector('[data-search-close]')?.addEventListener('click', closeSearch);
-  searchDialog?.addEventListener('close', () => document.body.classList.remove('search-open'));
+  searchDialog?.addEventListener('close', resetSearchState);
   searchDialog?.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
     event.preventDefault();
@@ -257,12 +308,10 @@
   searchDialog?.addEventListener('click', (event) => {
     if (event.target === searchDialog) closeSearch();
   });
-  searchInput?.addEventListener('input', () => {
-    loadSearchIndex()
-      .then((entries) => renderSearchResults(entries, searchInput.value))
-      .catch(() => {
-        if (searchStatus) searchStatus.textContent = '搜索索引暂时不可用，请稍后重试。';
-      });
+  searchInput?.addEventListener('input', updateSearch);
+  searchRetry?.addEventListener('click', () => {
+    searchInput?.focus();
+    updateSearch();
   });
   document.addEventListener('keydown', (event) => {
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
