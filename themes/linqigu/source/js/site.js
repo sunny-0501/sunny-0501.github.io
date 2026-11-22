@@ -7,6 +7,8 @@
   const appearancePanel = document.querySelector('#appearancePanel');
   const themeHue = document.querySelector('#themeHue');
   const themeHueValue = document.querySelector('#themeHueValue');
+  const accentHue = document.querySelector('#accentHue');
+  const accentHueValue = document.querySelector('#accentHueValue');
   const layoutOptions = [...document.querySelectorAll('[data-layout-mode]')];
   const windIntensity = document.querySelector('#windIntensity');
   const windIntensityValue = document.querySelector('#windIntensityValue');
@@ -117,6 +119,18 @@
   themeHue?.addEventListener('input', () => {
     applyThemeHue(themeHue.value);
     storage.setItem('blog-hue', themeHue.value);
+  });
+
+  const applyAccentHue = (value) => {
+    const hue = Math.round(Math.max(0, Math.min(360, Number(value) || 0)));
+    document.body.style.setProperty('--accent-hue', String(hue % 360));
+    if (accentHue) accentHue.value = String(hue);
+    if (accentHueValue) accentHueValue.value = String(hue);
+  };
+  applyAccentHue(storage.getItem('blog-accent-hue') || '210');
+  accentHue?.addEventListener('input', () => {
+    applyAccentHue(accentHue.value);
+    storage.setItem('blog-accent-hue', accentHue.value);
   });
 
   const applyLayout = (mode) => {
