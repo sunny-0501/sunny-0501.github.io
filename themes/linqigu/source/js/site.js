@@ -9,12 +9,43 @@
   const themeHueValue = document.querySelector('#themeHueValue');
   const layoutOptions = [...document.querySelectorAll('[data-layout-mode]')];
   const reduceMotionToggle = document.querySelector('#reduceMotionToggle');
+  const windToggle = document.querySelector('#windToggle');
+  const windLayer = document.querySelector('#windLayer');
   const motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
   const storage = {
     getItem(key) { try { return window.localStorage.getItem(key); } catch { return null; } },
     setItem(key, value) { try { window.localStorage.setItem(key, value); } catch {} },
   };
   const reducedMotion = { get matches() { return motionMedia.matches || storage.getItem('blog-reduce-motion') === 'true'; } };
+  const readToggle = (key, fallback) => {
+    const stored = storage.getItem(key);
+    return stored === null ? fallback : stored === 'true';
+  };
+  const createWind = () => {
+    if (!windLayer) return;
+    const streakCount = window.innerWidth < 720 ? 6 : 11;
+    if (windLayer.childElementCount === streakCount) return;
+    windLayer.replaceChildren();
+    for (let index = 0; index < streakCount; index += 1) {
+      const streak = document.createElement('span');
+      streak.className = 'wind-streak';
+      streak.style.setProperty('--wind-top', `${8 + Math.random() * 84}%`);
+      streak.style.setProperty('--wind-width', `${70 + Math.random() * 170}px`);
+      streak.style.setProperty('--wind-drift', `${-28 + Math.random() * 56}px`);
+      streak.style.setProperty('--wind-angle', `${-3 + Math.random() * 6}deg`);
+      streak.style.setProperty('--wind-opacity', String(.38 + Math.random() * .36));
+      streak.style.setProperty('--wind-duration', `${5 + Math.random() * 5}s`);
+      streak.style.setProperty('--wind-delay', `${-Math.random() * 10}s`);
+      windLayer.append(streak);
+    }
+  };
+  window.addEventListener('resize', createWind, { passive: true });
+  const applyWind = (enabled) => {
+    if (!windLayer) return;
+    createWind();
+    document.body.classList.toggle('wind-on', enabled && !reducedMotion.matches);
+  };
+  if (windToggle) windToggle.checked = readToggle('blog-wind', true);
   let activeCategory = 'all';
   let revealObserver;
 
@@ -24,6 +55,7 @@
       reduceMotionToggle.checked = reducedMotion.matches;
       reduceMotionToggle.disabled = motionMedia.matches;
     }
+    applyWind(windToggle?.checked ?? readToggle('blog-wind', true));
     if (reducedMotion.matches) {
       revealObserver?.disconnect();
       document.querySelectorAll('.reveal-pending').forEach((element) => element.classList.remove('reveal-pending'));
@@ -34,6 +66,10 @@
   reduceMotionToggle?.addEventListener('change', () => {
     storage.setItem('blog-reduce-motion', String(reduceMotionToggle.checked));
     applyMotionPreference();
+  });
+  windToggle?.addEventListener('change', () => {
+    storage.setItem('blog-wind', String(windToggle.checked));
+    applyWind(windToggle.checked);
   });
   applyMotionPreference();
 

@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=20261122-motion" />
+    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=20261122-wind-nav" />
     <link rel="stylesheet" href="<%- url_for('/css/hexo.css') %>" />
     <link rel="alternate" type="application/atom+xml" title="林栖谷" href="<%- url_for('/atom.xml') %>" />
   </head>
@@ -17,6 +17,7 @@
     <% if (is_post()) { %>
       <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
     <% } %>
+    <div class="wind-layer" id="windLayer" aria-hidden="true"></div>
     <dialog class="search-dialog" id="siteSearchDialog" aria-labelledby="siteSearchTitle" data-search-url="<%- url_for('/search.xml') %>">
       <div class="search-dialog__panel">
         <header class="search-dialog__header">
