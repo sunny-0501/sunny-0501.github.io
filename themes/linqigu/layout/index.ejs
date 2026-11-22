@@ -44,9 +44,8 @@
       <div class="section-heading section-heading--home">
         <h2 class="section-label"><span>LATEST NOTES</span><span>最新文章</span></h2>
         <div class="home-totoro-track" role="img" aria-label="龙猫沿着文章分隔线往返散步">
-          <span class="home-totoro-walker">
-            <img class="home-totoro-gif" id="homeTotoro" src="<%- url_for('/images/totoro-walking-transparent.gif') %>" data-totoro-animated="<%- url_for('/images/totoro-walking-transparent.gif') %>" data-totoro-still="<%- url_for('/images/totoro-rest.png') %>" alt="" width="540" height="540" decoding="async" />
-            <span class="home-totoro-turn" aria-hidden="true"></span>
+          <span class="home-totoro-walker" data-phase="rest" data-frame="113" data-motion-state="static" data-ready="false" aria-hidden="true">
+            <span class="home-totoro-sprite" id="homeTotoro"></span>
           </span>
         </div>
         <p class="filter-hint" id="filterHint" aria-live="polite">共 <%= posts.length %> 篇文章</p>

@@ -1,0 +1,141 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Totoro frame source · 256px</title>
+<style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<canvas id="atlas" width="2048" height="3840"></canvas>
+<script>
+// Offline, deterministic raster source. No image API or external assets.
+// 0–31: right walk; 32–63: left walk; 64–112: right→front→left; 113: rest.
+// Open this file and export the canvas with a transparent background.
+(() => {
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('2d');
+  const SIZE = 256;
+  const profile = [[-81,0],[-78,22],[-72,36],[-60,46],[-42,50],[-18,59],[8,69],[30,71],[49,63],[65,49],[75,28],[79,0]];
+  const clamp = (v,min,max) => Math.max(min,Math.min(max,v));
+  const smooth = v => v*v*(3-2*v);
+  const radius = y => {
+    for(let i=1;i<profile.length;i++){
+      if(y<=profile[i][0]){
+        const [a,ra]=profile[i-1], [b,rb]=profile[i];
+        return ra+(rb-ra)*smooth(clamp((y-a)/(b-a),0,1));
+      }
+    }
+    return 0;
+  };
+  function paint(c, yaw, phase=0, moving=false) {
+    const sine=Math.sin(yaw), cosine=Math.cos(yaw);
+    const bob=moving ? -1.3*(1-Math.cos(phase*2)) : 0;
+    const sway=moving ? Math.sin(phase)*.85 : 0;
+    const cx=128+sway, cy=143+bob;
+    const project=(x,y,z=0)=>({x:cx+x*cosine+z*sine,y:cy+y,depth:z*cosine-x*sine});
+    const surface=(phi,y,lift=0)=>{const r=radius(y);return project((r+lift)*Math.sin(phi),y,(r*.8+lift)*Math.cos(phi));};
+    const path=(points,fill,stroke)=>{
+      c.beginPath();points.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();
+      c.fillStyle=fill;c.fill();if(stroke){c.strokeStyle=stroke;c.lineWidth=1.1;c.stroke();}
+    };
+    const gradient=(x,y,r,stops)=>{const g=c.createRadialGradient(x,y,1,x,y,r);stops.forEach(([s,col])=>g.addColorStop(s,col));return g;};
+    const bodyFill=gradient(cx-29,cy-36,154,[[0,'#99998a'],[.38,'#808376'],[.76,'#687064'],[1,'#505c51']]);
+    // One grounded shadow for all views, with no separate drifting sprite shadow.
+    c.save();c.translate(128,233);c.scale(1,.18);c.fillStyle=gradient(0,0,66,[[0,'rgba(29,49,35,.26)'],[.6,'rgba(29,49,35,.13)'],[1,'rgba(29,49,35,0)']]);c.beginPath();c.arc(0,0,66,0,Math.PI*2);c.fill();c.restore();
+    const tail=project(0,55,-54);
+    c.save();c.translate(tail.x,tail.y);c.rotate(-sine*.4);c.fillStyle='#626b5e';c.beginPath();c.ellipse(0,0,15,23,0,0,Math.PI*2);c.fill();c.restore();
+    function ear(side) {
+      const a=project(side*25,-72,0);
+      const lean=side*4+(moving?Math.sin(phase-.2)*1.3:0);
+      const tip=project(side*33+lean,-122+(side<0?1:0),-2);
+      const left=project(side*25-10,-81,0),right=project(side*25+10,-81,0);
+      const fill=c.createLinearGradient(left.x,tip.y,right.x,a.y);fill.addColorStop(0,'#9a9b8b');fill.addColorStop(.5,'#818675');fill.addColorStop(1,'#576452');
+      c.beginPath();c.moveTo(left.x,left.y);c.bezierCurveTo(tip.x-12,tip.y+23,tip.x-4,tip.y+2,tip.x,tip.y);c.bezierCurveTo(tip.x+6,tip.y+10,right.x+5,right.y-15,right.x,right.y);c.quadraticCurveTo(a.x,a.y+11,left.x,left.y);c.fillStyle=fill;c.fill();c.strokeStyle='#52614e';c.lineWidth=1.1;c.stroke();
+      if(Math.abs(cosine)>.35){c.beginPath();c.moveTo(a.x-3,a.y-9);c.quadraticCurveTo(tip.x-4,tip.y+20,tip.x,tip.y+12);c.quadraticCurveTo(a.x+5,a.y-21,a.x+3,a.y-9);c.fillStyle='rgba(194,181,150,.40)';c.fill();}
+    }
+    [-1,1].sort((a,b)=>project(a*25,0).depth-project(b*25,0).depth).forEach(ear);
+    // Feet move in depth; the planted foot stays on one common ground plane.
+    function foot(side) {
+      const p=phase+(side===1?Math.PI:0);
+      const stride=moving?Math.sin(p)*30:0;
+      const lift=moving?Math.max(0,Math.cos(p))*5.7:0;
+      const pos=project(side*27,82-lift,12+stride);
+      c.save();c.translate(pos.x,pos.y);c.rotate(moving?Math.sin(p)*.08:0);
+      const g=c.createLinearGradient(-16,-10,12,10);g.addColorStop(0,'#7c8271');g.addColorStop(1,'#465545');
+      c.fillStyle=g;c.strokeStyle='#455240';c.lineWidth=.9;c.beginPath();c.ellipse(0,0,17.5,9.1,0,0,Math.PI*2);c.fill();c.stroke();
+      c.strokeStyle='rgba(211,214,185,.36)';c.lineWidth=1;
+      for(let k=-1;k<=1;k++){c.beginPath();c.moveTo(k*3.5+3,-1);c.lineTo(k*3.5+4,2.5);c.stroke();}
+      c.restore();
+    }
+    [-1,1].sort((a,b)=>project(a*27,0,12).depth-project(b*27,0,12).depth).forEach(foot);
+    function arm(side) {
+      const p=phase+(side===1?Math.PI:0),swing=moving?-Math.sin(p)*13:0;
+      const a=project(side*50,-24,0),b=project(side*65,19,3+swing),d=project(side*53,48,4+swing);
+      const g=c.createLinearGradient(a.x-10,a.y,b.x+13,d.y);g.addColorStop(0,'#8a8e7c');g.addColorStop(1,'#596551');
+      c.beginPath();c.moveTo(a.x,a.y);c.bezierCurveTo(b.x+side*12,a.y+25,b.x+side*12,b.y+17,d.x,d.y);c.bezierCurveTo(d.x-side*12,d.y+6,b.x-side*13,b.y+4,a.x-side*5,a.y+10);c.closePath();c.fillStyle=g;c.fill();c.strokeStyle='rgba(56,73,51,.56)';c.lineWidth=1.1;c.stroke();
+    }
+    const nearSide=sine>=0?-1:1;arm(-nearSide);
+    // A rounded, yaw-aware pear silhouette: minimum width is 80% of front.
+    const horizontal=Math.sqrt(cosine*cosine+.64*sine*sine);
+    c.beginPath();
+    for(let y=-81;y<=79;y+=1){const x=cx+radius(y)*horizontal;if(y===-81)c.moveTo(x,cy+y);else c.lineTo(x,cy+y);}
+    for(let y=79;y>=-81;y-=1)c.lineTo(cx-radius(y)*horizontal,cy+y);
+    c.closePath();c.fillStyle=bodyFill;c.fill();c.strokeStyle='#52604e';c.lineWidth=1.1;c.stroke();
+    c.save();c.clip();
+    // A cream patch wraps over the front surface instead of shrinking the body.
+    const left=[],right=[];
+    for(let y=-20;y<=69;y+=1){
+      const half=Math.sqrt(Math.max(0,1-((y-24.5)/44.5)**2))*1.03;
+      const lo=Math.max(-half,-Math.PI/2-yaw+.002),hi=Math.min(half,Math.PI/2-yaw-.002);
+      if(lo<=hi){left.push(surface(lo,y,.35));right.push(surface(hi,y,.35));}
+    }
+    if(left.length){
+      c.beginPath();left.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));right.reverse().forEach(p=>c.lineTo(p.x,p.y));c.closePath();
+      const belly=c.createLinearGradient(cx-25,cy-20,cx+50,cy+73);belly.addColorStop(0,'#f4efd2');belly.addColorStop(.55,'#e7e4be');belly.addColorStop(1,'#c8cd9d');c.fillStyle=belly;c.fill();
+    }
+    // Seven individually projected chevrons retain their shape during a turn.
+    const marks=[[-.62,-1],[0,-5],[.62,-1],[-.78,20],[-.27,17],[.27,17],[.78,20]];
+    for(const [phi,y]of marks){
+      if(Math.cos(phi+yaw)<.10)continue;
+      const a=surface(phi-.14,y+3,1),b=surface(phi,y-4,1),d=surface(phi+.14,y+3,1);
+      c.beginPath();c.moveTo(a.x,a.y);c.quadraticCurveTo(b.x,b.y-2,d.x,d.y);c.strokeStyle='#69775a';c.lineWidth=4.8;c.lineCap='round';c.stroke();
+    }
+    c.restore();
+    arm(nearSide);
+    // White eyes, the black nose, cheeks and whiskers occupy real front angles.
+    for(const side of [-1,1]){
+      const phi=side*.47,visibility=Math.cos(phi+yaw);if(visibility<=.06)continue;
+      const p=surface(phi,-53,1.8),rx=8.5*visibility;
+      c.beginPath();c.ellipse(p.x,p.y,rx,9.2,0,0,Math.PI*2);c.fillStyle='#fffdf1';c.fill();c.strokeStyle='#404b3b';c.lineWidth=1;c.stroke();
+      c.beginPath();c.ellipse(p.x+sine*1.2,p.y+.1,Math.max(1.1,3.7*visibility),4.6,0,0,Math.PI*2);c.fillStyle='#273027';c.fill();
+      c.beginPath();c.ellipse(p.x+sine*1.2-1,p.y-1.4,.85,1.1,0,0,Math.PI*2);c.fillStyle='#fff';c.fill();
+      const cheek=surface(side*.72,-35,1.3);c.beginPath();c.ellipse(cheek.x,cheek.y,7.4*Math.max(.2,Math.cos(side*.72+yaw)),4.5,0,0,Math.PI*2);c.fillStyle='rgba(202,147,124,.52)';c.fill();
+    }
+    const nose=surface(0,-47,5),noseW=Math.max(4.4,9.5*cosine);
+    c.beginPath();c.moveTo(nose.x-noseW,nose.y);c.quadraticCurveTo(nose.x,nose.y-5,nose.x+noseW,nose.y);c.quadraticCurveTo(nose.x+3,nose.y+3,nose.x,nose.y+5);c.quadraticCurveTo(nose.x-3,nose.y+3,nose.x-noseW,nose.y);c.fillStyle='#354033';c.fill();
+    c.beginPath();c.ellipse(nose.x-1,nose.y-.7,noseW*.45,1,0,0,Math.PI*2);c.fillStyle='rgba(211,220,188,.27)';c.fill();
+    const mouth=surface(0,-31,2);c.beginPath();c.moveTo(mouth.x-3.5*cosine,mouth.y);c.quadraticCurveTo(mouth.x,mouth.y+2,mouth.x+3.5*cosine,mouth.y);c.strokeStyle='#4a5642';c.lineWidth=1.2;c.stroke();
+    for(const side of [-1,1]){
+      if(Math.cos(side*.74+yaw)<.14)continue;
+      for(let n=0;n<3;n++){
+        const start=surface(side*.60,-41+n*3,2),end=project(side*(78+n*2),-42+n*8,27);
+        c.beginPath();c.moveTo(start.x,start.y);c.quadraticCurveTo((start.x+end.x)/2,end.y-4,end.x,end.y);c.lineWidth=1.15;c.strokeStyle='#424f3b';c.lineCap='round';c.stroke();
+      }
+    }
+    // A few quiet fur strokes keep the soft shaded 2D illustration readable.
+    c.strokeStyle='rgba(209,213,187,.20)';c.lineWidth=.8;
+    for(const [phi,y]of [[-.8,-64],[.83,-60],[-1,-12],[1.03,8]]){if(Math.cos(phi+yaw)<.3)continue;const a=surface(phi,y,.6),b=surface(phi+.025,y+4,.6);c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();}
+  }
+  const angles=[];
+  for(let i=0;i<114;i++){
+    const col=i%8,row=Math.floor(i/8);context.save();context.translate(col*SIZE,row*SIZE);
+    if(i<64){const left=i>=32,frame=i%32;paint(context,left?-1.12:1.12,frame/32*Math.PI*2,true);}
+    else if(i<113){const u=(i-64)/48;paint(context,1.12*(1-2*smooth(u)),0,false);}
+    else paint(context,1.12,0,false);
+    context.restore();
+  }
+  window.TOTORO_FRAMES={size:256,columns:8,rows:15,frames:114,walkFrames:32,turnFrames:49};
+  if(new URLSearchParams(location.search).has('contact')){
+    const source=document.createElement('canvas');source.width=canvas.width;source.height=canvas.height;source.getContext('2d').drawImage(canvas,0,0);
+    const indices=[0,8,16,24,64,70,76,82,88,94,100,106,112];
+    canvas.width=indices.length*192;canvas.height=218;context.fillStyle='#e8eee5';context.fillRect(0,0,canvas.width,canvas.height);
+    indices.forEach((index,j)=>{context.drawImage(source,(index%8)*256,Math.floor(index/8)*256,256,256,j*192,0,192,192);context.fillStyle='#45583d';context.font='12px sans-serif';context.fillText(String(index),j*192+92,211);});
+  }
+})();
+</script>
