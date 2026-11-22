@@ -3,10 +3,6 @@
 <% const categoryCount = (name) => posts.filter((post) => post.categories.toArray().some((category) => category.name === name)).length; %>
 <%- partial('_partial/document-start') %>
 <main id="top" tabindex="-1">
-  <section class="journal-intro" aria-labelledby="journalTitle">
-    <div><p class="eyebrow">LINQIGU · A PERSONAL JOURNAL</p><h1 id="journalTitle">林栖谷<span>，</span></h1><p class="journal-description">把走过的路，写成可以回看的光。</p></div>
-    <a class="journal-index" href="#articles"><span class="journal-status" aria-hidden="true"></span>记录、阅读，与日常 <span aria-hidden="true">↗</span></a>
-  </section>
   <section class="dashboard-hero" aria-label="博客首页">
     <article class="quote-card" aria-label="林栖谷随笔">
       <div class="quote-controls" role="tablist" aria-label="切换随笔">
