@@ -30,9 +30,9 @@
           <input class="theme-hue-slider" id="themeHue" type="range" min="0" max="360" value="165" aria-label="主题色相" />
         </div>
         <div class="appearance-group">
-          <span>阅读偏好</span>
-          <label class="setting-row"><span><i>≈</i>减少动效</span><input class="setting-toggle" id="reduceMotionToggle" type="checkbox" /><b class="switch" aria-hidden="true"></b></label>
-          <label class="setting-row"><span><i>≋</i>风吹特效</span><input class="setting-toggle" id="windToggle" type="checkbox" /><b class="switch" aria-hidden="true"></b></label>
+          <div class="appearance-heading"><label for="windIntensity">动效强度</label><output id="windIntensityValue" for="windIntensity">60%</output></div>
+          <input class="effect-intensity-slider" id="windIntensity" type="range" min="0" max="100" step="10" value="60" aria-label="动效强度" aria-describedby="windIntensityScale" />
+          <div class="range-endpoints" id="windIntensityScale"><span>关闭</span><span>轻柔</span><span>明显</span></div>
         </div>
         <div class="appearance-group">
           <span>文章布局</span>

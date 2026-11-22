@@ -8,22 +8,28 @@
   const themeHue = document.querySelector('#themeHue');
   const themeHueValue = document.querySelector('#themeHueValue');
   const layoutOptions = [...document.querySelectorAll('[data-layout-mode]')];
-  const reduceMotionToggle = document.querySelector('#reduceMotionToggle');
-  const windToggle = document.querySelector('#windToggle');
+  const windIntensity = document.querySelector('#windIntensity');
+  const windIntensityValue = document.querySelector('#windIntensityValue');
   const windLayer = document.querySelector('#windLayer');
   const motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
   const storage = {
     getItem(key) { try { return window.localStorage.getItem(key); } catch { return null; } },
     setItem(key, value) { try { window.localStorage.setItem(key, value); } catch {} },
   };
-  const reducedMotion = { get matches() { return motionMedia.matches || storage.getItem('blog-reduce-motion') === 'true'; } };
-  const readToggle = (key, fallback) => {
-    const stored = storage.getItem(key);
-    return stored === null ? fallback : stored === 'true';
+  const initialWindIntensity = () => {
+    const stored = storage.getItem('blog-wind-intensity');
+    if (stored !== null) {
+      const value = Number(stored);
+      return Number.isFinite(value) ? Math.round(Math.max(0, Math.min(100, value)) / 10) * 10 : 60;
+    }
+    return storage.getItem('blog-reduce-motion') === 'true' || storage.getItem('blog-wind') === 'false' ? 0 : 60;
   };
-  const createWind = () => {
+  if (windIntensity) windIntensity.value = String(initialWindIntensity());
+  const reducedMotion = { get matches() { return motionMedia.matches || Number(windIntensity?.value ?? 60) === 0; } };
+  const createWind = (intensity) => {
     if (!windLayer) return;
-    const streakCount = window.innerWidth < 720 ? 6 : 11;
+    const maxStreaks = window.innerWidth < 720 ? 6 : 11;
+    const streakCount = intensity === 0 ? 0 : Math.max(1, Math.round(maxStreaks * intensity / 100));
     if (windLayer.childElementCount === streakCount) return;
     windLayer.replaceChildren();
     for (let index = 0; index < streakCount; index += 1) {
@@ -33,43 +39,46 @@
       streak.style.setProperty('--wind-width', `${70 + Math.random() * 170}px`);
       streak.style.setProperty('--wind-drift', `${-28 + Math.random() * 56}px`);
       streak.style.setProperty('--wind-angle', `${-3 + Math.random() * 6}deg`);
-      streak.style.setProperty('--wind-opacity', String(.38 + Math.random() * .36));
+      streak.dataset.windFactor = String(.72 + Math.random() * .28);
       streak.style.setProperty('--wind-duration', `${5 + Math.random() * 5}s`);
       streak.style.setProperty('--wind-delay', `${-Math.random() * 10}s`);
       windLayer.append(streak);
     }
   };
-  window.addEventListener('resize', createWind, { passive: true });
-  const applyWind = (enabled) => {
+  const applyWind = (rawIntensity) => {
     if (!windLayer) return;
-    createWind();
-    document.body.classList.toggle('wind-on', enabled && !reducedMotion.matches);
+    const intensity = Math.round(Math.max(0, Math.min(100, Number(rawIntensity) || 0)) / 10) * 10;
+    createWind(intensity);
+    const opacity = .12 + intensity / 100 * .55;
+    windLayer.querySelectorAll('.wind-streak').forEach((streak) => {
+      streak.style.setProperty('--wind-opacity', String(opacity * Number(streak.dataset.windFactor)));
+    });
+    if (windIntensityValue) windIntensityValue.textContent = intensity === 0 ? '关闭' : `${intensity}%`;
+    document.body.classList.toggle('wind-on', intensity > 0 && !motionMedia.matches);
+    return intensity;
   };
-  if (windToggle) windToggle.checked = readToggle('blog-wind', true);
+  window.addEventListener('resize', () => applyWind(windIntensity?.value ?? 60), { passive: true });
   let activeCategory = 'all';
   let revealObserver;
 
   const applyMotionPreference = () => {
-    document.documentElement.dataset.motion = reducedMotion.matches ? 'reduced' : 'full';
-    if (reduceMotionToggle) {
-      reduceMotionToggle.checked = reducedMotion.matches;
-      reduceMotionToggle.disabled = motionMedia.matches;
-    }
-    applyWind(windToggle?.checked ?? readToggle('blog-wind', true));
-    if (reducedMotion.matches) {
+    const wasReduced = document.documentElement.dataset.motion === 'reduced';
+    const isReduced = reducedMotion.matches;
+    document.documentElement.dataset.motion = isReduced ? 'reduced' : 'full';
+    if (windIntensity) windIntensity.disabled = motionMedia.matches;
+    applyWind(windIntensity?.value ?? 60);
+    if (isReduced && !wasReduced) {
       revealObserver?.disconnect();
       document.querySelectorAll('.reveal-pending').forEach((element) => element.classList.remove('reveal-pending'));
       document.getAnimations().forEach((animation) => animation.cancel());
     }
   };
   motionMedia.addEventListener('change', applyMotionPreference);
-  reduceMotionToggle?.addEventListener('change', () => {
-    storage.setItem('blog-reduce-motion', String(reduceMotionToggle.checked));
+  windIntensity?.addEventListener('input', () => {
+    const intensity = Math.round(Math.max(0, Math.min(100, Number(windIntensity.value) || 0)) / 10) * 10;
+    windIntensity.value = String(intensity);
+    storage.setItem('blog-wind-intensity', String(intensity));
     applyMotionPreference();
-  });
-  windToggle?.addEventListener('change', () => {
-    storage.setItem('blog-wind', String(windToggle.checked));
-    applyWind(windToggle.checked);
   });
   applyMotionPreference();
 
