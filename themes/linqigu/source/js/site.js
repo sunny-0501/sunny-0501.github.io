@@ -105,11 +105,11 @@
   });
 
   const applyThemeHue = (value) => {
-    const hue = Number(value) || 0;
-    document.body.style.setProperty('--peach', `hsl(${hue} 57% 63%)`);
-    document.body.style.setProperty('--butter', `hsl(${hue} 62% 76%)`);
-    document.body.style.setProperty('--mint', `hsl(${hue} 36% 76%)`);
-    document.body.style.setProperty('--lilac', `hsl(${(hue + 42) % 360} 34% 78%)`);
+    const hue = Math.max(0, Math.min(360, Number(value) || 0));
+    document.body.style.setProperty('--theme-hue', String(hue % 360));
+    document.body.style.setProperty('--theme-warm-hue', String((hue + 210) % 360));
+    document.body.style.setProperty('--theme-butter-hue', String((hue + 240) % 360));
+    document.body.style.setProperty('--theme-cool-hue', String((hue + 42) % 360));
     if (themeHue) themeHue.value = String(hue);
     if (themeHueValue) themeHueValue.value = String(hue);
   };

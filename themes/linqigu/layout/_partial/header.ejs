@@ -1,7 +1,7 @@
 <%
   const activePath = page.path || '';
   const navigation = [
-    { label: '&#x4E3B;&#x9875;', path: '/', active: activePath === '' },
+    { label: '&#x4E3B;&#x9875;', path: '/', active: is_home() },
     { label: '&#x6587;&#x7AE0;', path: '/archives/', active: activePath.startsWith('archives') || activePath.startsWith('categories') || activePath.startsWith('tags') || is_post() },
     { label: '&#x53CB;&#x94FE;', path: '/links/', active: activePath.startsWith('links') },
     { label: '&#x7559;&#x8A00;', path: '/guestbook/', active: activePath.startsWith('guestbook') },
