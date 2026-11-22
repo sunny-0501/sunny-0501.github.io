@@ -41,15 +41,7 @@
     </aside>
     <div class="articles-column">
       <nav class="content-tabs" aria-label="文章视图"><a class="selected" aria-current="true" href="<%- url_for('/') %>" data-filter="all"><span>全部</span><b><%= posts.length %></b></a><a href="<%- url_for('/categories/项目/') %>" data-filter="项目"><span>项目</span><b><%= categoryCount('项目') %></b></a><a href="<%- url_for('/categories/随笔/') %>" data-filter="随笔"><span>随笔</span><b><%= categoryCount('随笔') %></b></a><a href="<%- url_for('/categories/阅读/') %>" data-filter="阅读"><span>阅读</span><b><%= categoryCount('阅读') %></b></a><a class="more-tab" href="<%- url_for('/archives/') %>"><span>归档</span><b>→</b></a></nav>
-      <div class="section-heading section-heading--home">
-        <h2 class="section-label"><span>LATEST NOTES</span><span>最新文章</span></h2>
-        <div class="home-totoro-track" role="img" aria-label="龙猫沿着文章分隔线往返散步">
-          <span class="home-totoro-walker" data-phase="rest" data-frame="113" data-motion-state="static" data-ready="false" aria-hidden="true">
-            <span class="home-totoro-sprite" id="homeTotoro"></span>
-          </span>
-        </div>
-        <p class="filter-hint" id="filterHint" aria-live="polite">共 <%= posts.length %> 篇文章</p>
-      </div>
+      <div class="section-heading"><h2 class="section-label"><span>LATEST NOTES</span><span>最新文章</span></h2><p class="filter-hint" id="filterHint" aria-live="polite">共 <%= posts.length %> 篇文章</p></div>
       <div class="article-list" id="articleList"><%- partial('_partial/article-row', { posts: posts }) %></div>
       <p class="empty-state" id="emptyState" hidden>没有找到匹配的文章。</p>
     </div>

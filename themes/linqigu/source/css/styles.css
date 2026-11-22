@@ -801,42 +801,6 @@ body.dark .quote-control.is-active span { background: rgba(255,247,232,.94); }
 body.dark .photo-copy { text-shadow: 0 2px 10px rgba(0,0,0,.72); }
 body.dark .article-body h3 { color: var(--deep-forest); }
 
-.section-heading--home { gap: clamp(12px, 2vw, 28px); }
-.section-heading--home .section-label { flex: 0 0 auto; }
-.home-totoro-track {
-  position: relative;
-  flex: 1 1 0;
-  align-self: center;
-  min-width: 52px;
-  height: 104px;
-  overflow: hidden;
-  pointer-events: none;
-}
-.home-totoro-track::before {
-  position: absolute;
-  right: 0;
-  bottom: 10px;
-  left: 0;
-  height: 1px;
-  background: var(--card-border);
-  content: "";
-}
-.home-totoro-walker {
-  position: absolute;
-  bottom: 2px;
-  left: 6px;
-  width: 96px;
-  height: 96px;
-}
-.home-totoro-sprite {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: url('../images/totoro-animation-frames.png') 14.285714% 100% / 800% 1500% no-repeat;
-  filter: drop-shadow(0 2px 2px rgba(36,74,64,.14));
-  image-rendering: auto;
-}
-
 @media (max-width: 720px) {
   .main-nav a { min-height: 44px; font-size: 13px; }
   .search-box { min-height: 40px; }
@@ -844,12 +808,6 @@ body.dark .article-body h3 { color: var(--deep-forest); }
   .quote-card, .photo-card { min-height: 315px; }
   .quote-card .quote-text { font-size: 37px; }
   .section-label span:nth-child(2) { font-size: 17px; }
-  .section-heading.section-heading--home { display: grid; grid-template-columns: minmax(0, 1fr) max-content; gap: 0 10px; }
-  .section-heading--home .section-label { grid-column: 1; grid-row: 1; }
-  .section-heading--home .filter-hint { grid-column: 2; grid-row: 1; white-space: nowrap; }
-  .home-totoro-track { grid-column: 1 / -1; grid-row: 2; width: 100%; min-width: 0; height: 88px; }
-  .home-totoro-walker { bottom: 1px; width: 78px; height: 78px; }
-  .home-totoro-track::before { bottom: 8px; }
 }
 
 @media (max-width: 480px) {
