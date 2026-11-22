@@ -801,6 +801,25 @@ body.dark .quote-control.is-active span { background: rgba(255,247,232,.94); }
 body.dark .photo-copy { text-shadow: 0 2px 10px rgba(0,0,0,.72); }
 body.dark .article-body h3 { color: var(--deep-forest); }
 
+.quote-mark { right: 106px; }
+.home-totoro {
+  position: absolute;
+  z-index: 3;
+  right: 18px;
+  bottom: 2px;
+  display: block;
+  width: clamp(74px, 7vw, 92px);
+  aspect-ratio: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 2px rgba(36,74,64,.16));
+  animation: home-totoro-wander 8s ease-in-out infinite alternate;
+}
+.home-totoro img { display: block; width: 100%; height: 100%; object-fit: contain; }
+@keyframes home-totoro-wander {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-22px, -2px); }
+}
+
 @media (max-width: 720px) {
   .main-nav a { min-height: 44px; font-size: 13px; }
   .search-box { min-height: 40px; }
@@ -824,6 +843,8 @@ body.dark .article-body h3 { color: var(--deep-forest); }
   .content-tabs a { gap: 4px; min-height: 40px; padding: 6px 8px; font-size: 11px; }
   .section-heading { display: flex; }
 }
+
+@media (max-width: 720px) { .quote-mark { right: 84px; } }
 
 @media (max-width: 360px) {
   .site-shell { padding-right: 12px; padding-left: 12px; }

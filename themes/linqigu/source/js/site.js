@@ -13,6 +13,7 @@
   const windIntensity = document.querySelector('#windIntensity');
   const windIntensityValue = document.querySelector('#windIntensityValue');
   const windLayer = document.querySelector('#windLayer');
+  const homeTotoro = document.querySelector('#homeTotoro');
   const motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
   const storage = {
     getItem(key) { try { return window.localStorage.getItem(key); } catch { return null; } },
@@ -67,6 +68,10 @@
     const wasReduced = document.documentElement.dataset.motion === 'reduced';
     const isReduced = reducedMotion.matches;
     document.documentElement.dataset.motion = isReduced ? 'reduced' : 'full';
+    if (homeTotoro) {
+      const totoroSource = isReduced ? homeTotoro.dataset.totoroStill : homeTotoro.dataset.totoroAnimated;
+      if (totoroSource && homeTotoro.getAttribute('src') !== totoroSource) homeTotoro.src = totoroSource;
+    }
     if (windIntensity) windIntensity.disabled = motionMedia.matches;
     applyWind(windIntensity?.value ?? 60);
     if (isReduced && !wasReduced) {

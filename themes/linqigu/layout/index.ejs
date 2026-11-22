@@ -22,6 +22,9 @@
         </section>
       </div>
       <span class="quote-mark" aria-hidden="true">“</span>
+      <span class="home-totoro" role="img" aria-label="在林间散步的龙猫">
+        <img id="homeTotoro" src="<%- url_for('/images/totoro-walking-transparent.gif') %>" data-totoro-animated="<%- url_for('/images/totoro-walking-transparent.gif') %>" data-totoro-still="<%- url_for('/images/totoro-rest.png') %>" alt="" width="540" height="540" decoding="async" />
+      </span>
     </article>
     <% if (featured) { %>
       <a class="photo-card" href="<%- url_for(featured.path) %>" aria-label="阅读最新文章"><img src="<%- url_for('/images/header-landscape.png') %>" alt="晴天下的草坡与画画的人" /><div class="photo-shade"></div><div class="photo-copy"><span>最新文章 · <%= featured.categories.length ? featured.categories.first().name : '随笔' %></span><h2><%= featured.title %></h2></div><span class="recommend">↗ 阅读全文</span></a>
