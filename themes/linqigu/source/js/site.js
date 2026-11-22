@@ -151,11 +151,6 @@
       if (!appearancePanel.contains(document.activeElement)) setAppearanceOpen(false);
     });
   });
-  appearancePanel?.addEventListener('focusout', () => {
-    queueMicrotask(() => {
-      if (!appearancePanel.contains(document.activeElement) && document.activeElement !== appearanceToggle) setAppearanceOpen(false);
-    });
-  });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && appearancePanel && !appearancePanel.hidden) {
       event.preventDefault();
