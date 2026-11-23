@@ -595,6 +595,11 @@ body.search-open, body.lightbox-open { overflow: hidden; }
 .page-hero-peach { background: var(--peach); }
 .page-hero-mint { background: var(--mint); }
 .page-hero-lilac { background: var(--lilac); }
+/* Decorative official stills: https://www.ghibli.jp/works/majo/, /works/totoro/, and /works/howl/. */
+.page-hero-image { background-size: cover; background-repeat: no-repeat; background-position: center; }
+.page-hero-links { --hero-art: url('../images/links-cottage.jpg'); --hero-art-position: 56% 53%; background-image: linear-gradient(90deg, rgba(225,238,228,.94) 0%, rgba(225,238,228,.86) 38%, rgba(225,238,228,.3) 100%), var(--hero-art); background-position: center, var(--hero-art-position); }
+.page-hero-guestbook { --hero-art: url('../images/guestbook-country-house.jpg'); --hero-art-position: 53% 53%; background-image: linear-gradient(90deg, rgba(228,239,226,.94) 0%, rgba(228,239,226,.86) 40%, rgba(228,239,226,.24) 100%), var(--hero-art); background-position: center, var(--hero-art-position); }
+.page-hero-explore { --hero-art: url('../images/explore-moving-castle.jpg'); --hero-art-position: 55% 48%; background-image: linear-gradient(90deg, rgba(250,232,215,.94) 0%, rgba(250,232,215,.86) 39%, rgba(250,232,215,.25) 100%), var(--hero-art); background-position: center, var(--hero-art-position); }
 .archive-hero {
   position: relative;
   z-index: 5;
@@ -651,6 +656,11 @@ body.search-open, body.lightbox-open { overflow: hidden; }
 
 body.dark .page-hero h1, body.dark .about-intro h2, body.dark .link-card, body.dark .about-avatar, body.dark .page-hero-symbol { color: var(--deep-forest); }
 body.dark .page-hero p:not(.eyebrow), body.dark .page-hero .eyebrow, body.dark .link-card p, body.dark .link-index { color: rgba(255,247,232,.76); }
+body.dark .page-hero-links { background-image: linear-gradient(90deg, rgba(28,45,37,.94) 0%, rgba(28,45,37,.86) 38%, rgba(28,45,37,.4) 100%), var(--hero-art); }
+body.dark .page-hero-guestbook { background-image: linear-gradient(90deg, rgba(28,45,37,.94) 0%, rgba(28,45,37,.86) 40%, rgba(28,45,37,.36) 100%), var(--hero-art); }
+body.dark .page-hero-explore { background-image: linear-gradient(90deg, rgba(37,40,37,.94) 0%, rgba(37,40,37,.86) 39%, rgba(37,40,37,.36) 100%), var(--hero-art); }
+body.dark .page-hero-image h1, body.dark .page-hero-image .eyebrow, body.dark .page-hero-image p:not(.eyebrow), body.dark .page-hero-image .page-hero-symbol { color: #fffdf7; }
+body.dark .page-hero-image .page-hero-symbol { border-color: rgba(255,253,247,.48); }
 body.dark .archive-hero h1, body.dark .archive-hero .eyebrow, body.dark .archive-hero p:not(.eyebrow) { color: #fffdf7; }
 body.dark .about-intro { background: var(--card); }
 
