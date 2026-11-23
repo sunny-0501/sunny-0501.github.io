@@ -14,6 +14,7 @@
   const windIntensityValue = document.querySelector('#windIntensityValue');
   const windLayer = document.querySelector('#windLayer');
   const motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let finishArchiveTypewriter = () => {};
   const storage = {
     getItem(key) { try { return window.localStorage.getItem(key); } catch { return null; } },
     setItem(key, value) { try { window.localStorage.setItem(key, value); } catch {} },
@@ -67,6 +68,7 @@
     const wasReduced = document.documentElement.dataset.motion === 'reduced';
     const isReduced = reducedMotion.matches;
     document.documentElement.dataset.motion = isReduced ? 'reduced' : 'full';
+    if (isReduced) finishArchiveTypewriter();
     if (windIntensity) windIntensity.disabled = motionMedia.matches;
     applyWind(windIntensity?.value ?? 60);
     if (isReduced && !wasReduced) {
@@ -74,6 +76,64 @@
       document.querySelectorAll('.reveal-pending').forEach((element) => element.classList.remove('reveal-pending'));
       document.getAnimations().forEach((animation) => animation.cancel());
     }
+  };
+  const startArchiveTypewriter = () => {
+    const targets = [...document.querySelectorAll('.archive-hero [data-typewriter]')];
+    if (!targets.length || reducedMotion.matches) return;
+
+    const queue = [];
+    targets.forEach((target) => {
+      const visual = document.createElement('span');
+      visual.setAttribute('aria-hidden', 'true');
+      visual.append(...[...target.childNodes].map((node) => node.cloneNode(true)));
+      const accessibleText = document.createElement('span');
+      accessibleText.className = 'sr-only';
+      accessibleText.textContent = [...target.childNodes].map((node) => node.nodeName === 'BR' ? ' ' : node.textContent).join('');
+      const walker = document.createTreeWalker(visual, NodeFilter.SHOW_TEXT);
+      const textNodes = [];
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+      textNodes.forEach((node) => {
+        const fragment = document.createDocumentFragment();
+        const characters = typeof Intl.Segmenter === 'function'
+          ? [...new Intl.Segmenter('zh', { granularity: 'grapheme' }).segment(node.textContent)].map((part) => part.segment)
+          : Array.from(node.textContent);
+        characters.forEach((character) => {
+          const span = document.createElement('span');
+          span.dataset.typewriterChar = '';
+          span.textContent = character;
+          queue.push({ span, delay: /[，。！？、]/u.test(character) ? 160 : target.tagName === 'H1' ? 85 : 42 });
+          fragment.append(span);
+        });
+        node.replaceWith(fragment);
+      });
+      target.replaceChildren(accessibleText, visual);
+      target.classList.add('typewriter-running');
+      queue.push({ delay: 320 });
+    });
+
+    let finished = false;
+    let timer;
+    let current;
+    finishArchiveTypewriter = () => {
+      if (finished) return;
+      finished = true;
+      window.clearTimeout(timer);
+      current?.classList.remove('typewriter-cursor');
+      targets.forEach((target) => target.classList.remove('typewriter-running'));
+    };
+    let index = 0;
+    const typeNext = () => {
+      if (finished) return;
+      const item = queue[index++];
+      if (!item) { finishArchiveTypewriter(); return; }
+      if (item.span) {
+        current?.classList.remove('typewriter-cursor');
+        current = item.span;
+        current.classList.add('is-typed', 'typewriter-cursor');
+      }
+      timer = window.setTimeout(typeNext, item.delay);
+    };
+    timer = window.setTimeout(typeNext, 200);
   };
   motionMedia.addEventListener('change', applyMotionPreference);
   windIntensity?.addEventListener('input', () => {
@@ -83,6 +143,7 @@
     applyMotionPreference();
   });
   applyMotionPreference();
+  startArchiveTypewriter();
 
   const applyTheme = (mode) => {
     const dark = mode === 'system' ? themeMedia.matches : mode === 'dark';
