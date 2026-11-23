@@ -599,11 +599,15 @@ body.search-open, body.lightbox-open { overflow: hidden; }
   position: relative;
   isolation: isolate;
   background:
-    linear-gradient(90deg, rgba(255, 253, 247, .92) 0%, rgba(255, 253, 247, .77) 42%, rgba(255, 253, 247, .22) 100%),
+    linear-gradient(90deg, rgba(255, 253, 247, .22) 0%, rgba(255, 253, 247, .08) 34%, rgba(255, 253, 247, 0) 62%),
     url('../images/archive-howls-castle.png') center 48% / cover no-repeat;
 }
 .archive-hero > * { position: relative; z-index: 1; }
 .archive-hero .page-hero-symbol { background: rgba(255, 253, 247, .18); }
+.archive-hero h1 { color: #193d32; }
+.archive-hero .eyebrow { color: rgba(29, 63, 51, .9); }
+.archive-hero p:not(.eyebrow) { color: rgba(29, 63, 51, .92); }
+.archive-hero .page-hero-symbol { border-color: rgba(29, 63, 51, .55); color: rgba(29, 63, 51, .82); }
 .page-hero h1 { max-width: 720px; color: var(--deep-forest); font-size: clamp(38px, 5.4vw, 70px); line-height: 1.18; margin-bottom: 17px; }
 .page-hero .eyebrow { color: rgba(36,74,64,.7); margin-bottom: 22px; }
 .page-hero p:not(.eyebrow) { max-width: 530px; color: rgba(36,74,64,.8); font-size: 13px; line-height: 1.85; margin-bottom: 0; }
@@ -638,6 +642,10 @@ body.search-open, body.lightbox-open { overflow: hidden; }
 
 body.dark .page-hero h1, body.dark .about-intro h2, body.dark .link-card, body.dark .about-avatar, body.dark .page-hero-symbol { color: var(--deep-forest); }
 body.dark .page-hero p:not(.eyebrow), body.dark .page-hero .eyebrow, body.dark .link-card p, body.dark .link-index { color: rgba(255,247,232,.76); }
+body.dark .archive-hero h1 { color: #193d32; }
+body.dark .archive-hero .eyebrow { color: rgba(29, 63, 51, .9); }
+body.dark .archive-hero p:not(.eyebrow) { color: rgba(29, 63, 51, .92); }
+body.dark .archive-hero .page-hero-symbol { border-color: rgba(29, 63, 51, .55); color: rgba(29, 63, 51, .82); }
 body.dark .about-intro { background: var(--card); }
 
 @media (max-width: 720px) {
