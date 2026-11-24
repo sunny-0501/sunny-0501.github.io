@@ -78,8 +78,13 @@
     }
   };
   const startArchiveTypewriter = () => {
+    let skipTypewriter = false;
+    try {
+      skipTypewriter = window.sessionStorage.getItem('archive-typewriter-seen') === 'true';
+      if (skipTypewriter) window.sessionStorage.removeItem('archive-typewriter-seen');
+    } catch {}
     const targets = [...document.querySelectorAll('.archive-hero [data-typewriter]')];
-    if (!targets.length || reducedMotion.matches) return;
+    if (!targets.length || reducedMotion.matches || skipTypewriter) return;
 
     const queue = [];
     targets.forEach((target) => {
@@ -144,6 +149,11 @@
   });
   applyMotionPreference();
   startArchiveTypewriter();
+  document.querySelectorAll('.inner-page .content-tabs a').forEach((link) => {
+    link.addEventListener('click', () => {
+      try { window.sessionStorage.setItem('archive-typewriter-seen', 'true'); } catch {}
+    });
+  });
 
   const applyTheme = (mode) => {
     const dark = mode === 'system' ? themeMedia.matches : mode === 'dark';
