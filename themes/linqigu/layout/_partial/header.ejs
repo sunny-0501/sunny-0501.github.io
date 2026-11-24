@@ -1,12 +1,29 @@
 <%
   const activePath = page.path || '';
+  const isArticleSection = activePath.startsWith('archives') || activePath.startsWith('categories') || activePath.startsWith('tags') || is_post();
+  const isMySection = ['explore', 'gallery', 'rss', 'about'].some((path) => activePath.startsWith(path));
   const navigation = [
-    { label: '&#x4E3B;&#x9875;', path: '/', active: is_home() },
-    { label: '&#x6587;&#x7AE0;', path: '/archives/', active: activePath.startsWith('archives') || activePath.startsWith('categories') || activePath.startsWith('tags') || is_post() },
-    { label: '&#x53CB;&#x94FE;', path: '/links/', active: activePath.startsWith('links') },
-    { label: '&#x7559;&#x8A00;', path: '/guestbook/', active: activePath.startsWith('guestbook') },
-    { label: '&#x6211;&#x7684;', path: '/explore/', active: ['explore', 'gallery', 'rss'].some((path) => activePath.startsWith(path)) },
-    { label: '&#x5173;&#x4E8E;', path: '/about/', active: activePath.startsWith('about') }
+    { label: '&#x4E3B;&#x9875;', path: '/', active: is_home(), current: is_home() },
+    {
+      label: '&#x6587;&#x7AE0;', path: '/archives/', active: isArticleSection, current: activePath.startsWith('archives'),
+      menuId: 'articlesMenu', toggleLabel: '&#x5C55;&#x5F00;&#x6587;&#x7AE0;&#x5206;&#x7C7B;',
+      menu: [
+        { label: '&#x5F52;&#x6863;', path: '/archives/', current: activePath.startsWith('archives') },
+        { label: '&#x5206;&#x7C7B;', path: '/categories/', current: activePath.startsWith('categories') },
+        { label: '&#x6807;&#x7B7E;', path: '/tags/', current: activePath.startsWith('tags') }
+      ]
+    },
+    { label: '&#x53CB;&#x94FE;', path: '/links/', active: activePath.startsWith('links'), current: activePath.startsWith('links') },
+    { label: '&#x7559;&#x8A00;', path: '/guestbook/', active: activePath.startsWith('guestbook'), current: activePath.startsWith('guestbook') },
+    {
+      label: '&#x6211;&#x7684;', path: '/explore/', active: isMySection, current: activePath.startsWith('explore'),
+      menuId: 'myMenu', toggleLabel: '&#x5C55;&#x5F00;&#x4E2A;&#x4EBA;&#x5206;&#x7C7B;',
+      menu: [
+        { label: '&#x5173;&#x4E8E;&#x6211;', path: '/about/', current: activePath.startsWith('about') },
+        { label: '&#x76F8;&#x518C;', path: '/gallery/', current: activePath.startsWith('gallery') },
+        { label: '&#x8BA2;&#x9605;', path: '/rss/', current: activePath.startsWith('rss') }
+      ]
+    }
   ];
 %>
 <header class="site-header">
@@ -16,7 +33,21 @@
   </a>
   <nav class="main-nav" aria-label="&#x4E3B;&#x5BFC;&#x822A;">
     <% navigation.forEach((item) => { %>
-      <a class="<%= item.active ? 'active' : '' %>" href="<%- url_for(item.path) %>"<%- item.active ? ' aria-current="page"' : '' %>><%- item.label %></a>
+      <% if (item.menu) { %>
+        <div class="nav-dropdown <%= item.active ? 'is-active' : '' %>">
+          <div class="nav-dropdown__bar">
+            <a class="nav-dropdown__link <%= item.active ? 'active' : '' %>" href="<%- url_for(item.path) %>"<%- item.current ? ' aria-current="page"' : '' %>><%- item.label %></a>
+            <button class="nav-dropdown__toggle" type="button" aria-label="<%- item.toggleLabel %>" aria-controls="<%= item.menuId %>" aria-expanded="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          </div>
+          <div class="nav-dropdown__menu" id="<%= item.menuId %>" hidden>
+            <% item.menu.forEach((menuItem) => { %>
+              <a class="nav-dropdown__item <%= menuItem.current ? 'active' : '' %>" href="<%- url_for(menuItem.path) %>"<%- menuItem.current ? ' aria-current="page"' : '' %>><%- menuItem.label %></a>
+            <% }); %>
+          </div>
+        </div>
+      <% } else { %>
+        <a class="<%= item.active ? 'active' : '' %>" href="<%- url_for(item.path) %>"<%- item.current ? ' aria-current="page"' : '' %>><%- item.label %></a>
+      <% } %>
     <% }); %>
   </nav>
   <div class="header-actions">
