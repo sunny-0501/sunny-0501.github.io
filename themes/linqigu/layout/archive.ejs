@@ -1,8 +1,47 @@
-<% const posts = page.posts ? page.posts.toArray() : site.posts.sort('date', -1).toArray(); %>
+<%
+  const posts = page.posts ? page.posts.toArray() : site.posts.sort('date', -1).toArray();
+  const currentCategory = typeof page.category === 'string' ? page.category : '';
+  const currentTag = typeof page.tag === 'string' ? page.tag : '';
+  const categories = ['项目', '随笔', '阅读'];
+%>
 <%- partial('_partial/document-start') %>
 <main class="inner-page" id="top">
-  <div class="status-bar"><span>文章归档</span><strong>把零散的想法，整理成可以回看的路</strong><a href="<%- url_for('/') %>" aria-label="回到首页">↗</a></div>
-  <section class="page-hero archive-hero"><div><p class="eyebrow">ARCHIVE · <%= posts.length %> NOTES</p><h1 data-typewriter><%= page.title || '把想法写下来，' %><br />就有了回声。</h1><p data-typewriter>这里记录项目、阅读和随笔里的片段。慢慢更新，也慢慢把自己说清楚。</p></div></section>
-  <section class="page-content article-page-grid" id="articles"><div class="articles-column"><nav class="content-tabs" aria-label="文章分类"><a class="selected" href="<%- url_for('/archives/') %>" data-filter="all">全部</a><a href="<%- url_for('/categories/项目/') %>" data-filter="项目">项目</a><a href="<%- url_for('/categories/随笔/') %>" data-filter="随笔">随笔</a><a href="<%- url_for('/categories/阅读/') %>" data-filter="阅读">阅读</a></nav><div class="section-heading"><div class="section-label"><span>02</span><span><%= page.title || '全部文章' %></span><span class="line"></span></div><p class="filter-hint" id="filterHint">点击上方标签筛选文章</p></div><div class="article-list" id="articleList"><%- partial('_partial/article-row', { posts: posts }) %></div><p class="empty-state" id="emptyState" hidden>没有找到匹配的文章。</p></div><aside class="sidebar"><div class="sidebar-card profile-card"><p class="mini-heading">KEEP READING</p><h2>从一篇开始。</h2><p>不必一次读完所有内容，挑一篇现在想看的就好。</p><a class="side-link" href="<%- url_for('/') %>">回到首页 ↗</a></div></aside></section>
+  <div class="status-bar">
+    <span>文章归档</span>
+    <strong>把零散的想法，整理成可以回看的路</strong>
+    <a href="<%- url_for('/') %>" aria-label="回到首页">↗</a>
+  </div>
+  <section class="page-hero archive-hero">
+    <div>
+      <p class="eyebrow">ARCHIVE · <%= posts.length %> NOTES</p>
+      <h1 data-typewriter><%= page.title || '把想法写下来，' %><br />就有了回声。</h1>
+      <p data-typewriter>这里记录项目、阅读和随笔里的片段。慢慢更新，也慢慢把自己说清楚。</p>
+    </div>
+  </section>
+  <section class="page-content article-page-grid" id="articles">
+    <div class="articles-column">
+      <nav class="content-tabs" aria-label="文章分类">
+        <a class="<%= currentCategory || currentTag ? '' : 'selected' %>" href="<%- url_for('/archives/') %>"<%- currentCategory || currentTag ? '' : ' aria-current="page"' %>>全部</a>
+        <% categories.forEach(function (category) { %>
+          <% const selected = currentCategory === category; %>
+          <a class="<%= selected ? 'selected' : '' %>" href="<%- url_for('/categories/' + category + '/') %>"<%- selected ? ' aria-current="page"' : '' %>><%= category %></a>
+        <% }); %>
+      </nav>
+      <div class="section-heading">
+        <div class="section-label"><span>02</span><span><%= currentCategory || (currentTag ? '# ' + currentTag : '') || page.title || '全部文章' %></span><span class="line"></span></div>
+        <p class="filter-hint" id="filterHint"><%= currentCategory ? currentCategory + ' · ' + posts.length + ' 篇文章' : currentTag ? '#' + currentTag + ' · ' + posts.length + ' 篇文章' : '点击上方分类浏览文章' %></p>
+      </div>
+      <div class="article-list" id="articleList"><%- partial('_partial/article-row', { posts: posts }) %></div>
+      <p class="empty-state" id="emptyState" hidden>没有找到匹配的文章。</p>
+    </div>
+    <aside class="sidebar">
+      <div class="sidebar-card profile-card">
+        <p class="mini-heading">KEEP READING</p>
+        <h2>从一篇开始。</h2>
+        <p>不必一次读完所有内容，挑一篇现在想看的就好。</p>
+        <a class="side-link" href="<%- url_for('/') %>">回到首页 ↗</a>
+      </div>
+    </aside>
+  </section>
 </main>
 <%- partial('_partial/document-end') %>

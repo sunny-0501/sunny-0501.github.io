@@ -442,6 +442,8 @@
   });
 
   const filterHint = document.querySelector('#filterHint');
+  const tabFilters = [...document.querySelectorAll('.home-page .content-tabs [data-filter]')];
+  const isHomeFilter = Boolean(document.querySelector('.home-page #articleList'));
   const filterRows = () => {
     let visible = 0;
     rows.forEach((row) => {
@@ -461,22 +463,34 @@
     if (emptyState) emptyState.hidden = visible > 0;
     if (filterHint) filterHint.textContent = activeCategory === 'all' ? '共 ' + visible + ' 篇文章' : activeCategory + ' · ' + visible + ' 篇文章';
   };
-  const tabFilters = [...document.querySelectorAll('.content-tabs [data-filter]')];
-  tabFilters.forEach((tab) => tab.addEventListener('click', (event) => {
-    if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-    if (!document.querySelector('#articleList')) return;
-    event.preventDefault();
-    if (activeCategory === tab.dataset.filter) return;
-    activeCategory = tab.dataset.filter;
+  const setActiveCategory = (category) => {
+    activeCategory = tabFilters.some((tab) => tab.dataset.filter === category) ? category : 'all';
     filterRows();
     tabFilters.forEach((item) => {
-      const selected = item === tab;
+      const selected = item.dataset.filter === activeCategory;
       item.classList.toggle('selected', selected);
       if (selected) item.setAttribute('aria-current', 'true');
       else item.removeAttribute('aria-current');
     });
-  }));
-  tabFilters.find((tab) => tab.classList.contains('selected'))?.setAttribute('aria-current', 'true');
+  };
+  if (isHomeFilter) {
+    setActiveCategory(new URLSearchParams(window.location.search).get('category') || 'all');
+    tabFilters.forEach((tab) => tab.addEventListener('click', (event) => {
+      if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      const category = tab.dataset.filter;
+      if (activeCategory === category) return;
+
+      const url = new URL(window.location.href);
+      if (category === 'all') url.searchParams.delete('category');
+      else url.searchParams.set('category', category);
+      window.history.pushState({ category }, '', url);
+      setActiveCategory(category);
+    }));
+    window.addEventListener('popstate', () => {
+      setActiveCategory(new URLSearchParams(window.location.search).get('category') || 'all');
+    });
+  }
 
   const quoteCard = document.querySelector('.quote-card');
   const quoteSlides = [...document.querySelectorAll('.quote-slide')];
