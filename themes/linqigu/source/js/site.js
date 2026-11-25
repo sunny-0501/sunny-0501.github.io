@@ -262,6 +262,30 @@
   };
   navDropdowns.forEach((dropdown) => {
     const button = dropdown.querySelector('.nav-dropdown__toggle');
+    let pointerIsOver = false;
+    dropdown.addEventListener('pointerenter', (event) => {
+      if (event.pointerType === 'mouse') {
+        pointerIsOver = true;
+        closeNavDropdowns();
+        setNavDropdownOpen(dropdown, true);
+      }
+    });
+    dropdown.addEventListener('pointerleave', (event) => {
+      if (event.pointerType === 'mouse') {
+        pointerIsOver = false;
+        if (!dropdown.contains(document.activeElement)) setNavDropdownOpen(dropdown, false);
+      }
+    });
+    dropdown.addEventListener('focusin', () => {
+      closeNavDropdowns();
+      setNavDropdownOpen(dropdown, true);
+    });
+    dropdown.addEventListener('focusout', () => {
+      requestAnimationFrame(() => {
+        if (!pointerIsOver && !dropdown.contains(document.activeElement)) setNavDropdownOpen(dropdown, false);
+      });
+    });
+
     button?.addEventListener('click', (event) => {
       event.stopPropagation();
       const shouldOpen = button.getAttribute('aria-expanded') !== 'true';
