@@ -1,6 +1,6 @@
 <%
-  const tags = site.tags.toArray().sort(function (first, second) {
-    return String(first.name).localeCompare(String(second.name), 'zh-CN');
+  const tags = site.tags.toArray().map((tag) => ({ tag, count: tag.posts.length })).filter((item) => item.count > 0).sort(function (first, second) {
+    return String(first.tag.name).localeCompare(String(second.tag.name), 'zh-CN');
   });
 %>
 <%- partial('_partial/document-start') %>
@@ -9,8 +9,8 @@
   <section class="page-hero page-hero-lilac"><div><p class="eyebrow">TAGS · <%= tags.length %></p><h1>顺着关键词，<br />遇见下一篇文章。</h1><p><%= page.description %></p></div><div class="page-hero-symbol" aria-hidden="true">#</div></section>
   <section class="page-content">
     <div class="tag-cloud">
-      <% tags.forEach(function (tag) { %>
-        <a class="tag-cloud__item" href="<%- url_for(tag.path) %>"><span># <%= tag.name %></span><b><%= tag.length %></b></a>
+      <% tags.forEach(function (item) { %>
+        <a class="tag-cloud__item" href="<%- url_for(item.tag.path) %>"><span># <%= item.tag.name %></span><b><%= item.count %></b></a>
       <% }); %>
     </div>
   </section>

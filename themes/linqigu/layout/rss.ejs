@@ -1,5 +1,5 @@
 <%
-  const posts = site.posts.sort('date', -1).toArray();
+  const posts = site.posts.sort('date', -1).toArray().filter((post) => post.archived !== true);
 %>
 <%- partial('_partial/document-start') %>
 <main class="inner-page" id="top">

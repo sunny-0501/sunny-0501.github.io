@@ -1,5 +1,5 @@
 <%
-  const posts = site.posts.sort('date', -1).toArray();
+  const posts = site.posts.sort('date', -1).toArray().filter((post) => post.archived !== true);
   const featured = posts[0];
   const categoryCount = (name) => posts.filter((post) => post.categories.toArray().some((category) => category.name === name)).length;
   const totalWords = posts.reduce((sum, post) => sum + (post.content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, '').length, 0);

@@ -1,5 +1,5 @@
 <% const thumbMap = { '项目': 'thumb-tool', '阅读': 'thumb-book', '随笔': 'thumb-walk' }; %>
-<% posts.forEach(function(post) { %>
+<% posts.filter((post) => post.archived !== true).forEach(function(post) { %>
   <% const category = post.categories && post.categories.length ? post.categories.first().name : '随笔'; %>
   <% const summary = (post.excerpt || post.content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim(); %>
   <% const readingMinutes = Math.max(1, Math.ceil(summary.length / 400)); %>

@@ -1,5 +1,5 @@
 <%
-  const posts = page.posts ? page.posts.toArray() : site.posts.sort('date', -1).toArray();
+  const posts = page.posts ? page.posts.toArray().filter((post) => post.archived !== true) : site.posts.sort('date', -1).toArray().filter((post) => post.archived !== true);
   const currentCategory = typeof page.category === 'string' ? page.category : '';
   const currentTag = typeof page.tag === 'string' ? page.tag : '';
   const categories = ['项目', '随笔', '阅读'];
