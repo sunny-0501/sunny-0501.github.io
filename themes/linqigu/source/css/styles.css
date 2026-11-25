@@ -899,8 +899,12 @@ body.dark .article-body h3 { color: var(--deep-forest); }
 @media (min-width: 1181px) {
   .site-header { grid-template-columns: auto minmax(0,1fr) auto; grid-template-rows: 66px; gap: 0 16px; }
   .brand { grid-column: 1; grid-row: 1; }
-  .main-nav { grid-column: 2; grid-row: 1; justify-self: center; width: max-content; max-width: 100%; margin: 0; padding: 3px 5px; border: 1px solid var(--card-border); border-radius: 999px; background: color-mix(in srgb, var(--card) 88%, transparent); box-shadow: 0 4px 15px rgba(37,76,61,.06); }
-  .main-nav a { min-width: 58px; min-height: 44px; padding: 0 11px; border-radius: 999px; }
+  .main-nav { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); grid-column: 2; grid-row: 1; justify-self: stretch; width: 100%; max-width: 100%; margin: 0; padding: 0; gap: 2px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+  .main-nav > a, .main-nav > .nav-dropdown { width: 100%; min-width: 0; justify-self: stretch; justify-content: center; }
+  .main-nav > a { border-color: transparent; border-radius: 0; }
+  .main-nav .nav-dropdown__link { flex: 1 1 auto; min-width: 0; border-radius: 0; }
+  .main-nav a.active { border-color: transparent; }
+  .nav-dropdown__bar { width: 100%; justify-content: center; }
   .main-nav a::after { right: 12px; bottom: 2px; left: 12px; }
   .nav-dropdown__toggle { min-height: 44px; }
   .header-actions { grid-column: 3; grid-row: 1; gap: 8px; }
