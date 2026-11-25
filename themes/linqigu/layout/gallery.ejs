@@ -1,27 +1,61 @@
 <%- partial('_partial/document-start') %>
 <main class="inner-page" id="top">
-  <div class="status-bar"><span>相册</span><strong>一些让页面拥有呼吸感的画面</strong><a href="<%- url_for('/explore/') %>" aria-label="返回我的页面">↗</a></div>
-  <section class="page-hero page-hero-lilac"><div><p class="eyebrow">GALLERY · VISUAL NOTES</p><h1>把喜欢的画面，<br />留在可以回看的地方。</h1><p>点击图片可以查看完整画面。</p></div><div class="page-hero-symbol" aria-hidden="true">▧</div></section>
-  <section class="page-content">
-    <section class="gallery-collection" aria-labelledby="galleryCollectionTitle">
-      <div class="gallery-collection-heading">
-        <div>
-          <p class="eyebrow">BUILT-IN VISUALS</p>
-          <h2 id="galleryCollectionTitle">博客内置图片</h2>
+  <section class="gallery-library" aria-labelledby="galleryTitle">
+    <header class="gallery-page-heading">
+      <span class="gallery-title-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="17" height="16" rx="2"/><path d="M7 15l3-4 2.2 2.6L15 10l3 5H7Z"/><path d="M7 2h14a2 2 0 0 1 2 2v12"/></svg></span>
+      <div><h1 id="galleryTitle">相册</h1><p>记录生活中的美好瞬间</p></div>
+    </header>
+    <label class="gallery-search">
+      <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg>
+      <input id="gallerySearch" type="search" aria-label="搜索相册图片" placeholder="搜索相册..." autocomplete="off" />
+    </label>
+    <div class="gallery-filters" role="group" aria-label="图片分类">
+      <button class="gallery-filter" type="button" data-gallery-filter="all" aria-pressed="true">全部</button>
+      <button class="gallery-filter" type="button" data-gallery-filter="wallpaper" aria-pressed="false">壁纸</button>
+      <button class="gallery-filter" type="button" data-gallery-filter="illustration" aria-pressed="false">插画</button>
+    </div>
+    <div class="gallery-album-list">
+      <details class="gallery-album" id="galleryAlbum">
+        <summary class="gallery-album-card" aria-controls="galleryCollectionContent">
+          <span class="gallery-album-cover">
+            <img src="<%- url_for('/images/header-landscape.png') %>" alt="" loading="eager" />
+            <span class="gallery-album-count" id="galleryAlbumCount" aria-live="polite">共 8 张照片</span>
+            <span class="gallery-album-copy"><strong>博客内置图片</strong><span>收录站点页面使用的插画、壁纸与标识</span></span>
+            <span class="gallery-album-chevron" aria-hidden="true">⌄</span>
+          </span>
+          <span class="gallery-album-meta"><span>插画</span><span>壁纸</span><span>博客素材</span></span>
+        </summary>
+        <div class="gallery-collection-content" id="galleryCollectionContent">
+          <div class="gallery-grid" id="galleryGrid">
+            <figure class="gallery-card gallery-card-wide" data-gallery-category="wallpaper" data-gallery-search="晴日 草坡 壁纸 背景 首页 插画">
+              <button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/header-landscape.png') %>" data-lightbox-caption="晴日的草坡"><img src="<%- url_for('/images/header-landscape.png') %>" alt="晴天下的草坡与画画的人" loading="lazy" /><span>晴日的草坡</span></button>
+            </figure>
+            <figure class="gallery-card" data-gallery-category="illustration" data-gallery-search="林间 休憩 插画 森林">
+              <button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/forest-rest.png') %>" data-lightbox-caption="林间休憩"><img src="<%- url_for('/images/forest-rest.png') %>" alt="林间休憩的插画" loading="lazy" /><span>林间休憩</span></button>
+            </figure>
+            <figure class="gallery-card" data-gallery-category="illustration" data-gallery-search="移动 城堡 归档 插画">
+              <button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/archive-howls-castle.png') %>" data-lightbox-caption="移动城堡"><img src="<%- url_for('/images/archive-howls-castle.png') %>" alt="移动城堡主题插画" loading="lazy" /><span>移动城堡</span></button>
+            </figure>
+            <figure class="gallery-card" data-gallery-category="wallpaper illustration" data-gallery-search="移动 城堡 探索 壁纸 插画">
+              <button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/explore-moving-castle.jpg') %>" data-lightbox-caption="探索页面插画"><img src="<%- url_for('/images/explore-moving-castle.jpg') %>" alt="探索页面使用的移动城堡插画" loading="lazy" /><span>探索页面插画</span></button>
+            </figure>
+            <figure class="gallery-card" data-gallery-category="wallpaper" data-gallery-search="乡间 小屋 留言 壁纸 背景">
+              <button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/guestbook-country-house.jpg') %>" data-lightbox-caption="乡间小屋"><img src="<%- url_for('/images/guestbook-country-house.jpg') %>" alt="留言页使用的乡间小屋插画" loading="lazy" /><span>乡间小屋</span></button>
+            </figure>
+            <figure class="gallery-card" data-gallery-category="wallpaper" data-gallery-search="林间 小屋 友链 壁纸 背景">
+              <button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/links-cottage.jpg') %>" data-lightbox-caption="林间小屋"><img src="<%- url_for('/images/links-cottage.jpg') %>" alt="友链页使用的林间小屋插画" loading="lazy" /><span>林间小屋</span></button>
+            </figure>
+            <figure class="gallery-card gallery-card-soft" data-gallery-category="illustration" data-gallery-search="博客 头像 林栖谷 插画">
+              <button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/avatar.png') %>" data-lightbox-caption="博客头像"><img src="<%- url_for('/images/avatar.png') %>" alt="博客头像" loading="lazy" /><span>博客头像</span></button>
+            </figure>
+            <figure class="gallery-card gallery-card-wide gallery-card-soft" data-gallery-category="illustration" data-gallery-search="博客 标识 林栖谷 logo 插画">
+              <button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/linqigu-logo.svg') %>" data-lightbox-caption="林栖谷标识"><img src="<%- url_for('/images/linqigu-logo.svg') %>" alt="林栖谷标识" loading="lazy" /><span>林栖谷标识</span></button>
+            </figure>
+          </div>
+          <p class="gallery-empty" id="galleryEmpty" role="status" hidden>没有找到符合条件的图片</p>
         </div>
-        <span class="gallery-collection-count">共 8 张</span>
-      </div>
-      <div class="gallery-grid">
-        <figure class="gallery-card gallery-card-wide"><button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/header-landscape.png') %>" data-lightbox-caption="晴日的草坡"><img src="<%- url_for('/images/header-landscape.png') %>" alt="晴天下的草坡与画画的人" loading="lazy" /><span>晴日的草坡</span></button></figure>
-        <figure class="gallery-card"><button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/forest-rest.png') %>" data-lightbox-caption="林间休憩"><img src="<%- url_for('/images/forest-rest.png') %>" alt="林间休憩的插画" loading="lazy" /><span>林间休憩</span></button></figure>
-        <figure class="gallery-card"><button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/archive-howls-castle.png') %>" data-lightbox-caption="移动城堡"><img src="<%- url_for('/images/archive-howls-castle.png') %>" alt="移动城堡主题插画" loading="lazy" /><span>移动城堡</span></button></figure>
-        <figure class="gallery-card"><button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/explore-moving-castle.jpg') %>" data-lightbox-caption="探索页面插画"><img src="<%- url_for('/images/explore-moving-castle.jpg') %>" alt="探索页面使用的移动城堡插画" loading="lazy" /><span>探索页面插画</span></button></figure>
-        <figure class="gallery-card"><button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/guestbook-country-house.jpg') %>" data-lightbox-caption="乡间小屋"><img src="<%- url_for('/images/guestbook-country-house.jpg') %>" alt="留言页使用的乡间小屋插画" loading="lazy" /><span>乡间小屋</span></button></figure>
-        <figure class="gallery-card"><button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/links-cottage.jpg') %>" data-lightbox-caption="林间小屋"><img src="<%- url_for('/images/links-cottage.jpg') %>" alt="友链页使用的林间小屋插画" loading="lazy" /><span>林间小屋</span></button></figure>
-        <figure class="gallery-card gallery-card-soft"><button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/avatar.png') %>" data-lightbox-caption="博客头像"><img src="<%- url_for('/images/avatar.png') %>" alt="博客头像" loading="lazy" /><span>博客头像</span></button></figure>
-        <figure class="gallery-card gallery-card-wide gallery-card-soft"><button class="gallery-item" type="button" data-lightbox-src="<%- url_for('/images/linqigu-logo.svg') %>" data-lightbox-caption="林栖谷标识"><img src="<%- url_for('/images/linqigu-logo.svg') %>" alt="林栖谷标识" loading="lazy" /><span>林栖谷标识</span></button></figure>
-      </div>
-    </section>
+      </details>
+    </div>
   </section>
 </main>
 <%- partial('_partial/document-end') %>

@@ -9,13 +9,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=gallery-collection-motion" />
+    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=gallery-library-theme-v2" />
     <link rel="stylesheet" href="<%- url_for('/css/hexo.css') %>" />
     <link rel="alternate" type="application/atom+xml" title="林栖谷" href="<%- url_for('/atom.xml') %>" />
   </head>
   <body class="<%= is_home() ? 'home-page' : '' %>">
     <a class="skip-link" href="#top">跳到正文</a>
-    <script>try { if (localStorage.getItem('blog-theme-mode') === 'dark' || (!localStorage.getItem('blog-theme-mode') && localStorage.getItem('blog-theme') === 'dark')) document.body.classList.add('dark'); } catch {}</script>
+    <script>try { const savedMode = localStorage.getItem('blog-theme-mode'); const legacyMode = localStorage.getItem('blog-theme'); const mode = ['light', 'dark', 'system'].includes(savedMode) ? savedMode : ['light', 'dark'].includes(legacyMode) ? legacyMode : 'system'; if (mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.body.classList.add('dark'); } catch {}</script>
     <% if (is_post()) { %>
       <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
     <% } %>

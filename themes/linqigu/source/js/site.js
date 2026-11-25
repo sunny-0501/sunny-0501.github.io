@@ -155,24 +155,22 @@
     });
   });
 
+  const themePanel = document.querySelector('#themePanel');
+  const themeOptions = [...document.querySelectorAll('[data-theme-mode]')];
+  const savedThemeMode = storage.getItem('blog-theme-mode');
+  const legacyThemeMode = storage.getItem('blog-theme');
+  let themeMode = ['light', 'dark', 'system'].includes(savedThemeMode)
+    ? savedThemeMode
+    : ['light', 'dark'].includes(legacyThemeMode) ? legacyThemeMode : 'system';
+  const themeModeNames = { light: '亮色', dark: '暗色', system: '跟随系统' };
   const applyTheme = (mode) => {
     const dark = mode === 'system' ? themeMedia.matches : mode === 'dark';
     document.body.classList.toggle('dark', dark);
-    if (toggle) {
-      const label = dark ? '切换为浅色主题' : '切换为深色主题';
-      toggle.setAttribute('aria-label', label);
-      toggle.setAttribute('title', label);
-      toggle.setAttribute('aria-pressed', String(dark));
-    }
+    toggle?.setAttribute('aria-label', `颜色主题：${themeModeNames[mode]}（当前${dark ? '暗色' : '亮色'}）`);
+    toggle?.setAttribute('title', `颜色主题：${themeModeNames[mode]}`);
+    themeOptions.forEach((option) => option.setAttribute('aria-pressed', String(option.dataset.themeMode === mode)));
   };
-  let themeMode = storage.getItem('blog-theme-mode') || (storage.getItem('blog-theme') === 'dark' ? 'dark' : 'light');
   applyTheme(themeMode);
-  toggle?.addEventListener('click', () => {
-    const dark = !document.body.classList.contains('dark');
-    themeMode = dark ? 'dark' : 'light';
-    applyTheme(themeMode);
-    storage.setItem('blog-theme-mode', themeMode);
-  });
   themeMedia.addEventListener('change', () => {
     if (themeMode === 'system') applyTheme('system');
   });
@@ -248,15 +246,34 @@
     appearanceToggle.setAttribute('aria-expanded', String(open));
     if (open) appearancePanel.querySelector('input:not(:disabled), button:not(:disabled), select:not(:disabled), textarea:not(:disabled), a[href]')?.focus();
   };
+  const setThemePanelOpen = (open, restoreFocus = false) => {
+    if (!themePanel || !toggle) return;
+    themePanel.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    if (open) themeOptions.find((option) => option.dataset.themeMode === themeMode)?.focus();
+    else if (restoreFocus) toggle.focus();
+  };
+  toggle?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    setAppearanceOpen(false);
+    setThemePanelOpen(themePanel?.hidden !== false);
+  });
+  themeOptions.forEach((option) => option.addEventListener('click', () => {
+    themeMode = option.dataset.themeMode;
+    applyTheme(themeMode);
+    storage.setItem('blog-theme-mode', themeMode);
+    setThemePanelOpen(false, true);
+  }));
   appearanceToggle?.addEventListener('click', (event) => {
     event.stopPropagation();
+    setThemePanelOpen(false);
     setAppearanceOpen(appearancePanel?.hidden !== false);
   });
   document.addEventListener('click', (event) => {
-    if (!appearancePanel || appearancePanel.hidden) return;
     const target = event.target;
     if (!(target instanceof Node)) return;
-    if (!appearancePanel.contains(target) && !appearanceToggle?.contains(target)) setAppearanceOpen(false);
+    if (appearancePanel && !appearancePanel.hidden && !appearancePanel.contains(target) && !appearanceToggle?.contains(target)) setAppearanceOpen(false);
+    if (themePanel && !themePanel.hidden && !themePanel.contains(target) && !toggle?.contains(target)) setThemePanelOpen(false);
   });
   appearancePanel?.addEventListener('keydown', (event) => {
     if (event.key !== 'Tab') return;
@@ -264,8 +281,20 @@
       if (!appearancePanel.contains(document.activeElement)) setAppearanceOpen(false);
     });
   });
+  themePanel?.addEventListener('keydown', (event) => {
+    if (event.key !== 'Tab') return;
+    requestAnimationFrame(() => {
+      if (!themePanel.contains(document.activeElement)) setThemePanelOpen(false);
+    });
+  });
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && appearancePanel && !appearancePanel.hidden) {
+    if (event.key !== 'Escape') return;
+    if (themePanel && !themePanel.hidden) {
+      event.preventDefault();
+      setThemePanelOpen(false, true);
+      return;
+    }
+    if (appearancePanel && !appearancePanel.hidden) {
       event.preventDefault();
       setAppearanceOpen(false);
       appearanceToggle?.focus();
@@ -490,6 +519,40 @@
       openSearch();
     }
   });
+
+  const gallerySearch = document.querySelector('#gallerySearch');
+  const galleryFilters = [...document.querySelectorAll('[data-gallery-filter]')];
+  const galleryCards = [...document.querySelectorAll('.gallery-card[data-gallery-category]')];
+  const galleryAlbum = document.querySelector('#galleryAlbum');
+  const galleryAlbumCount = document.querySelector('#galleryAlbumCount');
+  const galleryEmpty = document.querySelector('#galleryEmpty');
+  let activeGalleryFilter = 'all';
+  const filterGallery = (openFilteredAlbum = false) => {
+    const query = gallerySearch?.value.trim().toLowerCase() || '';
+    let visible = 0;
+    galleryCards.forEach((card) => {
+      const categories = (card.dataset.galleryCategory || '').split(/\s+/);
+      const searchText = `${card.dataset.gallerySearch || ''} ${card.textContent || ''}`.toLowerCase();
+      const matchesCategory = activeGalleryFilter === 'all' || categories.includes(activeGalleryFilter);
+      const matchesSearch = !query || searchText.includes(query);
+      card.hidden = !(matchesCategory && matchesSearch);
+      if (!card.hidden) visible += 1;
+    });
+    if (galleryAlbumCount) {
+      galleryAlbumCount.textContent = activeGalleryFilter === 'all' && !query
+        ? `共 ${galleryCards.length} 张照片`
+        : `${visible} 张匹配`;
+    }
+    if (galleryEmpty) galleryEmpty.hidden = visible > 0;
+    if (openFilteredAlbum && (query || activeGalleryFilter !== 'all') && galleryAlbum) galleryAlbum.open = true;
+  };
+  galleryFilters.forEach((filter) => filter.addEventListener('click', () => {
+    activeGalleryFilter = filter.dataset.galleryFilter || 'all';
+    galleryFilters.forEach((item) => item.setAttribute('aria-pressed', String(item === filter)));
+    filterGallery(true);
+  }));
+  gallerySearch?.addEventListener('input', () => filterGallery(Boolean(gallerySearch.value.trim())));
+  filterGallery();
 
   const lightboxDialog = document.querySelector('#lightboxDialog');
   const lightboxImage = document.querySelector('#lightboxImage');
