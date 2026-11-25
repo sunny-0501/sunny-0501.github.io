@@ -32,7 +32,7 @@
       </nav>
       <div class="section-heading archive-section-heading">
         <div class="section-label"><span>JOURNAL</span><span><%= currentCategory || (currentTag ? '# ' + currentTag : '') || page.title || '全部文章' %></span><span class="line"></span></div>
-        <p class="filter-hint" id="filterHint"><%= currentCategory ? currentCategory + ' · ' + posts.length + ' 篇文章' : currentTag ? '#' + currentTag + ' · ' + posts.length + ' 篇文章' : '共 ' + posts.length + ' 篇公开文章' %></p>
+        <p class="filter-hint" id="filterHint"><%= currentCategory ? currentCategory + ' · ' + posts.length + ' 篇文章' : currentTag ? '#' + currentTag + ' · ' + posts.length + ' 篇文章' : '共 ' + posts.length + ' 篇公开文章 · 选择上方分类查找' %></p>
       </div>
       <div class="article-list archive-article-list" id="articleList"><%- partial('_partial/article-row', { posts: posts }) %></div>
       <p class="empty-state" id="emptyState" hidden>没有找到匹配的文章。</p>

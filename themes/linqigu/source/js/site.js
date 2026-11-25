@@ -412,7 +412,7 @@
     searchResults.replaceChildren();
 
     if (!query) {
-      searchStatus.textContent = entries.length ? '输入关键词，搜索全部文章。' : '暂无可搜索的文章，稍后再来看看。';
+      searchStatus.textContent = entries.length ? '输入关键词，可按标题或正文搜索全部文章。' : '暂无可搜索的文章，稍后再来看看。';
       return;
     }
 
