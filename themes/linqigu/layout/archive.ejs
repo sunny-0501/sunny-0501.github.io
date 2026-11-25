@@ -1,46 +1,59 @@
 <%
-  const posts = page.posts ? page.posts.toArray().filter((post) => post.archived !== true) : site.posts.sort('date', -1).toArray().filter((post) => post.archived !== true);
+  const allPosts = site.posts.sort('date', -1).toArray().filter((post) => post.archived !== true);
+  const posts = page.posts ? page.posts.toArray().filter((post) => post.archived !== true) : allPosts;
   const currentCategory = typeof page.category === 'string' ? page.category : '';
   const currentTag = typeof page.tag === 'string' ? page.tag : '';
-  const categories = ['项目', '随笔', '阅读'];
+  const categories = ['项目', '随笔', '阅读'].map((name) => ({
+    name,
+    count: allPosts.filter((post) => post.categories.toArray().some((category) => category.name === name)).length
+  })).filter((category) => category.count > 0);
+  const totalWords = allPosts.reduce((sum, post) => sum + (post.content || '').replace(/<[^>]*>/g, ' ').replace(/&[^;]+;/g, ' ').replace(/\s+/g, '').length, 0);
+  const oldestYear = allPosts.length ? new Date(allPosts[allPosts.length - 1].date).getFullYear() : new Date().getFullYear();
+  const yearsWriting = Math.max(1, new Date().getFullYear() - oldestYear + 1);
 %>
 <%- partial('_partial/document-start') %>
-<main class="inner-page" id="top">
-  <div class="status-bar">
-    <span>文章归档</span>
-    <strong>把零散的想法，整理成可以回看的路</strong>
-    <a href="<%- url_for('/') %>" aria-label="回到首页">↗</a>
-  </div>
-  <section class="page-hero archive-hero">
-    <div>
-      <p class="eyebrow">ARCHIVE · <%= posts.length %> NOTES</p>
-      <h1 data-typewriter><%= page.title || '把想法写下来，' %><br />就有了回声。</h1>
-      <p data-typewriter>这里记录项目、阅读和随笔里的片段。慢慢更新，也慢慢把自己说清楚。</p>
+<main class="inner-page archive-page" id="top">
+  <section class="page-hero archive-hero" aria-labelledby="archiveTitle">
+    <div class="archive-hero__content">
+      <p class="eyebrow">ARCHIVE · <%= allPosts.length %> NOTES</p>
+      <h1 id="archiveTitle" data-typewriter><%= page.title || '把想法写下来，' %><br />就有了回声。</h1>
+      <p data-typewriter>这里记录项目、阅读和日常里的片段。慢慢更新，也慢慢把自己说清楚。</p>
+      <a class="archive-hero__link" href="#articles">开始浏览 <span aria-hidden="true">↓</span></a>
     </div>
   </section>
-  <section class="page-content article-page-grid" id="articles">
-    <div class="articles-column">
-      <nav class="content-tabs" aria-label="文章分类">
-        <a class="<%= currentCategory || currentTag ? '' : 'selected' %>" href="<%- url_for('/archives/') %>"<%- currentCategory || currentTag ? '' : ' aria-current="page"' %>>全部</a>
+  <section class="page-content article-page-grid archive-content" id="articles">
+    <div class="articles-column archive-main">
+      <nav class="content-tabs archive-tabs" aria-label="文章分类">
+        <a class="<%= currentCategory || currentTag ? '' : 'selected' %>" href="<%- url_for('/archives/') %>"<%- currentCategory || currentTag ? '' : ' aria-current="page"' %>><span>全部</span><b><%= allPosts.length %></b></a>
         <% categories.forEach(function (category) { %>
-          <% const selected = currentCategory === category; %>
-          <a class="<%= selected ? 'selected' : '' %>" href="<%- url_for('/categories/' + category + '/') %>"<%- selected ? ' aria-current="page"' : '' %>><%= category %></a>
+          <% const selected = currentCategory === category.name; %>
+          <a class="<%= selected ? 'selected' : '' %>" href="<%- url_for('/categories/' + category.name + '/') %>"<%- selected ? ' aria-current="page"' : '' %>><span><%= category.name %></span><b><%= category.count %></b></a>
         <% }); %>
       </nav>
-      <div class="section-heading">
-        <div class="section-label"><span>02</span><span><%= currentCategory || (currentTag ? '# ' + currentTag : '') || page.title || '全部文章' %></span><span class="line"></span></div>
-        <p class="filter-hint" id="filterHint"><%= currentCategory ? currentCategory + ' · ' + posts.length + ' 篇文章' : currentTag ? '#' + currentTag + ' · ' + posts.length + ' 篇文章' : '点击上方分类浏览文章' %></p>
+      <div class="section-heading archive-section-heading">
+        <div class="section-label"><span>JOURNAL</span><span><%= currentCategory || (currentTag ? '# ' + currentTag : '') || page.title || '全部文章' %></span><span class="line"></span></div>
+        <p class="filter-hint" id="filterHint"><%= currentCategory ? currentCategory + ' · ' + posts.length + ' 篇文章' : currentTag ? '#' + currentTag + ' · ' + posts.length + ' 篇文章' : '共 ' + posts.length + ' 篇公开文章' %></p>
       </div>
-      <div class="article-list" id="articleList"><%- partial('_partial/article-row', { posts: posts }) %></div>
+      <div class="article-list archive-article-list" id="articleList"><%- partial('_partial/article-row', { posts: posts }) %></div>
       <p class="empty-state" id="emptyState" hidden>没有找到匹配的文章。</p>
     </div>
-    <aside class="sidebar">
-      <div class="sidebar-card profile-card">
-        <p class="mini-heading">KEEP READING</p>
-        <h2>从一篇开始。</h2>
-        <p>不必一次读完所有内容，挑一篇现在想看的就好。</p>
-        <a class="side-link" href="<%- url_for('/') %>">回到首页 ↗</a>
-      </div>
+    <aside class="sidebar archive-sidebar" aria-label="站点信息与分类">
+      <section class="sidebar-card profile-card archive-profile-card">
+        <div class="profile-avatar"><img src="<%- url_for('/images/avatar.png') %>" alt="sunny 的头像" loading="lazy" /></div>
+        <div class="profile-identity"><p class="mini-heading">ABOUT THE AUTHOR</p><h2>sunny</h2><i></i><span>INFJ · 林栖谷</span><p>一个在互联网行业工作、下班后写字的人。相信好奇心、长期主义，还有一杯热茶。</p></div>
+        <div class="site-stats" aria-label="站点统计"><div><strong><%= allPosts.length %></strong><span>篇文章</span></div><div><strong><%= totalWords.toLocaleString('zh-CN') %></strong><span>字数</span></div><div><strong><%= yearsWriting %></strong><span>记录年</span></div></div>
+        <a class="profile-more" href="<%- url_for('/about/') %>">认识我更多 <span>↗</span></a>
+      </section>
+      <nav class="sidebar-card archive-topic-card" aria-label="按分类浏览">
+        <p class="mini-heading">BROWSE BY TOPIC</p>
+        <div class="archive-topic-links">
+          <a href="<%- url_for('/archives/') %>"><span>全部文章</span><b><%= allPosts.length %></b></a>
+          <% categories.forEach(function (category) { %>
+            <a href="<%- url_for('/categories/' + category.name + '/') %>"><span><%= category.name %></span><b><%= category.count %></b></a>
+          <% }); %>
+        </div>
+      </nav>
+      <div class="sidebar-card archive-aside-note"><p class="mini-heading">KEEP IN TOUCH</p><p>如果你喜欢这里的文字，可以订阅 RSS，在下一次更新时再相遇。</p><a class="side-link" href="<%- url_for('/rss/') %>">订阅更新 ↗</a></div>
     </aside>
   </section>
 </main>
