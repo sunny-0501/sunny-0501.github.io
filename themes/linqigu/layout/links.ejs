@@ -1,3 +1,37 @@
+<%
+  const friends = [
+    { name: '狐言', url: 'https://blog.dukefox.com/', avatar: 'https://blog.dukefox.com/favicon.ico', description: '一个有细节、有温度的个人博客。', note: '个人博客' },
+    { name: '少数派', url: 'https://sspai.com/', avatar: 'https://sspai.com/favicon.ico', description: '关注数字生活方式与效率工具。', note: '数字生活' },
+    { name: 'Figma', url: 'https://www.figma.com/', avatar: 'https://www.figma.com/favicon.ico', description: '把想法画出来，再和别人一起做。', note: '设计工具' },
+    { name: 'Are.na', url: 'https://www.are.na/', avatar: 'https://www.are.na/favicon.ico', description: '收集、连接和保存灵感的地方。', note: '灵感收藏' }
+  ];
+%>
 <%- partial('_partial/document-start') %>
-<main class="inner-page" id="top"><div class="status-bar"><span>友链与灵感</span><strong>一些值得慢慢打开的网站，和正在发光的人</strong><a href="<%- url_for('/') %>" aria-label="回到首页">↗</a></div><section class="page-hero page-hero-lilac page-hero-image page-hero-links"><div><p class="eyebrow">LINKS · INSPIRATION</p><h1>去认识一些<br />有趣的人。</h1><p>这里放着我常去的网站、喜欢的创作者，以及一些让我重新开始思考的地方。</p></div><div class="page-hero-symbol" aria-hidden="true">↗</div></section><section class="page-content"><div class="section-heading page-section-heading"><div class="section-label"><span>03</span><span>我的收藏夹</span><span class="line"></span></div><p class="page-note">点击卡片，打开新的窗口</p></div><div class="link-grid"><a class="link-card link-card-green" href="https://blog.dukefox.com/" target="_blank" rel="noreferrer"><span class="link-index">01</span><strong>狐言</strong><p>一个有细节、有温度的个人博客。</p><span class="link-arrow">↗</span></a><a class="link-card link-card-yellow" href="https://sspai.com/" target="_blank" rel="noreferrer"><span class="link-index">02</span><strong>少数派</strong><p>关注数字生活方式与效率工具。</p><span class="link-arrow">↗</span></a><a class="link-card link-card-peach" href="https://www.figma.com/" target="_blank" rel="noreferrer"><span class="link-index">03</span><strong>Figma</strong><p>把想法画出来，再和别人一起做。</p><span class="link-arrow">↗</span></a><a class="link-card link-card-blue" href="https://www.are.na/" target="_blank" rel="noreferrer"><span class="link-index">04</span><strong>Are.na</strong><p>收集、连接和保存灵感的地方。</p><span class="link-arrow">↗</span></a></div></section></main>
+<main class="inner-page friends-page" id="top">
+  <div class="status-bar"><span>友链与灵感</span><strong>交换一束微光，也交换彼此的世界</strong><a href="<%- url_for('/') %>" aria-label="回到首页">↗</a></div>
+  <section class="page-hero page-hero-image page-hero-links friends-hero">
+    <div><p class="eyebrow">FRIENDS · INSPIRATION</p><h1>在这里，遇见<br />有趣的灵魂。</h1><p>一些值得慢慢打开的网站，和正在认真生活、创作的人。</p></div>
+    <div class="page-hero-symbol" aria-hidden="true">✳</div>
+  </section>
+  <section class="page-content">
+    <div class="section-heading page-section-heading"><div class="section-label"><span>01</span><span>朋友们</span><span class="line"></span></div><p class="page-note">共 <%= friends.length %> 个站点 · 点击访问</p></div>
+    <div class="link-grid friends-grid">
+      <% friends.forEach(function(friend, index) { %>
+        <a class="link-card friend-card friend-card-<%= ['green', 'yellow', 'peach', 'blue'][index % 4] %>" href="<%- friend.url %>" target="_blank" rel="noopener noreferrer">
+          <span class="friend-card__top"><img src="<%- friend.avatar %>" alt="" loading="lazy" /><span><%= friend.note %></span></span>
+          <strong><%= friend.name %></strong><p><%= friend.description %></p><span class="link-arrow" aria-hidden="true">↗</span>
+        </a>
+      <% }); %>
+    </div>
+  </section>
+  <section class="friends-apply page-content" aria-labelledby="friendsApplyTitle">
+    <div class="friends-apply__intro"><p class="eyebrow">LET'S BE FRIENDS</p><h2 id="friendsApplyTitle">交换链接，<br />从认识开始。</h2><p>欢迎认真写作、持续维护的个人站点来信申请。确认信息可正常访问后，我会尽快添加。</p><a class="friends-email" href="mailto:2522015679@qq.com">发送友链申请 <span aria-hidden="true">↗</span></a></div>
+    <div class="friends-apply__details">
+      <div><b>01</b><span><strong>先添加本站</strong><small>请先在你的友链页放入本站信息。</small></span></div>
+      <div><b>02</b><span><strong>发送站点资料</strong><small>邮件请附站点名称、简介、链接与头像。</small></span></div>
+      <div><b>03</b><span><strong>等待确认</strong><small>确认站点可访问后会尽快收录。</small></span></div>
+      <p>站点需支持 HTTPS、内容积极且以原创为主。若长期无法访问或内容不合适，友链可能会被移除。</p>
+    </div>
+  </section>
+</main>
 <%- partial('_partial/document-end') %>

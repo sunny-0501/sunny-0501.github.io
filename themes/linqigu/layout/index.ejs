@@ -1,6 +1,10 @@
-<% const posts = site.posts.sort('date', -1).toArray(); %>
-<% const featured = posts[0]; %>
-<% const categoryCount = (name) => posts.filter((post) => post.categories.toArray().some((category) => category.name === name)).length; %>
+<%
+  const posts = site.posts.sort('date', -1).toArray();
+  const featured = posts[0];
+  const categoryCount = (name) => posts.filter((post) => post.categories.toArray().some((category) => category.name === name)).length;
+  const totalWords = posts.reduce((sum, post) => sum + (post.content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, '').length, 0);
+  const startYear = posts.length ? new Date(posts[posts.length - 1].date).getFullYear() : new Date().getFullYear();
+%>
 <%- partial('_partial/document-start') %>
 <main id="top" tabindex="-1">
   <section class="dashboard-hero" aria-label="博客首页">
@@ -10,16 +14,8 @@
         <button class="quote-control" id="quote-tab-2" type="button" role="tab" aria-selected="false" aria-controls="quote-slide-2" aria-label="显示第二则随笔" tabindex="-1"><span></span></button>
       </div>
       <div class="quote-slides" aria-live="polite">
-        <section class="quote-slide is-active" id="quote-slide-1" role="tabpanel" aria-labelledby="quote-tab-1">
-          <p class="eyebrow">PERSONAL NOTES</p>
-          <h2 class="quote-text">念念不忘，<br />必有回响。</h2>
-          <p class="quote-site">LINQIGU NOTES</p>
-        </section>
-        <section class="quote-slide quote-slide--long" id="quote-slide-2" role="tabpanel" aria-labelledby="quote-tab-2" aria-hidden="true" inert>
-          <p class="eyebrow">PERSONAL NOTES</p>
-          <h2 class="quote-text">身如柳絮随风扬，<br />无论云泥意贯一。</h2>
-          <p class="quote-site">LINQIGU NOTES</p>
-        </section>
+        <section class="quote-slide is-active" id="quote-slide-1" role="tabpanel" aria-labelledby="quote-tab-1"><p class="eyebrow">PERSONAL NOTES</p><h2 class="quote-text">念念不忘，<br />必有回响。</h2><p class="quote-site">LINQIGU NOTES</p></section>
+        <section class="quote-slide quote-slide--long" id="quote-slide-2" role="tabpanel" aria-labelledby="quote-tab-2" aria-hidden="true" inert><p class="eyebrow">PERSONAL NOTES</p><h2 class="quote-text">身如柳絮随风扬，<br />无论云泥意贯一。</h2><p class="quote-site">LINQIGU NOTES</p></section>
       </div>
       <span class="quote-mark" aria-hidden="true">“</span>
     </article>
@@ -32,10 +28,8 @@
       <div class="sidebar-card profile-card">
         <div class="profile-avatar"><img src="<%- url_for('/images/avatar.png') %>" alt="sunny 的头像" /></div>
         <div class="profile-identity"><p class="mini-heading">ABOUT THE AUTHOR</p><h2>sunny</h2><i></i><span>INFJ</span><p>一个在互联网行业工作、下班后写字的人。相信好奇心、长期主义，还有一杯热茶。</p></div>
-        <div class="profile-socials" aria-label="联系 sunny">
-          <a href="https://github.com/sunny-0501" target="_blank" rel="noreferrer" aria-label="GitHub"><span aria-hidden="true">&lt;/&gt;</span></a>
-          <a href="<%- url_for('/rss/') %>" aria-label="RSS 订阅"><span aria-hidden="true">◉</span></a>
-        </div>
+        <div class="profile-socials" aria-label="联系 sunny"><a href="https://github.com/sunny-0501" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><span aria-hidden="true">&lt;/&gt;</span></a></div>
+        <div class="site-stats" aria-label="站点统计"><div><strong><%= posts.length %></strong><span>篇文章</span></div><div><strong><%= totalWords.toLocaleString('zh-CN') %></strong><span>字数</span></div><div><strong><%= Math.max(1, new Date().getFullYear() - startYear + 1) %></strong><span>记录年</span></div></div>
         <a class="profile-more" href="<%- url_for('/about/') %>">认识我更多 <span>↗</span></a>
       </div>
     </aside>
@@ -46,6 +40,7 @@
       <p class="empty-state" id="emptyState" hidden>没有找到匹配的文章。</p>
     </div>
   </section>
+  <nav class="quick-links" aria-label="快捷入口"><a href="<%- url_for('/archives/') %>"><span>01 · ARCHIVE</span><strong>文章归档</strong><i aria-hidden="true">↗</i></a><a href="<%- url_for('/links/') %>"><span>02 · FRIENDS</span><strong>友链往来</strong><i aria-hidden="true">↗</i></a><a href="<%- url_for('/about/') %>"><span>03 · ABOUT</span><strong>关于 sunny</strong><i aria-hidden="true">↗</i></a></nav>
   <section class="newsletter" id="newsletter"><div><p class="eyebrow">KEEP IN TOUCH</p><h2>下次更新，继续相遇。</h2><p>通过 RSS 订阅，在你习惯的阅读器里收到新文章。</p></div><a class="read-link newsletter-link" href="<%- url_for('/rss/') %>">订阅更新 <span>↗</span></a></section>
 </main>
 <%- partial('_partial/document-end') %>
