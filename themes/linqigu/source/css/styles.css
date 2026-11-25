@@ -1139,3 +1139,52 @@ body.dark .archive-topic-links a { border-color: var(--card-border); }
 @media (max-width: 480px) {
   .status-bar__back { display: inline-flex; min-height: 36px; align-items: center; padding: 0 8px; border: 1px solid var(--card-border); border-radius: 5px; background: var(--card); font-size: 11px !important; white-space: nowrap; }
 }
+/* Compact full-width image hero on the homepage. */
+.home-page .dashboard-hero { display: block; padding: 12px 0 8px; }
+.home-page .quote-card.home-hero {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  width: 100%;
+  height: clamp(250px, 24vw, 300px);
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #315e54 url("../images/header-landscape.png") center 42% / cover no-repeat;
+  color: #fffdf7;
+}
+.home-page .quote-card.home-hero::before { z-index: 0; background: linear-gradient(90deg, rgba(17,48,43,.78) 0%, rgba(17,48,43,.58) 43%, rgba(17,48,43,.2) 100%), linear-gradient(0deg, rgba(17,48,43,.2), transparent 65%); }
+.home-page .quote-card.home-hero::after { content: none; }
+.home-page .quote-card.home-hero > .quote-controls { z-index: 3; top: 15px; left: 26px; gap: 12px; }
+.home-page .quote-card.home-hero .quote-control span { background: rgba(255,253,247,.5); }
+.home-page .quote-card.home-hero .quote-control.is-active span { background: #fffdf7; }
+.home-page .quote-card.home-hero .quote-slides { z-index: 2; inset: 47px 28px 18px; }
+.home-page .quote-card.home-hero .quote-slide { max-width: 780px; }
+.home-page .quote-card.home-hero .eyebrow { margin-bottom: 10px; color: rgba(255,253,247,.82); font-size: 10px; }
+.home-page .quote-card.home-hero .quote-text { max-width: 760px; margin: 0 0 8px; color: #fffdf7; font-size: clamp(32px, 4vw, 48px); font-weight: 800; line-height: 1.16; letter-spacing: .01em; text-shadow: 0 2px 12px rgba(9,32,29,.35); }
+.home-page .quote-card.home-hero .quote-slide--long .quote-text { font-size: clamp(30px, 3.4vw, 42px); }
+.home-page .quote-card.home-hero .home-hero-description { max-width: 640px; margin: 0 0 12px; color: rgba(255,253,247,.9); font-size: clamp(11px, 1vw, 13px); font-weight: 600; line-height: 1.65; text-shadow: 0 1px 7px rgba(9,32,29,.4); }
+.home-page .quote-card.home-hero .home-hero-cta { display: inline-flex; min-height: 36px; align-items: center; gap: 14px; padding: 0 13px; border: 1px solid rgba(255,253,247,.78); border-radius: 5px; background: rgba(30,70,58,.34); color: #fffdf7; font-size: 12px; font-weight: 700; transition: background-color .18s ease, transform .18s ease; }
+.home-page .quote-card.home-hero .home-hero-cta span { font-size: 16px; line-height: 1; }
+@media (hover: hover) and (pointer: fine) { .home-page .quote-card.home-hero .home-hero-cta:hover { background: rgba(30,70,58,.62); transform: translateY(-1px); } }
+@media (max-width: 720px) {
+  .home-page .dashboard-hero { padding: 10px 0 6px; }
+  .home-page .quote-card.home-hero { height: 258px; }
+  .home-page .quote-card.home-hero > .quote-controls { top: 12px; left: 20px; }
+  .home-page .quote-card.home-hero .quote-slides { inset: 43px 20px 15px; }
+  .home-page .quote-card.home-hero .quote-text { font-size: clamp(30px, 6vw, 37px); }
+  .home-page .quote-card.home-hero .quote-slide--long .quote-text { font-size: clamp(27px, 5.3vw, 34px); }
+}
+@media (max-width: 480px) {
+  .home-page .quote-card.home-hero { height: 242px; background-position: 58% center; }
+  .home-page .quote-card.home-hero .quote-slides { inset: 43px 17px 13px; }
+  .home-page .quote-card.home-hero .quote-text { font-size: clamp(24px, 6.8vw, 30px); }
+  .home-page .quote-card.home-hero .quote-slide--long .quote-text { font-size: clamp(24px, 6.5vw, 28px); }
+  .home-page .quote-card.home-hero .home-hero-description { font-size: 11px; }
+}
+.home-page::before { height: 540px; opacity: .12; background-position: center 18%; }
+body.dark.home-page::before { opacity: .07; }
+@media (max-width: 720px) {
+  .home-page::before { height: 430px; opacity: .08; }
+}
