@@ -204,15 +204,43 @@
     storage.setItem('blog-accent-hue', accentHue.value);
   });
 
-  const applyLayout = (mode) => {
+  let layoutSwitchTimer = null;
+  let layoutSwitchRevision = 0;
+  const applyLayout = (mode, animate = false) => {
+    const revision = ++layoutSwitchRevision;
     const grid = mode === 'grid';
-    document.body.classList.toggle('layout-grid', grid);
-    layoutOptions.forEach((option) => option.setAttribute('aria-pressed', String(option.dataset.layoutMode === mode)));
-    storage.setItem('blog-layout', grid ? 'grid' : 'list');
+    const articleList = document.querySelector('.home-page .article-list');
+    const isGrid = document.body.classList.contains('layout-grid');
+    if (layoutSwitchTimer !== null) {
+      window.clearTimeout(layoutSwitchTimer);
+      layoutSwitchTimer = null;
+    }
+    const setLayout = () => {
+      document.body.classList.toggle('layout-grid', grid);
+      layoutOptions.forEach((option) => option.setAttribute('aria-pressed', String(option.dataset.layoutMode === mode)));
+      storage.setItem('blog-layout', grid ? 'grid' : 'list');
+    };
+
+    if (!animate || !articleList || isGrid === grid || reducedMotion.matches) {
+      articleList?.classList.remove('is-switching');
+      setLayout();
+      return;
+    }
+
+    articleList.classList.add('is-switching');
+    layoutSwitchTimer = window.setTimeout(() => {
+      if (revision !== layoutSwitchRevision) return;
+      layoutSwitchTimer = null;
+      setLayout();
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (revision !== layoutSwitchRevision) return;
+        articleList.classList.remove('is-switching');
+      }));
+    }, 200);
   };
 
   applyLayout(storage.getItem('blog-layout') || 'list');
-  layoutOptions.forEach((option) => option.addEventListener('click', () => applyLayout(option.dataset.layoutMode)));
+  layoutOptions.forEach((option) => option.addEventListener('click', () => applyLayout(option.dataset.layoutMode, true)));
 
   const setAppearanceOpen = (open) => {
     if (!appearancePanel || !appearanceToggle) return;
