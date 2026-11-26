@@ -1,6 +1,7 @@
 <% const thumbMap = { '项目': 'thumb-tool', '阅读': 'thumb-book', '随笔': 'thumb-walk' }; %>
 <% posts.filter((post) => post.archived !== true).forEach(function(post) { %>
   <% const category = post.categories && post.categories.length ? post.categories.first().name : '随笔'; %>
+  <% const sourcePath = ['source', ...String(post.source || '').replace(/^source\//, '').split('/')].map(encodeURIComponent).join('/'); %>
   <% const summary = (post.excerpt || post.content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim(); %>
   <% const readingMinutes = Math.max(1, Math.ceil(summary.length / 400)); %>
   <article class="article-row" data-category="<%= category %>">
@@ -10,6 +11,6 @@
       <h3><a class="article-link" href="<%- url_for(post.path) %>"><%= post.title %></a></h3>
       <p><%= summary.length > 100 ? summary.slice(0, 100) + '…' : summary %></p>
     </div>
-    <span class="row-arrow" aria-hidden="true">↗</span>
+    <span class="row-actions"><a class="archive-action" href="https://github.com/sunny-0501/sunny-0501.github.io/edit/main/<%= sourcePath %>" target="_blank" rel="noopener noreferrer" title="在 GitHub 源文件中添加 archived: true；需要仓库写入权限" aria-label="在 GitHub 编辑文章《<%= post.title %>》并归档">归档</a><span class="row-arrow" aria-hidden="true">↗</span></span>
   </article>
 <% }); %>
