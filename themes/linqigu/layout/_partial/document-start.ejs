@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=homepage-two-images-v1" />
     <link rel="stylesheet" href="<%- url_for('/css/hexo.css') %>" /><% if (typeof archiveView !== 'undefined' && archiveView) { %>
     <link rel="stylesheet" href="<%- url_for('/css/archive.css') %>?v=backdrop-list-v1" /><% } %>
+    <% if (typeof galleryView !== 'undefined' && galleryView) { %><link rel="stylesheet" href="<%- url_for('/css/gallery.css') %>?v=gallery-backdrop-v1" /><% } %>
+    <% if (typeof isAlbum !== 'undefined' && isAlbum) { %><link rel="stylesheet" href="<%- url_for('/css/gallery-album.css') %>?v=gallery-album-v1" /><% } %>
     <link rel="alternate" type="application/atom+xml" title="林栖谷" href="<%- url_for('/atom.xml') %>" />
   </head>
-  <body class="<%= is_home() ? 'home-page' : typeof archiveView !== 'undefined' && archiveView ? 'archive-view' : '' %>">
+  <body class="<%= is_home() ? 'home-page' : typeof archiveView !== 'undefined' && archiveView ? 'archive-view' : typeof galleryView !== 'undefined' && galleryView ? 'gallery-view' : '' %>">
     <a class="skip-link" href="#top">跳到正文</a>
     <script>try { const savedMode = localStorage.getItem('blog-theme-mode'); const legacyMode = localStorage.getItem('blog-theme'); const mode = ['light', 'dark', 'system'].includes(savedMode) ? savedMode : ['light', 'dark'].includes(legacyMode) ? legacyMode : 'system'; if (mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.body.classList.add('dark'); } catch {}</script>
     <% if (is_post()) { %>

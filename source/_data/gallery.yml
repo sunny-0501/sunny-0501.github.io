@@ -1,0 +1,52 @@
+albums:
+  - slug: site-assets
+    title: 博客内置图片
+    description: 收录站点页面使用的插画、壁纸与标识
+    cover: /images/header-landscape.png
+    tags:
+      - 插画
+      - 壁纸
+      - 博客素材
+    photos:
+      - src: /images/header-landscape.png
+        title: 晴日的草坡
+        alt: 晴天下的草坡与画画的人
+        categories: [wallpaper]
+        search: 晴日 草坡 壁纸 背景 首页 插画
+      - src: /images/forest-rest.png
+        title: 林间休憩
+        alt: 林间休憩的插画
+        categories: [illustration]
+        search: 林间 休憩 插画 森林
+      - src: /images/archive-howls-castle.png
+        title: 移动城堡
+        alt: 移动城堡主题插画
+        categories: [illustration]
+        search: 移动 城堡 归档 插画
+      - src: /images/explore-moving-castle.jpg
+        title: 探索页面插画
+        alt: 探索页面使用的移动城堡插画
+        categories: [wallpaper, illustration]
+        search: 移动 城堡 探索 壁纸 插画
+      - src: /images/guestbook-country-house.jpg
+        title: 乡间小屋
+        alt: 留言页使用的乡间小屋插画
+        categories: [wallpaper]
+        search: 乡间 小屋 留言 壁纸 背景
+      - src: /images/links-cottage.jpg
+        title: 林间小屋
+        alt: 友链页使用的林间小屋插画
+        categories: [wallpaper]
+        search: 林间 小屋 友链 壁纸 背景
+      - src: /images/avatar.png
+        title: 博客头像
+        alt: 博客头像
+        categories: [illustration]
+        search: 博客 头像 林栖谷 插画
+        soft: true
+      - src: /images/linqigu-logo.svg
+        title: 林栖谷标识
+        alt: 林栖谷标识
+        categories: [illustration]
+        search: 博客 标识 林栖谷 logo 插画
+        soft: true

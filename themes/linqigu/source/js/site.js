@@ -522,12 +522,15 @@
 
   const gallerySearch = document.querySelector('#gallerySearch');
   const galleryFilters = [...document.querySelectorAll('[data-gallery-filter]')];
-  const galleryCards = [...document.querySelectorAll('.gallery-card[data-gallery-category]')];
-  const galleryAlbum = document.querySelector('#galleryAlbum');
-  const galleryAlbumCount = document.querySelector('#galleryAlbumCount');
+  const galleryPhotos = [...document.querySelectorAll('[data-gallery-photo]')];
+  const galleryAlbums = [...document.querySelectorAll('[data-gallery-album]')];
+  const galleryCards = galleryPhotos.length ? galleryPhotos : galleryAlbums;
+  const galleryPhotoCount = document.querySelector('#galleryPhotoCount');
   const galleryEmpty = document.querySelector('#galleryEmpty');
+  const galleryGrid = document.querySelector('#galleryGrid');
+  const galleryViewOptions = [...document.querySelectorAll('[data-gallery-view]')];
   let activeGalleryFilter = 'all';
-  const filterGallery = (openFilteredAlbum = false) => {
+  const filterGallery = () => {
     const query = gallerySearch?.value.trim().toLowerCase() || '';
     let visible = 0;
     galleryCards.forEach((card) => {
@@ -538,21 +541,33 @@
       card.hidden = !(matchesCategory && matchesSearch);
       if (!card.hidden) visible += 1;
     });
-    if (galleryAlbumCount) {
-      galleryAlbumCount.textContent = activeGalleryFilter === 'all' && !query
-        ? `共 ${galleryCards.length} 张照片`
-        : `${visible} 张匹配`;
+    if (galleryPhotoCount) {
+      galleryPhotoCount.textContent = activeGalleryFilter === 'all' && !query
+        ? `共 ${galleryPhotos.length} 张照片`
+        : `找到 ${visible} 张照片 · 共 ${galleryPhotos.length} 张`;
     }
     if (galleryEmpty) galleryEmpty.hidden = visible > 0;
-    if (openFilteredAlbum && (query || activeGalleryFilter !== 'all') && galleryAlbum) galleryAlbum.open = true;
   };
   galleryFilters.forEach((filter) => filter.addEventListener('click', () => {
     activeGalleryFilter = filter.dataset.galleryFilter || 'all';
     galleryFilters.forEach((item) => item.setAttribute('aria-pressed', String(item === filter)));
-    filterGallery(true);
+    filterGallery();
   }));
-  gallerySearch?.addEventListener('input', () => filterGallery(Boolean(gallerySearch.value.trim())));
+  gallerySearch?.addEventListener('input', filterGallery);
   filterGallery();
+
+  const applyGalleryView = (view) => {
+    if (!galleryGrid) return;
+    const layout = view === 'list' ? 'list' : 'grid';
+    galleryGrid.dataset.galleryLayout = layout;
+    galleryViewOptions.forEach((option) => option.setAttribute('aria-pressed', String(option.dataset.galleryView === layout)));
+  };
+  applyGalleryView(storage.getItem('blog-gallery-view'));
+  galleryViewOptions.forEach((option) => option.addEventListener('click', () => {
+    const view = option.dataset.galleryView === 'list' ? 'list' : 'grid';
+    applyGalleryView(view);
+    storage.setItem('blog-gallery-view', view);
+  }));
 
   const lightboxDialog = document.querySelector('#lightboxDialog');
   const lightboxImage = document.querySelector('#lightboxImage');
