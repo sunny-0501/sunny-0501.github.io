@@ -1,4 +1,4 @@
-/* Loaded only by archive.ejs. Shared homepage styles remain untouched. */
+/* Shared by article archives, categories, tags and their filtered lists. */
 body.archive-view {
   --archive-backdrop-height: clamp(560px, 72vh, 760px);
   position: relative;
@@ -73,6 +73,25 @@ body.archive-view .archive-content {
 }
 body.archive-view .archive-author { grid-column: 1; min-width: 0; padding: 0; border: 0; }
 body.archive-view .archive-main { grid-column: 2; min-width: 0; }
+body.archive-view [data-archive-pane][hidden], body.archive-view .archive-post[hidden] { display: none !important; }
+body.archive-view .archive-post { min-width: 0; }
+body.archive-view .archive-view-tabs { display: flex; align-items: stretch; gap: 5px; margin-bottom: 16px; padding: 7px; border: 1px solid var(--card-border); border-radius: 16px; background: var(--card); box-shadow: 0 3px 16px rgba(37, 76, 61, .045); }
+body.archive-view .archive-view-link { display: inline-flex; flex: 1 1 0; align-items: center; justify-content: center; gap: 9px; min-height: 46px; padding: 8px 12px; border-radius: 10px; color: var(--soft-ink); font-size: 13px; font-weight: 600; }
+body.archive-view .archive-view-link b { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 50%; background: color-mix(in srgb, var(--forest) 7%, transparent); font-size: 10px; font-weight: 500; }
+body.archive-view .archive-view-link.selected { background: var(--selection-surface); color: #fffdf7; }
+body.archive-view .archive-view-link.selected b { background: rgba(255, 255, 255, .16); }
+body.archive-view .archive-view-link:focus-visible, body.archive-view .archive-index-links a:focus-visible { outline: 3px solid var(--selection-accent); outline-offset: 3px; }
+body.archive-view #archiveViewHeading:focus { outline: none; }
+body.archive-view .archive-taxonomy-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+body.archive-view .archive-taxonomy-grid .taxonomy-card { min-height: 185px; border-radius: 16px; background: var(--card); }
+body.archive-view .archive-taxonomy-grid .taxonomy-card strong { font-family: var(--sans); font-size: 27px; }
+body.archive-view .archive-taxonomy-grid .taxonomy-card:nth-child(3n+2) { background: color-mix(in srgb, var(--butter) 20%, var(--card)); }
+body.archive-view .archive-taxonomy-grid .taxonomy-card:nth-child(3n) { background: color-mix(in srgb, var(--lilac) 18%, var(--card)); }
+body.archive-view .archive-tag-cloud { gap: 12px; padding: 25px; border-radius: 16px; background: var(--card); }
+body.archive-view .archive-tag-cloud .tag-cloud__item { min-height: 44px; padding: 10px 14px; font-family: var(--sans); font-size: 13px; }
+body.archive-view .archive-index-links { display: grid; gap: 4px; margin-top: 12px; padding-top: 11px; border-top: 1px solid var(--card-border); }
+body.archive-view .archive-index-links a { display: flex; justify-content: space-between; align-items: center; min-height: 40px; color: var(--soft-ink); font-size: 11px; }
+body.archive-view .archive-topic-links a[aria-current="page"] { color: var(--deep-forest); font-weight: 700; }
 body.archive-view .archive-sidebar { position: static; grid-column: 3; gap: 18px; padding: 0; border: 0; }
 body.archive-view .sidebar-card,
 body.archive-view .archive-tabs,
@@ -175,6 +194,13 @@ body.archive-view.dark .archive-article-list .article-thumb { color: #244a40; }
   body.archive-view .archive-author { grid-column: 1; grid-row: 2; }
   body.archive-view .archive-sidebar { grid-column: 1; grid-row: 3; }
   body.archive-view .archive-tabs { flex-wrap: nowrap; gap: 2px; margin-bottom: 12px; padding: 6px; }
+  body.archive-view .archive-view-tabs { gap: 3px; margin-bottom: 12px; padding: 6px; }
+  body.archive-view .archive-view-link { gap: 6px; min-height: 42px; padding: 7px 8px; font-size: 12px; }
+  body.archive-view .archive-view-link b { min-width: 19px; height: 19px; font-size: 9px; }
+  body.archive-view .archive-taxonomy-grid { gap: 12px; }
+  body.archive-view .archive-taxonomy-grid .taxonomy-card { min-height: 165px; padding: 20px; }
+  body.archive-view .archive-taxonomy-grid .taxonomy-card strong { font-size: 23px; }
+  body.archive-view .archive-tag-cloud { gap: 9px; padding: 20px; }
   body.archive-view .archive-tabs a { gap: 6px; padding: 7px 9px; font-size: 12px; }
   body.archive-view .archive-tabs a b { min-width: 18px; height: 18px; }
   body.archive-view .archive-section-heading { gap: 8px; margin-bottom: 12px; padding: 20px; }
@@ -190,4 +216,8 @@ body.archive-view.dark .archive-article-list .article-thumb { color: #244a40; }
   body.archive-view .archive-article-list .row-actions { grid-column: 1; grid-row: 2; flex-direction: row; justify-content: center; align-self: start; }
   body.archive-view .archive-article-list .row-arrow { display: none; }
   body.archive-view .archive-article-list .archive-action { min-height: 36px; padding: 0 14px; }
+}
+@media (max-width: 360px) {
+  body.archive-view .archive-taxonomy-grid { grid-template-columns: minmax(0, 1fr); }
+  body.archive-view .archive-view-link { gap: 4px; padding: 7px 5px; font-size: 11px; }
 }

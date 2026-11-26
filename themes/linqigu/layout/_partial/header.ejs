@@ -8,7 +8,7 @@
       label: '&#x627E;&#x6587;&#x7AE0;', path: '/archives/', active: isArticleSection, current: activePath.startsWith('archives'),
       menuId: 'articlesMenu', toggleLabel: '&#x5C55;&#x5F00;&#x6587;&#x7AE0;&#x5206;&#x7C7B;',
       menu: [
-        { label: '&#x5F52;&#x6863;', path: '/archives/', current: activePath.startsWith('archives') },
+        { label: '&#x5F52;&#x6863;', path: '/archives/', current: activePath.startsWith('archives'), authorOnly: true },
         { label: '&#x5206;&#x7C7B;', path: '/categories/', current: activePath.startsWith('categories') },
         { label: '&#x6807;&#x7B7E;', path: '/tags/', current: activePath.startsWith('tags') }
       ]
@@ -19,7 +19,6 @@
       label: '&#x6211;&#x7684;', path: '/explore/', active: isMySection, current: activePath.startsWith('explore'),
       menuId: 'myMenu', toggleLabel: '&#x5C55;&#x5F00;&#x4E2A;&#x4EBA;&#x5206;&#x7C7B;',
       menu: [
-        { label: '&#x5173;&#x4E8E;&#x6211;', path: '/about/', current: activePath.startsWith('about') },
         { label: '&#x76F8;&#x518C;', path: '/gallery/', current: activePath.startsWith('gallery') },
         { label: '&#x8BA2;&#x9605;', path: '/rss/', current: activePath.startsWith('rss') }
       ]
@@ -36,12 +35,12 @@
       <% if (item.menu) { %>
         <div class="nav-dropdown <%= item.active ? 'is-active' : '' %>">
           <div class="nav-dropdown__bar">
-            <a class="nav-dropdown__link <%= item.active ? 'active' : '' %>" href="<%- url_for(item.path) %>"<%- item.current ? ' aria-current="page"' : '' %>><%- item.label %></a>
+            <a class="nav-dropdown__link <%= item.active ? 'active' : '' %>" href="<%- url_for(item.path) %>"<%- item.current ? ' aria-current="page"' : '' %><%- item.menuId === 'articlesMenu' ? ' data-archive-section' : '' %>><%- item.label %></a>
             <button class="nav-dropdown__toggle" type="button" aria-label="<%- item.toggleLabel %>" aria-controls="<%= item.menuId %>" aria-expanded="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
           </div>
           <div class="nav-dropdown__menu" id="<%= item.menuId %>" hidden>
             <% item.menu.forEach((menuItem) => { %>
-              <a class="nav-dropdown__item <%= menuItem.current ? 'active' : '' %>" href="<%- url_for(menuItem.path) %>"<%- menuItem.current ? ' aria-current="page"' : '' %>><%- menuItem.label %></a>
+              <a class="nav-dropdown__item <%= menuItem.current ? 'active' : '' %>" href="<%- url_for(menuItem.path) %>"<%- menuItem.current ? ' aria-current="page"' : '' %><%- menuItem.authorOnly ? ' data-author-only hidden' : item.menuId === 'articlesMenu' ? ' data-archive-link' : '' %>><%- menuItem.label %></a>
             <% }); %>
           </div>
         </div>
@@ -75,10 +74,6 @@
           <div class="appearance-heading"><label for="windIntensity">动效强度</label><output id="windIntensityValue" for="windIntensity">60%</output></div>
           <input class="effect-intensity-slider" id="windIntensity" type="range" min="0" max="100" step="10" value="60" aria-describedby="windIntensityScale" />
           <div class="range-endpoints" id="windIntensityScale"><span>关闭</span><span>轻柔</span><span>明显</span></div>
-        </div>
-        <div class="appearance-group">
-          <span>文章布局</span>
-          <div class="layout-options" role="group" aria-label="文章布局"><button type="button" data-layout-mode="list"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>列表</button><button type="button" data-layout-mode="grid"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>网格</button></div>
         </div>
       </div>
     </div>

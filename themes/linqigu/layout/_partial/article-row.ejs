@@ -11,6 +11,6 @@
       <h3><a class="article-link" href="<%- url_for(post.path) %>"><%= post.title %></a></h3>
       <p><%= summary.length > 100 ? summary.slice(0, 100) + '…' : summary %></p>
     </div>
-    <span class="row-actions"><a class="archive-action" href="https://github.com/sunny-0501/sunny-0501.github.io/edit/main/<%= sourcePath %>" target="_blank" rel="noopener noreferrer" title="在 GitHub 源文件中添加 archived: true；需要仓库写入权限" aria-label="在 GitHub 编辑文章《<%= post.title %>》并归档">归档</a><span class="row-arrow" aria-hidden="true">↗</span></span>
+    <span class="row-actions"><a class="archive-action" data-author-only hidden href="https://github.com/sunny-0501/sunny-0501.github.io/edit/main/<%= sourcePath %>" target="_blank" rel="noopener noreferrer" title="在 GitHub 源文件中添加 archived: true；需要仓库写入权限" aria-label="在 GitHub 编辑文章《<%= post.title %>》并归档">归档</a><span class="row-arrow" aria-hidden="true">↗</span></span>
   </article>
 <% }); %>

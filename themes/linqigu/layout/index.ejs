@@ -30,17 +30,20 @@
         <div class="profile-identity"><p class="mini-heading">ABOUT THE AUTHOR</p><h2>sunny</h2><i></i><span>INFJ</span><p>一个在互联网行业工作、下班后写字的人。相信好奇心、长期主义，还有一杯热茶。</p></div>
         <div class="profile-socials" aria-label="联系 sunny"><a href="https://github.com/sunny-0501" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><span aria-hidden="true">&lt;/&gt;</span></a></div>
         <div class="site-stats" aria-label="站点统计"><div><strong><%= posts.length %></strong><span>篇文章</span></div><div><strong><%= totalWords.toLocaleString('zh-CN') %></strong><span>字数</span></div><div><strong><%= Math.max(1, new Date().getFullYear() - startYear + 1) %></strong><span>记录年</span></div></div>
-        <a class="profile-more" href="<%- url_for('/about/') %>">认识我更多 <span>↗</span></a>
+        <a class="profile-more" href="<%- url_for('/explore/') %>">认识我更多 <span>↗</span></a>
       </div>
     </aside>
     <div class="articles-column">
-      <nav class="content-tabs" aria-label="按分类浏览文章"><a class="selected" aria-current="true" href="<%- url_for('/') %>" data-filter="all"><span>全部</span><b><%= posts.length %></b></a><a href="<%- url_for('/categories/项目/') %>" data-filter="项目"><span>项目</span><b><%= categoryCount('项目') %></b></a><a href="<%- url_for('/categories/随笔/') %>" data-filter="随笔"><span>随笔</span><b><%= categoryCount('随笔') %></b></a><a href="<%- url_for('/categories/阅读/') %>" data-filter="阅读"><span>阅读</span><b><%= categoryCount('阅读') %></b></a><a class="more-tab" href="<%- url_for('/archives/') %>"><span>归档</span><b>→</b></a></nav>
+      <div class="home-article-toolbar">
+        <nav class="content-tabs" aria-label="按分类浏览文章"><a class="selected" aria-current="true" href="<%- url_for('/') %>" data-filter="all"><span>全部</span><b><%= posts.length %></b></a><a href="<%- url_for('/categories/项目/') %>" data-filter="项目"><span>项目</span><b><%= categoryCount('项目') %></b></a><a href="<%- url_for('/categories/随笔/') %>" data-filter="随笔"><span>随笔</span><b><%= categoryCount('随笔') %></b></a><a href="<%- url_for('/categories/阅读/') %>" data-filter="阅读"><span>阅读</span><b><%= categoryCount('阅读') %></b></a></nav>
+        <%- partial('_partial/article-layout-options') %>
+      </div>
       <div class="section-heading"><h2 class="section-label"><span>LATEST NOTES</span><span>最新文章</span></h2><p class="filter-hint" id="filterHint" aria-live="polite">共 <%= posts.length %> 篇文章 · 可按上方分类查找</p></div>
       <div class="article-list" id="articleList"><%- partial('_partial/article-row', { posts: posts }) %></div>
       <p class="empty-state" id="emptyState" hidden>没有找到匹配的文章。</p>
     </div>
   </section>
-  <nav class="quick-links" aria-label="快捷入口"><a href="<%- url_for('/archives/') %>"><span>01 · ARCHIVE</span><strong>文章归档</strong><i aria-hidden="true">↗</i></a><a href="<%- url_for('/links/') %>"><span>02 · FRIENDS</span><strong>友链往来</strong><i aria-hidden="true">↗</i></a><a href="<%- url_for('/about/') %>"><span>03 · ABOUT</span><strong>关于 sunny</strong><i aria-hidden="true">↗</i></a></nav>
+  <nav class="quick-links" aria-label="快捷入口"><a href="<%- url_for('/archives/') %>"><span>01 · JOURNAL</span><strong>全部文章</strong><i aria-hidden="true">↗</i></a><a href="<%- url_for('/links/') %>"><span>02 · FRIENDS</span><strong>友链往来</strong><i aria-hidden="true">↗</i></a><a href="<%- url_for('/explore/') %>"><span>03 · MY SPACE</span><strong>我的</strong><i aria-hidden="true">↗</i></a></nav>
   <section class="newsletter" id="newsletter"><div><p class="eyebrow">KEEP IN TOUCH</p><h2>下次更新，继续相遇。</h2><p>通过 RSS 订阅，在你习惯的阅读器里收到新文章。</p></div><a class="read-link newsletter-link" href="<%- url_for('/rss/') %>">订阅更新 <span>↗</span></a></section>
 </main>
 <%- partial('_partial/document-end') %>

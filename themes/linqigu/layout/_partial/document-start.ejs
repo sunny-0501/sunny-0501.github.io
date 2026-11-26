@@ -9,14 +9,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=homepage-two-images-v1" />
+    <link rel="stylesheet" href="<%- url_for('/css/styles.css') %>?v=article-toolbar-v2" />
     <link rel="stylesheet" href="<%- url_for('/css/hexo.css') %>" /><% if (typeof archiveView !== 'undefined' && archiveView) { %>
-    <link rel="stylesheet" href="<%- url_for('/css/archive.css') %>?v=backdrop-list-v1" /><% } %>
+    <link rel="stylesheet" href="<%- url_for('/css/archive.css') %>?v=archive-shell-v2" /><% } %>
+    <% if (typeof exploreView !== 'undefined' && exploreView) { %><link rel="stylesheet" href="<%- url_for('/css/explore.css') %>?v=my-space-v1" /><link rel="stylesheet" href="<%- url_for('/css/explore-portals.css') %>?v=forest-portals-v1" /><% } %>
     <% if (typeof galleryView !== 'undefined' && galleryView) { %><link rel="stylesheet" href="<%- url_for('/css/gallery.css') %>?v=gallery-backdrop-v1" /><% } %>
     <% if (typeof isAlbum !== 'undefined' && isAlbum) { %><link rel="stylesheet" href="<%- url_for('/css/gallery-album.css') %>?v=gallery-album-v1" /><% } %>
     <link rel="alternate" type="application/atom+xml" title="林栖谷" href="<%- url_for('/atom.xml') %>" />
   </head>
-  <body class="<%= is_home() ? 'home-page' : typeof archiveView !== 'undefined' && archiveView ? 'archive-view' : typeof galleryView !== 'undefined' && galleryView ? 'gallery-view' : '' %>">
+  <body class="<%= is_home() ? 'home-page' : typeof archiveView !== 'undefined' && archiveView ? 'archive-view' : typeof galleryView !== 'undefined' && galleryView ? 'gallery-view' : typeof exploreView !== 'undefined' && exploreView ? 'explore-view' : '' %>">
     <a class="skip-link" href="#top">跳到正文</a>
     <script>try { const savedMode = localStorage.getItem('blog-theme-mode'); const legacyMode = localStorage.getItem('blog-theme'); const mode = ['light', 'dark', 'system'].includes(savedMode) ? savedMode : ['light', 'dark'].includes(legacyMode) ? legacyMode : 'system'; if (mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.body.classList.add('dark'); } catch {}</script>
     <% if (is_post()) { %>

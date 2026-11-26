@@ -1,3 +1,13 @@
-<%- partial('_partial/document-start') %>
-<main class="inner-page" id="top"><div class="status-bar"><span>关于我</span><strong>一个在下班后写字的人，持续收集生活里的微小灵感</strong><a href="<%- url_for('/') %>" aria-label="回到首页">↗</a></div><section class="page-hero page-hero-mint"><div><p class="eyebrow">ABOUT THE AUTHOR</p><h1>你好，我是 sunny。</h1><p>白天做互联网产品，晚上写一点东西。这个博客是我的慢速工作台，用来放下思考、阅读和生活碎片。</p></div><div class="about-avatar"><img src="<%- url_for('/images/avatar.png') %>" alt="sunny 的头像" /></div></section><section class="page-content about-layout"><article class="about-intro"><p class="mini-heading">WHY I WRITE</p><h2>记录不是为了证明，<br />只是想让时间留下形状。</h2><%- page.content %><a class="read-link" href="<%- url_for('/guestbook/') %>">和我打个招呼 <span>↗</span></a></article><div class="about-side"><section class="sidebar-card"><p class="mini-heading">我在关注</p><ul class="principles"><li><b>01</b><span>把复杂的事说简单。</span></li><li><b>02</b><span>给注意力留一点空白。</span></li><li><b>03</b><span>长期做值得回看的事。</span></li></ul></section></div></section></main>
-<%- partial('_partial/document-end') %>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="作者介绍已合并至“我的”页面。" />
+    <meta http-equiv="refresh" content="0; url=<%- url_for('/explore/') %>" />
+    <link rel="canonical" href="<%- full_url_for('/explore/') %>" />
+    <title>我的 · <%= config.title %></title>
+    <style>body{margin:0;background:#f1f5f0;color:#284c40;font-family:system-ui,"Microsoft YaHei",sans-serif}main{max-width:560px;margin:15vh auto;padding:32px}h1{font-size:28px}p{line-height:1.8}a{color:inherit;text-underline-offset:5px}</style>
+  </head>
+  <body><main><h1>作者介绍搬到“我的”了。</h1><p>正在前往新的页面。<a href="<%- url_for('/explore/') %>">点击这里阅读作者介绍与个人收藏 ↗</a></p></main></body>
+</html>

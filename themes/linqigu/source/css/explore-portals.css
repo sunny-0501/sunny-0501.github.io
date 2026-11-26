@@ -1,0 +1,122 @@
+/* Two small illustrated doorways: the gallery and the RSS reading room. */
+body.explore-view .explore-portals { margin: 48px 0; }
+body.explore-view .explore-portals-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 23px; }
+body.explore-view .explore-portals-heading .eyebrow { margin: 0 0 10px; color: var(--soft-ink); font-size: 10px; }
+body.explore-view .explore-portals-heading h2 { margin: 0; color: var(--deep-forest); font: 600 clamp(23px, 2.5vw, 32px)/1.5 var(--serif); }
+body.explore-view .explore-portals-heading > p { margin: 0 0 4px; color: var(--soft-ink); font-size: 12px; line-height: 1.8; }
+body.explore-view .explore-portals-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+body.explore-view .explore-portal {
+  --portal-paper: #fffcf2;
+  --portal-ink: #34523c;
+  --portal-soft-ink: #6e7c65;
+  --portal-sky: #e5ecd8;
+  --portal-sun: #f6e4a6;
+  --portal-cloud: #f7f8eb;
+  --portal-hill-far: #bfd0ad;
+  --portal-hill-near: #a8bd92;
+  --portal-trunk: #6e805b;
+  --portal-canopy: #829d74;
+  --portal-canopy-light: #a7ba8a;
+  --portal-mail-sky: #edf0dc;
+  --portal-mail-sun: #e9dba9;
+  --portal-mail-hill: #c4cba4;
+  position: relative; display: block; min-width: 0; overflow: hidden; border: 1px solid #d6ddc9; border-radius: 22px; background: var(--portal-paper); color: var(--portal-ink); box-shadow: 0 5px 0 rgba(111, 133, 87, .07), 0 14px 35px rgba(48, 78, 51, .06); isolation: isolate; -webkit-tap-highlight-color: transparent; transition: box-shadow .3s ease, border-color .3s ease;
+}
+body.explore-view .portal-art { position: relative; height: 270px; overflow: hidden; border-bottom: 1px solid rgba(88, 113, 66, .12); }
+body.explore-view .portal-landscape, body.explore-view .portal-postal-scene { display: block; width: 100%; height: 100%; }
+body.explore-view .portal-sky { fill: var(--portal-sky); }
+body.explore-view .portal-sun { fill: var(--portal-sun); }
+body.explore-view .portal-cloud { fill: var(--portal-cloud); }
+body.explore-view .portal-hill-far { fill: var(--portal-hill-far); }
+body.explore-view .portal-hill-near { fill: var(--portal-hill-near); }
+body.explore-view .portal-trunk { fill: var(--portal-trunk); }
+body.explore-view .portal-canopy { fill: var(--portal-canopy); }
+body.explore-view .portal-canopy-light { fill: var(--portal-canopy-light); }
+body.explore-view .portal-fern { color: #718c5e; }
+body.explore-view .portal-mail-sky { fill: var(--portal-mail-sky); }
+body.explore-view .portal-mail-sun { fill: var(--portal-mail-sun); }
+body.explore-view .portal-mail-hill { fill: var(--portal-mail-hill); }
+body.explore-view .portal-wind-lines { color: #abb99a; }
+body.explore-view .portal-sprigs { color: #8b9f70; }
+body.explore-view .portal-ticket { position: absolute; z-index: 4; top: 19px; left: 22px; display: inline-flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 4px; background: rgba(255, 252, 242, .85); color: var(--portal-ink); font-family: var(--mono); font-size: 9px; letter-spacing: .09em; }
+body.explore-view .portal-ticket i { display: block; width: 21px; height: 1px; background: currentColor; opacity: .4; }
+body.explore-view .portal-photo { position: absolute; z-index: 2; top: 60px; left: 50%; display: block; width: 204px; padding: 9px 9px 0; background: #fffcf1; box-shadow: 0 8px 20px rgba(48, 69, 37, .18); transform-origin: 50% 10%; transition: transform .5s cubic-bezier(.2, .75, .25, 1); }
+body.explore-view .portal-photo img { display: block; width: 100%; height: 126px; object-fit: cover; }
+body.explore-view .portal-photo > span { display: block; height: 29px; padding-top: 7px; color: #727c64; text-align: center; font-family: var(--serif); font-size: 10px; letter-spacing: .12em; }
+body.explore-view .portal-photo--back { top: 48px; margin-left: -148px; transform: rotate(-12deg); }
+body.explore-view .portal-photo--front { margin-left: -51px; transform: rotate(8deg); }
+body.explore-view .portal-gallery-leaf { position: absolute; z-index: 3; top: 47px; left: calc(50% + 104px); width: 54px; height: 54px; color: #6e8a52; transform: rotate(21deg); transform-origin: 20% 80%; transition: transform .55s cubic-bezier(.2, .75, .25, 1); }
+body.explore-view .portal-art-note { position: absolute; z-index: 4; right: 22px; bottom: 15px; left: 22px; display: flex; justify-content: center; align-items: center; gap: 7px; color: var(--portal-ink); font-family: var(--serif); font-size: 10px; letter-spacing: .12em; }
+body.explore-view .portal-art-note i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: .65; }
+body.explore-view .portal-letter { transform-origin: 50% 75%; transition: transform .55s cubic-bezier(.2, .75, .25, 1); }
+body.explore-view .portal-paper-plane { transform-origin: 70% 25%; transition: transform .65s cubic-bezier(.2, .75, .25, 1); }
+body.explore-view .portal-postmark { position: absolute; top: 63px; right: 38px; display: flex; width: 72px; height: 72px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border: 1px solid #879877; border-radius: 50%; color: #687e55; transform: rotate(14deg); opacity: .73; }
+body.explore-view .portal-postmark::after { position: absolute; inset: 5px; border: 1px dashed currentColor; border-radius: inherit; content: ""; }
+body.explore-view .portal-postmark b { font-family: var(--serif); font-size: 12px; font-weight: 600; letter-spacing: .12em; }
+body.explore-view .portal-postmark > span { font-family: var(--mono); font-size: 5px; letter-spacing: .08em; }
+body.explore-view .portal-content { padding: 25px 29px 24px; }
+body.explore-view .portal-content-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+body.explore-view .portal-content h3 { display: flex; align-items: baseline; flex-wrap: wrap; gap: 13px; margin: 0; font-family: var(--serif); font-size: 26px; font-weight: 700; line-height: 1.5; }
+body.explore-view .portal-content h3 > span { color: var(--portal-soft-ink); font-size: 13px; font-weight: 500; }
+body.explore-view .portal-route-label { flex-shrink: 0; color: var(--portal-soft-ink); font-family: var(--mono); font-size: 8px; letter-spacing: .13em; }
+body.explore-view .portal-content > p { margin: 11px 0 20px; color: var(--portal-soft-ink); font-size: 13px; line-height: 1.9; }
+body.explore-view .portal-invitation { display: flex; align-items: center; justify-content: space-between; min-height: 30px; padding-top: 15px; border-top: 1px dashed rgba(110, 135, 90, .29); font-size: 12px; font-weight: 700; }
+body.explore-view .portal-arrow { display: grid; width: 29px; height: 29px; place-items: center; border: 1px solid rgba(110, 135, 90, .28); border-radius: 50%; font-size: 16px; font-weight: 400; transition: transform .3s ease, background-color .3s ease; }
+body.explore-view .explore-portal:focus-visible { outline: 3px solid var(--selection-accent); outline-offset: 5px; }
+body.explore-view .explore-portal:active { border-color: var(--selection-accent); }
+body.explore-view.dark .explore-portal { --portal-paper: #223a30; --portal-ink: #e3ebd4; --portal-soft-ink: #b6c4a9; --portal-sky: #354b3d; --portal-sun: #d7c78f; --portal-cloud: #a3b49a; --portal-hill-far: #607a58; --portal-hill-near: #526b49; --portal-trunk: #344830; --portal-canopy: #456440; --portal-canopy-light: #5c7950; --portal-mail-sky: #3d4b38; --portal-mail-sun: #a2996b; --portal-mail-hill: #63734f; border-color: #536449; box-shadow: 0 5px 0 rgba(0, 0, 0, .08), 0 14px 35px rgba(0, 0, 0, .12); }
+body.explore-view.dark .portal-postmark { border-color: #bac7a7; color: #d6dfbf; }
+body.explore-view.dark .portal-art-note { color: #f4f1da; }
+body.explore-view.dark .portal-invitation { border-top-color: rgba(192, 207, 171, .25); }
+body.explore-view.dark .portal-arrow { border-color: rgba(192, 207, 171, .35); }
+body.explore-view.dark .portal-fern { color: #829e6c; }
+body.explore-view.dark .portal-ticket { background: rgba(24, 42, 31, .85); color: #e3ebd4; }
+@media (hover: hover) and (pointer: fine) {
+  body.explore-view .explore-portal:hover { border-color: #9cb084; box-shadow: 0 6px 0 rgba(111, 133, 87, .1), 0 18px 35px rgba(48, 78, 51, .11); }
+  body.explore-view .explore-portal:hover .portal-photo--back { transform: translate(-7px, -3px) rotate(-15deg); }
+  body.explore-view .explore-portal:hover .portal-photo--front { transform: translate(7px, -5px) rotate(11deg); }
+  body.explore-view .explore-portal:hover .portal-gallery-leaf { transform: translate(3px, -3px) rotate(5deg); }
+  body.explore-view .explore-portal:hover .portal-letter { transform: translateY(-14px) rotate(-2deg); }
+  body.explore-view .explore-portal:hover .portal-paper-plane { transform: translate(13px, -8px) rotate(5deg); }
+  body.explore-view .explore-portal:hover .portal-arrow { transform: translate(2px, -2px); background: rgba(151, 176, 123, .12); }
+}
+body.explore-view .explore-portal:focus-visible .portal-photo--back { transform: translate(-7px, -3px) rotate(-15deg); }
+body.explore-view .explore-portal:focus-visible .portal-photo--front { transform: translate(7px, -5px) rotate(11deg); }
+body.explore-view .explore-portal:focus-visible .portal-letter { transform: translateY(-14px) rotate(-2deg); }
+body.explore-view .explore-portal:focus-visible .portal-paper-plane { transform: translate(13px, -8px) rotate(5deg); }
+@media (max-width: 800px) {
+  body.explore-view .explore-portals { margin: 35px 0; }
+  body.explore-view .explore-portals-heading { display: block; }
+  body.explore-view .explore-portals-heading > p { margin-top: 10px; }
+  body.explore-view .explore-portals-grid { gap: 18px; }
+  body.explore-view .portal-content { padding: 22px 21px; }
+  body.explore-view .portal-content h3 { gap: 8px; font-size: 24px; }
+  body.explore-view .portal-content h3 > span { font-size: 12px; }
+  body.explore-view .portal-route-label { display: none; }
+  body.explore-view .portal-art { height: 240px; }
+  body.explore-view .portal-photo { top: 61px; width: 157px; padding: 7px 7px 0; }
+  body.explore-view .portal-photo img { height: 99px; }
+  body.explore-view .portal-photo--back { top: 49px; margin-left: -116px; }
+  body.explore-view .portal-photo--front { margin-left: -40px; }
+  body.explore-view .portal-gallery-leaf { left: calc(50% + 76px); width: 44px; height: 44px; }
+  body.explore-view .portal-postmark { right: 18px; top: 56px; width: 57px; height: 57px; }
+  body.explore-view .portal-postmark b { font-size: 10px; }
+}
+@media (max-width: 620px) {
+  body.explore-view .explore-portals-grid { grid-template-columns: minmax(0, 1fr); gap: 23px; }
+  body.explore-view .portal-art { height: 250px; }
+  body.explore-view .portal-content { padding: 23px; }
+  body.explore-view .portal-route-label { display: block; }
+  body.explore-view .portal-photo { top: 61px; width: 177px; }
+  body.explore-view .portal-photo img { height: 109px; }
+  body.explore-view .portal-photo--back { top: 49px; margin-left: -129px; }
+  body.explore-view .portal-photo--front { margin-left: -46px; }
+  body.explore-view .portal-gallery-leaf { left: calc(50% + 89px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.explore-view .explore-portal, body.explore-view .explore-portal * { transition: none !important; }
+  body.explore-view .explore-portal:is(:hover, :focus-visible) .portal-photo--back { transform: rotate(-12deg); }
+  body.explore-view .explore-portal:is(:hover, :focus-visible) .portal-photo--front { transform: rotate(8deg); }
+  body.explore-view .explore-portal:is(:hover, :focus-visible) .portal-gallery-leaf { transform: rotate(21deg); }
+  body.explore-view .explore-portal:is(:hover, :focus-visible) .portal-letter, body.explore-view .explore-portal:is(:hover, :focus-visible) .portal-paper-plane, body.explore-view .explore-portal:is(:hover, :focus-visible) .portal-arrow { transform: none; }
+}

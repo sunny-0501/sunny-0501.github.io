@@ -149,11 +149,9 @@
   });
   applyMotionPreference();
   startArchiveTypewriter();
-  document.querySelectorAll('.inner-page .content-tabs a').forEach((link) => {
-    link.addEventListener('click', () => {
-      try { window.sessionStorage.setItem('archive-typewriter-seen', 'true'); } catch {}
-    });
-  });
+  // Author tools are available only in the local preview; the public site has no login backend.
+  const localAuthorPreview = ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+  document.querySelectorAll('[data-author-only]').forEach((element) => { element.hidden = !localAuthorPreview; });
 
   const themePanel = document.querySelector('#themePanel');
   const themeOptions = [...document.querySelectorAll('[data-theme-mode]')];
@@ -205,6 +203,10 @@
   let layoutSwitchTimer = null;
   let layoutSwitchRevision = 0;
   const applyLayout = (mode, animate = false) => {
+    if (!document.body.classList.contains('home-page')) {
+      document.body.classList.remove('layout-grid');
+      return;
+    }
     const revision = ++layoutSwitchRevision;
     const grid = mode === 'grid';
     const articleList = document.querySelector('.home-page .article-list');

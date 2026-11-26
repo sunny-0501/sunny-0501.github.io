@@ -1,12 +1,41 @@
 <%
   const allPosts = site.posts.sort('date', -1).toArray().filter((post) => post.archived !== true);
-  const posts = page.posts ? page.posts.toArray().filter((post) => post.archived !== true) : allPosts;
   const currentCategory = typeof page.category === 'string' ? page.category : '';
   const currentTag = typeof page.tag === 'string' ? page.tag : '';
-  const categories = ['项目', '随笔', '阅读'].map((name) => ({
-    name,
-    count: allPosts.filter((post) => post.categories.toArray().some((category) => category.name === name)).length
-  })).filter((category) => category.count > 0);
+  const preferredCategories = ['项目', '随笔', '阅读'];
+  const categories = site.categories.toArray().map((category) => ({
+    name: category.name, path: category.path,
+    count: allPosts.filter((post) => post.categories.toArray().some((item) => item.name === category.name)).length
+  })).filter((category) => category.count > 0).sort((first, second) => {
+    const firstOrder = preferredCategories.indexOf(first.name);
+    const secondOrder = preferredCategories.indexOf(second.name);
+    return (firstOrder < 0 ? 99 : firstOrder) - (secondOrder < 0 ? 99 : secondOrder) || first.name.localeCompare(second.name, 'zh-CN');
+  });
+  const tags = site.tags.toArray().map((tag) => ({
+    name: tag.name, path: tag.path,
+    count: allPosts.filter((post) => post.tags.toArray().some((item) => item.name === tag.name)).length
+  })).filter((tag) => tag.count > 0).sort((first, second) => first.name.localeCompare(second.name, 'zh-CN'));
+  const taxonomy = typeof taxonomyView === 'string' ? taxonomyView : '';
+  const initialKind = taxonomy || (currentCategory ? 'category' : currentTag ? 'tag' : page.year ? 'period' : 'posts');
+  const initialName = currentCategory || currentTag || (page.year ? String(page.year) + (page.month ? '-' + String(page.month).padStart(2, '0') : '') : '');
+  const postMatches = (post) => currentCategory ? post.categories.toArray().some((category) => category.name === currentCategory)
+    : currentTag ? post.tags.toArray().some((tag) => tag.name === currentTag)
+    : page.year ? date(post.date, page.month ? 'YYYY-MM' : 'YYYY') === initialName : true;
+  const visiblePosts = allPosts.filter(postMatches);
+  const postsPaneVisible = !taxonomy;
+  const initialGroup = currentCategory ? 'categories' : currentTag ? 'tags' : taxonomy || 'posts';
+  const initialLabel = taxonomy === 'categories' ? '文章分类' : taxonomy === 'tags' ? '文章标签' : currentCategory || (currentTag ? '# ' + currentTag : '') || (page.year ? initialName + ' 的文章' : '全部文章');
+  const initialHint = taxonomy === 'categories' ? '共 ' + categories.length + ' 个分类 · 按主题继续阅读'
+    : taxonomy === 'tags' ? '共 ' + tags.length + ' 个标签 · 从关键词出发'
+    : (currentCategory ? currentCategory + ' · ' : currentTag ? '#' + currentTag + ' · ' : page.year ? initialName + ' · ' : '') + '共 ' + visiblePosts.length + ' 篇公开文章';
+  const archiveRoutes = [
+    { kind: 'posts', name: '', title: '文章', path: url_for('/archives/') },
+    { kind: 'categories', name: '', title: '文章分类', path: url_for('/categories/') },
+    { kind: 'tags', name: '', title: '文章标签', path: url_for('/tags/') },
+    ...categories.map((category) => ({ kind: 'category', name: category.name, title: category.name, path: url_for(category.path) })),
+    ...tags.map((tag) => ({ kind: 'tag', name: tag.name, title: '# ' + tag.name, path: url_for(tag.path) }))
+  ];
+  if (page.year) archiveRoutes.push({ kind: 'period', name: initialName, title: initialName + ' 的文章', path: url_for(page.path || '/archives/') });
   const totalWords = allPosts.reduce((sum, post) => sum + (post.content || '').replace(/<[^>]*>/g, ' ').replace(/&[^;]+;/g, ' ').replace(/\s+/g, '').length, 0);
   const oldestYear = allPosts.length ? new Date(allPosts[allPosts.length - 1].date).getFullYear() : new Date().getFullYear();
   const yearsWriting = Math.max(1, new Date().getFullYear() - oldestYear + 1);
@@ -14,11 +43,12 @@
   const categoryCount = new Set(allPosts.flatMap((post) => post.categories.toArray().map((category) => category.name))).size;
 %>
 <%- partial('_partial/document-start', { archiveView: true }) %>
-<main class="inner-page archive-page" id="top">
+<main class="inner-page archive-page" id="top" data-archive-shell data-archive-site-title="<%= config.title %>">
+  <script type="application/json" id="archiveRoutes"><%- JSON.stringify(archiveRoutes).replace(/</g, '\\u003c') %></script>
   <section class="page-hero archive-hero" aria-labelledby="archiveTitle">
     <div class="archive-hero__content">
       <p class="eyebrow">ARCHIVE · <%= allPosts.length %> NOTES</p>
-      <h1 id="archiveTitle" data-typewriter><%= page.title || '把想法写下来，' %><br />就有了回声。</h1>
+      <h1 id="archiveTitle" data-typewriter>把想法写下来，<br />就有了回声。</h1>
       <p data-typewriter>这里记录项目、阅读和日常里的片段。慢慢更新，也慢慢把自己说清楚。</p>
       <a class="archive-hero__link" href="#articles">开始浏览 <span aria-hidden="true">↓</span></a>
     </div>
@@ -29,23 +59,45 @@
         <div class="profile-avatar"><img src="<%- url_for('/images/avatar.png') %>" alt="sunny 的头像" loading="lazy" /></div>
         <div class="profile-identity"><p class="mini-heading">ABOUT THE AUTHOR</p><h2>sunny</h2><i></i><span>INFJ · 林栖谷</span><p>一个在互联网行业工作、下班后写字的人。相信好奇心、长期主义，还有一杯热茶。</p></div>
         <div class="profile-socials"><a href="https://github.com/sunny-0501" target="_blank" rel="noopener noreferrer" aria-label="sunny 的 GitHub"><span aria-hidden="true">&lt;/&gt;</span></a></div>
-        <a class="profile-more" href="<%- url_for('/about/') %>">认识我更多 <span aria-hidden="true">↗</span></a>
+        <a class="profile-more" href="<%- url_for('/explore/') %>">认识我更多 <span aria-hidden="true">↗</span></a>
       </section>
     </aside>
     <div class="articles-column archive-main">
-      <nav class="content-tabs archive-tabs" aria-label="文章分类">
-        <a class="<%= currentCategory || currentTag ? '' : 'selected' %>" href="<%- url_for('/archives/') %>"<%- currentCategory || currentTag ? '' : ' aria-current="page"' %>><span>全部</span><b><%= allPosts.length %></b></a>
-        <% categories.forEach(function (category) { %>
-          <% const selected = currentCategory === category.name; %>
-          <a class="<%= selected ? 'selected' : '' %>" href="<%- url_for('/categories/' + category.name + '/') %>"<%- selected ? ' aria-current="page"' : '' %>><span><%= category.name %></span><b><%= category.count %></b></a>
+      <nav class="archive-view-tabs" aria-label="文章浏览方式">
+        <% [{ kind: 'posts', label: '全部文章', path: '/archives/', count: allPosts.length }, { kind: 'categories', label: '分类', path: '/categories/', count: categories.length }, { kind: 'tags', label: '标签', path: '/tags/', count: tags.length }].forEach(function (view) { %>
+          <a class="archive-view-link<%= initialGroup === view.kind ? ' selected' : '' %>" data-archive-view-link="<%= view.kind %>" href="<%- url_for(view.path) %>"<%- initialGroup === view.kind ? ' aria-current="page"' : '' %>><span><%= view.label %></span><b><%= view.count %></b></a>
         <% }); %>
       </nav>
-      <div class="section-heading archive-section-heading">
-        <h2 class="section-label"><span>JOURNAL</span><span><%= currentCategory || (currentTag ? '# ' + currentTag : '') || page.title || '全部文章' %></span></h2>
-        <p class="filter-hint" id="filterHint"><%= currentCategory ? currentCategory + ' · ' + posts.length + ' 篇文章' : currentTag ? '#' + currentTag + ' · ' + posts.length + ' 篇文章' : '共 ' + posts.length + ' 篇公开文章 · 选择上方分类查找' %></p>
+      <div class="section-heading archive-section-heading" id="archiveViewHeading" tabindex="-1">
+        <h2 class="section-label"><span>JOURNAL</span><span id="archiveViewTitle"><%= initialLabel %></span></h2>
+        <p class="filter-hint" id="filterHint" role="status" aria-live="polite"><%= initialHint %></p>
       </div>
-      <div class="article-list archive-article-list" id="articleList"><%- partial('_partial/article-row', { posts: posts }) %></div>
-      <p class="empty-state" id="emptyState" hidden>没有找到匹配的文章。</p>
+      <section data-archive-pane="posts" aria-label="文章列表"<%- postsPaneVisible ? '' : ' hidden' %>>
+        <nav class="content-tabs archive-tabs" aria-label="按分类筛选文章">
+          <a class="<%= initialKind === 'posts' ? 'selected' : '' %>" data-archive-category-link="" href="<%- url_for('/archives/') %>"<%- initialKind === 'posts' ? ' aria-current="page"' : '' %>><span>全部</span><b><%= allPosts.length %></b></a>
+          <% categories.forEach(function (category) { %>
+            <a class="<%= currentCategory === category.name ? 'selected' : '' %>" data-archive-category-link="<%= category.name %>" href="<%- url_for(category.path) %>"<%- currentCategory === category.name ? ' aria-current="page"' : '' %>><span><%= category.name %></span><b><%= category.count %></b></a>
+          <% }); %>
+        </nav>
+        <div class="article-list archive-article-list" id="articleList">
+          <% allPosts.forEach(function (post) { %>
+            <div class="archive-post" data-archive-post data-archive-categories="<%= JSON.stringify(post.categories.toArray().map((category) => category.name)) %>" data-archive-tags="<%= JSON.stringify(post.tags.toArray().map((tag) => tag.name)) %>" data-archive-period="<%= date(post.date, 'YYYY-MM') %>"<%- postMatches(post) ? '' : ' hidden' %>><%- partial('_partial/article-row', { posts: [post] }) %></div>
+          <% }); %>
+        </div>
+        <p class="empty-state" id="emptyState"<%- visiblePosts.length ? ' hidden' : '' %>>没有找到匹配的文章。</p>
+      </section>
+      <section class="archive-taxonomy-panel" data-archive-pane="categories" aria-label="文章分类"<%- taxonomy === 'categories' ? '' : ' hidden' %>>
+        <div class="taxonomy-grid archive-taxonomy-grid">
+          <% categories.forEach(function (category) { %><a class="taxonomy-card" href="<%- url_for(category.path) %>"><span>CATEGORY</span><strong><%= category.name %></strong><p><%= category.count %> 篇文章</p><i aria-hidden="true">↗</i></a><% }); %>
+        </div>
+        <% if (!categories.length) { %><p class="empty-state">还没有公开文章分类。</p><% } %>
+      </section>
+      <section class="archive-taxonomy-panel" data-archive-pane="tags" aria-label="文章标签"<%- taxonomy === 'tags' ? '' : ' hidden' %>>
+        <div class="tag-cloud archive-tag-cloud">
+          <% tags.forEach(function (tag) { %><a class="tag-cloud__item" href="<%- url_for(tag.path) %>"><span># <%= tag.name %></span><b><%= tag.count %></b></a><% }); %>
+        </div>
+        <% if (!tags.length) { %><p class="empty-state">还没有公开文章标签。</p><% } %>
+      </section>
     </div>
     <aside class="sidebar archive-sidebar" aria-label="站点信息与分类">
       <section class="sidebar-card archive-stat-card" aria-labelledby="archiveStatsTitle">
@@ -63,9 +115,10 @@
         <div class="archive-topic-links">
           <a href="<%- url_for('/archives/') %>"><span>全部文章</span><b><%= allPosts.length %></b></a>
           <% categories.forEach(function (category) { %>
-            <a href="<%- url_for('/categories/' + category.name + '/') %>"><span><%= category.name %></span><b><%= category.count %></b></a>
+            <a href="<%- url_for(category.path) %>" data-archive-topic="<%= category.name %>"<%- currentCategory === category.name ? ' aria-current="page"' : '' %>><span><%= category.name %></span><b><%= category.count %></b></a>
           <% }); %>
         </div>
+        <div class="archive-index-links"><a href="<%- url_for('/categories/') %>">浏览所有分类 <span aria-hidden="true">↗</span></a><a href="<%- url_for('/tags/') %>">浏览所有标签 <span aria-hidden="true">↗</span></a></div>
       </nav>
       <div class="sidebar-card archive-aside-note"><p class="mini-heading">KEEP IN TOUCH</p><p>如果你喜欢这里的文字，可以订阅 RSS，在下一次更新时再相遇。</p><a class="side-link" href="<%- url_for('/rss/') %>">订阅更新 ↗</a></div>
     </aside>
