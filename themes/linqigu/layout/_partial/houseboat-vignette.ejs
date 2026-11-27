@@ -1,6 +1,8 @@
 <svg class="houseboat-vignette" viewBox="0 0 220 110" fill="none" aria-hidden="true" focusable="false">
   <g class="houseboat-vignette__cloud" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".45">
     <path d="M143 25h35c4-8 16-7 18 0h12M155 34h36" />
+  </g>
+  <g class="houseboat-vignette__birds" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".45">
     <path d="m27 42 4-3 4 3m5-8 3-2 3 2" />
   </g>
   <g class="houseboat-vignette__boat" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -11,7 +13,14 @@
     <path d="m104 19 13 3-13 5" class="houseboat-vignette__flag" />
   </g>
   <g class="houseboat-vignette__water" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".45">
-    <path d="M18 88h25m118 0h37M35 98h29m85 0h37M75 105h66" />
+    <path class="houseboat-vignette__ripple houseboat-vignette__ripple--near" d="M18 88c6-2 12 2 18 0s12 2 18 0M35 98h29" />
+    <path class="houseboat-vignette__ripple houseboat-vignette__ripple--far" d="M161 88h37M149 98c6-2 12 2 18 0s12 2 18 0" />
+    <path d="M75 105h66" />
     <path d="M7 78h8m179 20h12" />
+  </g>
+  <g fill="currentColor" opacity=".4">
+    <circle class="houseboat-vignette__spark houseboat-vignette__spark--one" cx="34" cy="65" r="1.3" />
+    <circle class="houseboat-vignette__spark houseboat-vignette__spark--two" cx="164" cy="52" r="1" />
+    <circle class="houseboat-vignette__spark houseboat-vignette__spark--three" cx="200" cy="65" r="1.2" />
   </g>
 </svg>

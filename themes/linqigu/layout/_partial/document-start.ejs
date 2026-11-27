@@ -15,7 +15,7 @@
     <% if (typeof exploreView !== 'undefined' && exploreView) { %><link rel="stylesheet" href="<%- url_for('/css/explore.css') %>?v=my-space-v1" /><link rel="stylesheet" href="<%- url_for('/css/explore-portals.css') %>?v=forest-portals-v1" /><% } %>
     <% if (typeof galleryView !== 'undefined' && galleryView) { %><link rel="stylesheet" href="<%- url_for('/css/gallery.css') %>?v=gallery-backdrop-v1" /><% } %>
     <% if (typeof isAlbum !== 'undefined' && isAlbum) { %><link rel="stylesheet" href="<%- url_for('/css/gallery-album.css') %>?v=gallery-album-v1" /><% } %>
-    <link rel="stylesheet" href="<%- url_for('/css/houseboat.css') %>?v=houseboat-v1" />
+    <link rel="stylesheet" href="<%- url_for('/css/houseboat.css') %>?v=houseboat-japanese-breeze-v2" />
     <link rel="alternate" type="application/atom+xml" title="吉卜力画舫" href="<%- url_for('/atom.xml') %>" />
   </head>
   <body class="<%= is_home() ? 'home-page' : typeof archiveView !== 'undefined' && archiveView ? 'archive-view' : typeof galleryView !== 'undefined' && galleryView ? 'gallery-view' : typeof exploreView !== 'undefined' && exploreView ? 'explore-view' : '' %>">
