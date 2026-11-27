@@ -3,51 +3,57 @@
   const featured = posts[0];
   const categoryCount = (name) => posts.filter((post) => post.categories.toArray().some((category) => category.name === name)).length;
   const totalWords = posts.reduce((sum, post) => sum + (post.content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, '').length, 0);
-  const startYear = posts.length ? new Date(posts[posts.length - 1].date).getFullYear() : new Date().getFullYear();
 %>
 <%- partial('_partial/document-start') %>
-<main id="top" tabindex="-1">
-  <div class="houseboat-welcome">
-    <p class="houseboat-welcome__note"><svg class="houseboat-welcome__leaf" viewBox="0 0 28 28" fill="none" aria-hidden="true" focusable="false"><path d="M6 19C3 10 10 4 23 5c0 12-6 18-14 15" fill="currentColor" fill-opacity=".12" /><path d="M5 24 20 9M6 19C3 10 10 4 23 5c0 12-6 18-14 15M12 17l-1-6m6 1h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" /></svg><span class="houseboat-welcome__copy">慢慢写，慢慢航行。<span class="houseboat-welcome__japanese" lang="ja">風にまかせて、ゆっくりと。</span></span></p>
-    <span class="houseboat-welcome__route"><span>日常</span><i aria-hidden="true"></i><span>阅读</span><i aria-hidden="true"></i><span>远方</span></span>
-  </div>
-  <section class="dashboard-hero" aria-label="博客首页">
-    <article class="quote-card" aria-label="吉卜力画舫随笔">
-      <div class="quote-controls" role="tablist" aria-label="切换随笔">
-        <button class="quote-control is-active" id="quote-tab-1" type="button" role="tab" aria-selected="true" aria-controls="quote-slide-1" aria-label="显示第一则随笔"><span></span></button>
-        <button class="quote-control" id="quote-tab-2" type="button" role="tab" aria-selected="false" aria-controls="quote-slide-2" aria-label="显示第二则随笔" tabindex="-1"><span></span></button>
-      </div>
-      <div class="quote-slides" aria-live="polite">
-        <section class="quote-slide is-active" id="quote-slide-1" role="tabpanel" aria-labelledby="quote-tab-1"><p class="eyebrow">PERSONAL NOTES</p><h2 class="quote-text">念念不忘，<br />必有回响。</h2><p class="quote-site">GHIBLI HOUSEBOAT</p></section>
-        <section class="quote-slide quote-slide--long" id="quote-slide-2" role="tabpanel" aria-labelledby="quote-tab-2" aria-hidden="true" inert><p class="eyebrow">PERSONAL NOTES</p><h2 class="quote-text">身如柳絮随风扬，<br />无论云泥意贯一。</h2><p class="quote-site">GHIBLI HOUSEBOAT</p></section>
-      </div>
-      <%- partial('_partial/houseboat-vignette') %>
-    </article>
-    <% if (featured) { %>
-      <a class="photo-card" href="<%- url_for(featured.path) %>" aria-label="阅读最新文章"><img src="<%- url_for('/images/header-landscape.png') %>" alt="晴天下的草坡与画画的人" /><div class="photo-shade"></div><span class="houseboat-breeze" aria-hidden="true"><i></i><i></i><i></i></span><span class="houseboat-postmark" aria-hidden="true"><span lang="ja">風の便り</span><small>SLOW DAYS</small></span><div class="photo-copy"><span>最新文章 · <%= featured.categories.length ? featured.categories.first().name : '随笔' %></span><h2><%= featured.title %></h2></div><span class="recommend">↗ 阅读全文</span></a>
-    <% } %>
+<main class="journal-home" id="top" tabindex="-1">
+  <div class="journal-masthead"><span><i aria-hidden="true"></i> 一艘装着日常与想象的小船</span><span lang="ja">風にまかせて、ゆっくりと。</span></div>
+  <section class="voyage-hero" aria-labelledby="homeTitle">
+    <div class="voyage-hero__copy">
+      <p class="eyebrow"><span aria-hidden="true">✳</span> THE JOURNAL OF SLOW DAYS</p>
+      <h1 id="homeTitle">慢慢写，<br /><em>慢慢航行。</em></h1>
+      <p class="voyage-hero__description">把日常酿成故事，把好奇交给远方。<br />在风经过的地方，收藏生活的微光。</p>
+      <div class="voyage-hero__actions"><a class="journal-button" href="#articles">翻开手记 <span aria-hidden="true">↗</span></a><button class="journal-text-button" type="button" data-boarding-open hidden>领取登船券 <span aria-hidden="true">→</span></button></div>
+      <div class="voyage-hero__signature"><span class="signature-line" aria-hidden="true"></span><span>sunny 的个人手记<br /><small>PRODUCT · BOOKS · EVERYDAY</small></span></div>
+    </div>
+    <div class="voyage-hero__window">
+      <img class="voyage-hero__art" src="<%- url_for('/images/header-landscape.png') %>" alt="蓝天下，少女撑着阳伞在开满野花的草坡上作画" width="1536" height="1024" fetchpriority="high" />
+      <div class="voyage-hero__wash" aria-hidden="true"></div>
+      <span class="voyage-hero__vertical" lang="ja" aria-hidden="true">小さな日々、大きな世界。</span>
+      <span class="journal-stamp" aria-hidden="true">風の便り<small>GHIBLI HOUSEBOAT</small></span>
+      <span class="houseboat-breeze" aria-hidden="true"><i></i><i></i><i></i></span>
+      <div class="voyage-hero__caption"><span>一期一会 · 每一次停靠，都有新的故事</span><span aria-hidden="true">01 — ∞</span></div>
+    </div>
+    <div class="voyage-hero__ticket" aria-hidden="true"><img src="<%- url_for('/images/ghibli-houseboat-logo.svg') %>" alt="" width="44" height="44" /><span>今日，适合出发。<small>GOOD THINGS TAKE THE SLOW ROUTE.</small></span><i>〰</i></div>
   </section>
-  <section class="content-layout" id="articles">
-    <aside class="sidebar">
-      <div class="sidebar-card profile-card">
-        <div class="profile-avatar"><img src="<%- url_for('/images/avatar.png') %>" alt="sunny 的头像" /></div>
-        <div class="profile-identity"><p class="mini-heading">ABOUT THE AUTHOR</p><h2>sunny</h2><i></i><span>INFJ</span><p>一个在互联网行业工作、下班后写字的人。相信好奇心、长期主义，还有一杯热茶。</p></div>
-        <div class="profile-socials" aria-label="联系 sunny"><a href="https://github.com/sunny-0501" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><span aria-hidden="true">&lt;/&gt;</span></a></div>
-        <div class="site-stats" aria-label="站点统计"><div><strong><%= posts.length %></strong><span>篇文章</span></div><div><strong><%= totalWords.toLocaleString('zh-CN') %></strong><span>字数</span></div><div><strong><%= Math.max(1, new Date().getFullYear() - startYear + 1) %></strong><span>记录年</span></div></div>
-        <a class="profile-more" href="<%- url_for('/explore/') %>">认识我更多 <span>↗</span></a>
-      </div>
-    </aside>
+  <div class="journal-route" aria-label="手记主题"><span>沿途收集</span><a href="<%- url_for('/categories/项目/') %>">产品与创造</a><i aria-hidden="true">✳</i><a href="<%- url_for('/categories/阅读/') %>">书页里的远方</a><i aria-hidden="true">✳</i><a href="<%- url_for('/categories/随笔/') %>">日常的微小片刻</a><span class="journal-route__end" lang="ja">日々のかけら</span></div>
+  <section class="journal-dispatch" aria-label="最新一封来信">
+    <div class="journal-dispatch__label"><span class="eyebrow">FRESH OFF THE BOAT</span><span>最近的一封</span></div>
+    <% if (featured) { %><a href="<%- url_for(featured.path) %>" class="journal-dispatch__link"><time datetime="<%= date(featured.date, 'YYYY-MM-DD') %>"><%= date(featured.date, 'YYYY.MM.DD') %></time><h2><%= featured.title %></h2><span aria-hidden="true">↗</span></a><% } else { %><p>新故事正在路上，先在这里坐坐吧。</p><% } %>
+  </section>
+  <section class="content-layout journal-content" id="articles">
     <div class="articles-column">
+      <div class="journal-section-title"><div><p class="eyebrow">01 / THE LOGBOOK</p><h2>沿途手记<span>日々の記録</span></h2></div><a href="<%- url_for('/archives/') %>">全部归档 <span aria-hidden="true">↗</span></a></div>
       <div class="home-article-toolbar">
         <nav class="content-tabs" aria-label="按分类浏览文章"><a class="selected" aria-current="true" href="<%- url_for('/') %>" data-filter="all"><span>全部</span><b><%= posts.length %></b></a><a href="<%- url_for('/categories/项目/') %>" data-filter="项目"><span>项目</span><b><%= categoryCount('项目') %></b></a><a href="<%- url_for('/categories/随笔/') %>" data-filter="随笔"><span>随笔</span><b><%= categoryCount('随笔') %></b></a><a href="<%- url_for('/categories/阅读/') %>" data-filter="阅读"><span>阅读</span><b><%= categoryCount('阅读') %></b></a></nav>
         <%- partial('_partial/article-layout-options') %>
       </div>
-      <div class="section-heading"><h2 class="section-label"><span>LATEST NOTES</span><span>最新文章</span></h2><p class="filter-hint" id="filterHint" aria-live="polite">共 <%= posts.length %> 篇文章 · 可按上方分类查找</p></div>
+      <p class="journal-count filter-hint" id="filterHint" aria-live="polite">共 <%= posts.length %> 篇文章</p>
       <div class="article-list" id="articleList"><%- partial('_partial/article-row', { posts: posts }) %></div>
       <p class="empty-state" id="emptyState" hidden>没有找到匹配的文章。</p>
     </div>
+    <aside class="sidebar journal-sidebar">
+      <section class="sidebar-card profile-card">
+        <span class="profile-postmark" aria-hidden="true">船长手记<br />SLOW LIVING CLUB</span>
+        <div class="profile-avatar"><img src="<%- url_for('/images/avatar.png') %>" alt="sunny 的头像" width="112" height="112" loading="lazy" /></div>
+        <div class="profile-identity"><p class="mini-heading">THE ONE BEHIND THE WORDS</p><h2>你好，我是 sunny。</h2><span>INFJ · 保持好奇，缓慢生长</span><p>白天做产品，下班后写字。<br />相信好的故事，总藏在平常的日子里。<br />欢迎来我的小船上坐一会儿。</p></div>
+        <a class="profile-more" href="<%- url_for('/explore/') %>">关于这位船长 <span aria-hidden="true">↗</span></a>
+        <div class="site-stats"><div><strong><%= posts.length %></strong><span>篇手记</span></div><div><strong><%= totalWords.toLocaleString('zh-CN') %></strong><span>字的风景</span></div></div>
+      </section>
+      <a class="journal-small-world" href="<%- url_for('/gallery/') %>"><img src="<%- url_for('/images/forest-rest.png') %>" alt="树影里的休息时光" loading="lazy" width="480" height="360" /><span><small>THE LITTLE THINGS</small><strong>把喜欢的瞬间，<br />好好收藏。</strong><i aria-hidden="true">↗</i></span></a>
+    </aside>
   </section>
-  <nav class="quick-links" aria-label="快捷入口"><a href="<%- url_for('/archives/') %>"><span aria-hidden="true">01 · <span lang="ja">日々の記録</span></span><strong>全部文章</strong><i aria-hidden="true">↗</i></a><a href="<%- url_for('/links/') %>"><span aria-hidden="true">02 · <span lang="ja">ご縁をたどって</span></span><strong>友链往来</strong><i aria-hidden="true">↗</i></a><a href="<%- url_for('/explore/') %>"><span aria-hidden="true">03 · <span lang="ja">わたしのこと</span></span><strong>我的</strong><i aria-hidden="true">↗</i></a></nav>
-  <section class="newsletter" id="newsletter"><div><p class="eyebrow houseboat-newsletter-note" lang="ja">また、次の便りで。</p><h2>下次更新，继续相遇。</h2><p>通过 RSS 订阅，在你习惯的阅读器里收到新文章。</p></div><a class="read-link newsletter-link" href="<%- url_for('/rss/') %>">订阅更新 <span>↗</span></a></section>
+  <section class="journal-wander" id="voyage" aria-label="随风漫游"><%- partial('_partial/voyage') %></section>
+  <nav class="quick-links journal-destinations" aria-label="下一处风景"><a href="<%- url_for('/archives/') %>"><span>01 · 日々の記録</span><strong>翻阅旧日的手记</strong><i aria-hidden="true">↗</i></a><a href="<%- url_for('/links/') %>"><span>02 · ご縁をたどって</span><strong>在友链港湾相遇</strong><i aria-hidden="true">↗</i></a><a href="<%- url_for('/gallery/') %>"><span>03 · 小さな宝物</span><strong>收集生活的切片</strong><i aria-hidden="true">↗</i></a></nav>
+  <section class="newsletter" id="newsletter"><div><p class="eyebrow" lang="ja">また、次の便りで。</p><h2>风会带来，下一封信。</h2><p>通过 RSS 订阅，让新的故事顺流抵达。</p></div><a class="read-link newsletter-link" href="<%- url_for('/rss/') %>">订阅画舫来信 <span aria-hidden="true">↗</span></a><%- partial('_partial/houseboat-vignette') %></section>
 </main>
 <%- partial('_partial/document-end') %>

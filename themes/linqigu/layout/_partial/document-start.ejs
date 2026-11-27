@@ -16,10 +16,16 @@
     <% if (typeof galleryView !== 'undefined' && galleryView) { %><link rel="stylesheet" href="<%- url_for('/css/gallery.css') %>?v=gallery-backdrop-v1" /><% } %>
     <% if (typeof isAlbum !== 'undefined' && isAlbum) { %><link rel="stylesheet" href="<%- url_for('/css/gallery-album.css') %>?v=gallery-album-v1" /><% } %>
     <link rel="stylesheet" href="<%- url_for('/css/houseboat.css') %>?v=houseboat-japanese-breeze-v2" />
+    <link rel="stylesheet" href="<%- url_for('/css/journal.css') %>?v=slow-voyage-v1" />
+    <link rel="stylesheet" href="<%- url_for('/css/journal-inner.css') %>?v=slow-voyage-v1" />
+    <link rel="stylesheet" href="<%- url_for('/css/voyage.css') %>?v=slow-voyage-v1" />
+    <link rel="stylesheet" href="<%- url_for('/css/friends.css') %>?v=slow-voyage-v1" />
+    <link rel="stylesheet" href="<%- url_for('/css/boarding.css') %>?v=slow-voyage-v1" />
     <link rel="alternate" type="application/atom+xml" title="吉卜力画舫" href="<%- url_for('/atom.xml') %>" />
   </head>
   <body class="<%= is_home() ? 'home-page' : typeof archiveView !== 'undefined' && archiveView ? 'archive-view' : typeof galleryView !== 'undefined' && galleryView ? 'gallery-view' : typeof exploreView !== 'undefined' && exploreView ? 'explore-view' : '' %>">
     <a class="skip-link" href="#top">跳到正文</a>
+    <%- partial('_partial/boarding') %>
     <script>try { const savedMode = localStorage.getItem('blog-theme-mode'); const legacyMode = localStorage.getItem('blog-theme'); const mode = ['light', 'dark', 'system'].includes(savedMode) ? savedMode : ['light', 'dark'].includes(legacyMode) ? legacyMode : 'system'; if (mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.body.classList.add('dark'); } catch {}</script>
     <% if (is_post()) { %>
       <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>

@@ -182,7 +182,7 @@
     if (themeHue) themeHue.value = String(hue);
     if (themeHueValue) themeHueValue.value = String(hue);
   };
-  applyThemeHue(storage.getItem('blog-hue') || '165');
+  applyThemeHue(storage.getItem('blog-hue') || '148');
   themeHue?.addEventListener('input', () => {
     applyThemeHue(themeHue.value);
     storage.setItem('blog-hue', themeHue.value);
@@ -194,7 +194,7 @@
     if (accentHue) accentHue.value = String(hue);
     if (accentHueValue) accentHueValue.value = String(hue);
   };
-  applyAccentHue(storage.getItem('blog-accent-hue') || '210');
+  applyAccentHue(storage.getItem('blog-accent-hue') || '43');
   accentHue?.addEventListener('input', () => {
     applyAccentHue(accentHue.value);
     storage.setItem('blog-accent-hue', accentHue.value);
@@ -321,27 +321,9 @@
   };
   navDropdowns.forEach((dropdown) => {
     const button = dropdown.querySelector('.nav-dropdown__toggle');
-    let pointerIsOver = false;
-    dropdown.addEventListener('pointerenter', (event) => {
-      if (event.pointerType === 'mouse') {
-        pointerIsOver = true;
-        closeNavDropdowns();
-        setNavDropdownOpen(dropdown, true);
-      }
-    });
-    dropdown.addEventListener('pointerleave', (event) => {
-      if (event.pointerType === 'mouse') {
-        pointerIsOver = false;
-        if (!dropdown.contains(document.activeElement)) setNavDropdownOpen(dropdown, false);
-      }
-    });
-    dropdown.addEventListener('focusin', () => {
-      closeNavDropdowns();
-      setNavDropdownOpen(dropdown, true);
-    });
     dropdown.addEventListener('focusout', () => {
       requestAnimationFrame(() => {
-        if (!pointerIsOver && !dropdown.contains(document.activeElement)) setNavDropdownOpen(dropdown, false);
+        if (!dropdown.contains(document.activeElement)) setNavDropdownOpen(dropdown, false);
       });
     });
 
@@ -350,6 +332,13 @@
       const shouldOpen = button.getAttribute('aria-expanded') !== 'true';
       closeNavDropdowns();
       if (shouldOpen) setNavDropdownOpen(dropdown, true);
+    });
+    button?.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowDown') return;
+      event.preventDefault();
+      closeNavDropdowns();
+      setNavDropdownOpen(dropdown, true);
+      dropdown.querySelector('.nav-dropdown__menu a:not([hidden])')?.focus();
     });
     dropdown.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape' || !dropdown.classList.contains('is-open')) return;

@@ -13,8 +13,7 @@
         { label: '&#x6807;&#x7B7E;', path: '/tags/', current: activePath.startsWith('tags') }
       ]
     },
-    { label: '&#x53CB;&#x94FE;', path: '/links/', active: activePath.startsWith('links'), current: activePath.startsWith('links') },
-    { label: '&#x7559;&#x8A00;', path: '/guestbook/', active: activePath.startsWith('guestbook'), current: activePath.startsWith('guestbook') },
+    { label: '友链港湾', path: '/links/', active: activePath.startsWith('links') || activePath.startsWith('guestbook'), current: activePath.startsWith('links') },
     {
       label: '&#x6211;&#x7684;', path: '/explore/', active: isMySection, current: activePath.startsWith('explore'),
       menuId: 'myMenu', toggleLabel: '&#x5C55;&#x5F00;&#x4E2A;&#x4EBA;&#x5206;&#x7C7B;',
@@ -55,6 +54,7 @@
       <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg>
       <span class="search-box__placeholder">&#x641C;&#x627E;&#x6587;&#x7AE0;</span>
     </button>
+    <a class="header-voyage" href="<%- url_for('/links/#voyage') %>" title="随机访问一个博客"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 6 12H6L12 3Zm0 0v14M3 17h18l-4 4H7l-4-4Z"/></svg><span>随风漫游</span></a>
     <div class="appearance-control">
       <button class="icon-button" id="appearanceToggle" type="button" aria-label="外观设置" aria-controls="appearancePanel" aria-expanded="false">
         <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-1.3-1.1-2-2.3-2h-1.1a2 2 0 0 1-2-2V7A4 4 0 0 0 12 3Z"/><circle cx="7.2" cy="10" r=".7"/><circle cx="10" cy="6.8" r=".7"/><circle cx="14.2" cy="6.8" r=".7"/></svg>
@@ -63,12 +63,12 @@
         <p class="mini-heading">MAKE YOURSELF AT HOME</p>
         <h2>阅读偏好</h2>
         <div class="appearance-group">
-          <div class="appearance-heading"><label for="themeHue">主题色相</label><output id="themeHueValue" for="themeHue">165</output></div>
-          <input class="theme-hue-slider" id="themeHue" type="range" min="0" max="360" value="165" />
+          <div class="appearance-heading"><label for="themeHue">主题色相</label><output id="themeHueValue" for="themeHue">148</output></div>
+          <input class="theme-hue-slider" id="themeHue" type="range" min="0" max="360" value="148" />
         </div>
         <div class="appearance-group">
-          <div class="appearance-heading"><label for="accentHue">强调色相</label><output id="accentHueValue" for="accentHue">210</output></div>
-          <input class="accent-hue-slider" id="accentHue" type="range" min="0" max="360" value="210" />
+          <div class="appearance-heading"><label for="accentHue">强调色相</label><output id="accentHueValue" for="accentHue">43</output></div>
+          <input class="accent-hue-slider" id="accentHue" type="range" min="0" max="360" value="43" />
         </div>
         <div class="appearance-group">
           <div class="appearance-heading"><label for="windIntensity">动效强度</label><output id="windIntensityValue" for="windIntensity">60%</output></div>

@@ -1,11 +1,11 @@
-<% const thumbMap = { '项目': 'thumb-tool', '阅读': 'thumb-book', '随笔': 'thumb-walk' }; %>
+<% const thumbMap = { '项目': 'thumb-tool', '阅读': 'thumb-book', '随笔': 'thumb-walk' }; const coverMap = { '项目': '/images/explore-moving-castle.jpg', '阅读': '/images/links-cottage.jpg', '随笔': '/images/forest-rest.png' }; %>
 <% posts.filter((post) => post.archived !== true).forEach(function(post) { %>
   <% const category = post.categories && post.categories.length ? post.categories.first().name : '随笔'; %>
   <% const sourcePath = ['source', ...String(post.source || '').replace(/^source\//, '').split('/')].map(encodeURIComponent).join('/'); %>
   <% const summary = (post.excerpt || post.content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim(); %>
   <% const readingMinutes = Math.max(1, Math.ceil(summary.length / 400)); %>
   <article class="article-row" data-category="<%= category %>">
-    <div class="article-thumb <%= thumbMap[category] || 'thumb-tool' %>"><span><%= category.toUpperCase() %><br />NOTE</span></div>
+    <div class="article-thumb <%= thumbMap[category] || 'thumb-tool' %>"><img src="<%- url_for(post.cover || coverMap[category] || '/images/header-landscape.png') %>" alt="" loading="lazy" width="320" height="220" /><span><%= category %> / JOURNAL</span></div>
     <div class="article-body">
       <div class="article-meta"><span class="tag"><%= category %></span><time datetime="<%= date(post.date, 'YYYY-MM-DD') %>"><%= date(post.date, 'YYYY.MM.DD') %></time><span><%= readingMinutes %> MIN</span></div>
       <h3><a class="article-link" href="<%- url_for(post.path) %>"><%= post.title %></a></h3>

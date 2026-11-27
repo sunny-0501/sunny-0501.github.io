@@ -1,0 +1,33 @@
+<%
+  const voyageBlogs = (Array.isArray(site.data.friends) ? site.data.friends : [])
+    .filter((friend) => friend.kind === 'blog' && /^https:\/\//i.test(friend.url || ''))
+    .map((friend) => ({ name: friend.name, url: friend.url }));
+  const voyageFallback = voyageBlogs.length ? voyageBlogs[0].url : 'https://www.travellings.cn/go.html';
+%>
+<section class="voyage-ticket" data-voyage data-voyage-destinations="<%= JSON.stringify(voyageBlogs) %>" aria-label="随风漫游，随机访问其他博客">
+  <div class="voyage-ticket__illustration" aria-hidden="true">
+    <svg viewBox="0 0 156 116" fill="none">
+      <circle cx="118" cy="24" r="15" fill="currentColor" opacity=".19" />
+      <path class="voyage-ticket__cloud" d="M17 29h39m-31 6h20m54 5h36" stroke="currentColor" stroke-linecap="round" opacity=".35" />
+      <g class="voyage-ticket__boat" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M42 78h76l-14 15H58L42 78Z" fill="currentColor" fill-opacity=".1" />
+        <path d="M77 76V18m-5 8L47 69h25V26Zm11 5v38h27L83 31Z" fill="var(--card, #fffdf4)" />
+        <path d="m78 18 16 4-16 6" fill="var(--peach, #c8906f)" />
+      </g>
+      <path d="M23 99c10-5 16 5 27 0s17 5 28 0 17 5 28 0 16 5 27 0M47 108h34m11 0h18" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".5" />
+      <path d="m22 54 4-3 4 3m96 7 4-3 4 3" stroke="currentColor" stroke-linecap="round" opacity=".5" />
+    </svg>
+    <span>ONE WAY · NO PLAN</span>
+  </div>
+  <div class="voyage-ticket__copy">
+    <p class="eyebrow">A LITTLE DETOUR <span lang="ja">風まかせの旅</span></p>
+    <h2>下一站，交给风。</h2>
+    <p>互联网很大，偶然也很好。登上一班没有目的地的小船，去另一位写作者的世界坐坐。</p>
+    <span class="voyage-ticket__status" data-voyage-status role="status" aria-live="polite">从 <%= voyageBlogs.length %> 座邻岸小屋中，发现一次新相遇。</span>
+  </div>
+  <div class="voyage-ticket__actions">
+    <a class="voyage-ticket__depart" data-voyage-random href="<%- voyageFallback %>" target="_blank" rel="noopener noreferrer" aria-label="随机访问一位博主，在新标签页打开"><span>随风漫游</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 17 19 6M8 5l11 1-2 11" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
+    <a class="voyage-ticket__further" href="https://www.travellings.cn/go.html" target="_blank" rel="noopener noreferrer external">开往 · 更远的世界 <span aria-hidden="true">↗</span></a>
+    <span class="voyage-ticket__footnote">新标签页靠岸，画舫留在这里。</span>
+  </div>
+</section>
