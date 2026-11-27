@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="<%= page.description || config.description %>" />
     <title><%= page.title ? page.title + ' · ' : '' %><%= config.title %></title>
-    <link rel="icon" href="<%- url_for('/images/linqigu-logo.svg') %>" type="image/svg+xml" />
+    <link rel="icon" href="<%- url_for('/images/ghibli-houseboat-logo.svg') %>" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -15,7 +15,8 @@
     <% if (typeof exploreView !== 'undefined' && exploreView) { %><link rel="stylesheet" href="<%- url_for('/css/explore.css') %>?v=my-space-v1" /><link rel="stylesheet" href="<%- url_for('/css/explore-portals.css') %>?v=forest-portals-v1" /><% } %>
     <% if (typeof galleryView !== 'undefined' && galleryView) { %><link rel="stylesheet" href="<%- url_for('/css/gallery.css') %>?v=gallery-backdrop-v1" /><% } %>
     <% if (typeof isAlbum !== 'undefined' && isAlbum) { %><link rel="stylesheet" href="<%- url_for('/css/gallery-album.css') %>?v=gallery-album-v1" /><% } %>
-    <link rel="alternate" type="application/atom+xml" title="林栖谷" href="<%- url_for('/atom.xml') %>" />
+    <link rel="stylesheet" href="<%- url_for('/css/houseboat.css') %>?v=houseboat-v1" />
+    <link rel="alternate" type="application/atom+xml" title="吉卜力画舫" href="<%- url_for('/atom.xml') %>" />
   </head>
   <body class="<%= is_home() ? 'home-page' : typeof archiveView !== 'undefined' && archiveView ? 'archive-view' : typeof galleryView !== 'undefined' && galleryView ? 'gallery-view' : typeof exploreView !== 'undefined' && exploreView ? 'explore-view' : '' %>">
     <a class="skip-link" href="#top">跳到正文</a>
@@ -29,7 +30,7 @@
         <header class="search-dialog__header">
           <div>
             <p class="eyebrow">SEARCH THE JOURNAL</p>
-            <h2 id="siteSearchTitle">搜索林栖谷</h2>
+            <h2 id="siteSearchTitle">搜索吉卜力画舫</h2>
           </div>
           <button class="search-dialog__close" type="button" data-search-close aria-label="关闭搜索">×</button>
         </header>

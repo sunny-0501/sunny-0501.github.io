@@ -42,11 +42,11 @@ albums:
         title: 博客头像
         alt: 博客头像
         categories: [illustration]
-        search: 博客 头像 林栖谷 插画
+        search: 博客 头像 吉卜力画舫 插画
         soft: true
-      - src: /images/linqigu-logo.svg
-        title: 林栖谷标识
-        alt: 林栖谷标识
+      - src: /images/ghibli-houseboat-logo.svg
+        title: 吉卜力画舫标识
+        alt: 吉卜力画舫标识
         categories: [illustration]
-        search: 博客 标识 林栖谷 logo 插画
+        search: 博客 标识 吉卜力画舫 logo 插画
         soft: true

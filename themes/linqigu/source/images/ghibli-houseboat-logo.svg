@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none">
+  <title>吉卜力画舫 · GHIBLI HOUSEBOAT</title>
+  <desc>暖阳下，一艘载着绿色小屋与树叶的画舫，轻轻漂过水面。</desc>
+  <rect x="2" y="2" width="124" height="124" rx="34" fill="#F5F2E5"/>
+  <circle cx="94" cy="31" r="12" fill="#E9C57E"/>
+  <path d="M64 20V77" stroke="#355E4E" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M66 22C78 16 88 19 88 19C83 31 73 34 66 29" fill="#84A382"/>
+  <path d="M35 56L63 36L91 56" fill="#C48B64"/>
+  <path d="M35 56L63 36L91 56" stroke="#355E4E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M42 57H84V79H42V57Z" fill="#A9BC94"/>
+  <path d="M42 58V79M84 58V79" stroke="#355E4E" stroke-width="3.5" stroke-linecap="round"/>
+  <rect x="55" y="59" width="16" height="17" rx="3" fill="#FFF6CF"/>
+  <path d="M63 61V74" stroke="#A9875F" stroke-width="2"/>
+  <path d="M25 78H103L93 89C90 93 86 95 80 95H47C41 95 37 93 34 89L25 78Z" fill="#355E4E"/>
+  <path d="M33 79H95" stroke="#E9C57E" stroke-width="3" stroke-linecap="round"/>
+  <path d="M23 103C30 99 36 99 43 103C50 107 56 107 63 103C70 99 76 99 83 103C90 107 97 107 105 102" stroke="#84A382" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,87 @@
+/* A little paper, lake water, and wind for the houseboat journal. */
+body {
+  background-image: radial-gradient(color-mix(in srgb, var(--forest) 5%, transparent) .5px, transparent .5px);
+  background-size: 5px 5px;
+}
+
+.houseboat-welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 46px;
+  padding: 7px 2px 1px;
+  color: var(--soft-ink);
+}
+.houseboat-welcome__note { display: flex; align-items: center; gap: 10px; margin: 0; font-family: var(--serif); font-size: 13px; letter-spacing: .06em; }
+.houseboat-welcome__leaf { flex: 0 0 25px; width: 25px; height: 25px; color: var(--forest); }
+.houseboat-welcome__route { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 9px; letter-spacing: .1em; white-space: nowrap; }
+.houseboat-welcome__route i { display: block; width: 38px; border-top: 1px dashed var(--soft-ink); opacity: .4; }
+.home-page .dashboard-hero { padding-top: 10px; }
+
+.home-page .quote-card { border-radius: 12px 12px 36px 12px; }
+.home-page .quote-card::before { background: linear-gradient(135deg, rgba(255,253,243,.89), rgba(246,247,232,.79)); }
+.home-page .quote-card::after { display: none; }
+.home-page .quote-site { font-size: 10px; letter-spacing: .13em; }
+.home-page .quote-card .quote-slide--long .quote-text { font-size: clamp(24px, 2.6vw, 35px); line-height: 1.48; }
+.houseboat-vignette { position: absolute; z-index: 1; right: 12px; bottom: 0; width: 185px; height: auto; color: var(--forest); opacity: .7; pointer-events: none; }
+.houseboat-vignette__boat { transform-origin: 108px 88px; }
+.houseboat-vignette__sail { fill: var(--card); fill-opacity: .85; }
+.houseboat-vignette__hull { fill: var(--forest); fill-opacity: .12; }
+.houseboat-vignette__flag { fill: var(--peach); stroke: var(--peach); }
+.home-page .photo-card { border-radius: 12px; }
+.houseboat-postmark { position: absolute; z-index: 2; top: 21px; right: 22px; display: grid; width: 67px; height: 67px; place-content: center; gap: 5px; border: 1px solid rgba(255,253,247,.8); border-radius: 50%; outline: 1px solid rgba(255,253,247,.4); outline-offset: -5px; color: #fffdf7; text-align: center; text-shadow: 0 1px 8px rgba(19,50,41,.65); transform: rotate(9deg); pointer-events: none; }
+.houseboat-postmark span { font-family: var(--serif); font-size: 12px; letter-spacing: .1em; }
+.houseboat-postmark small { font-family: var(--mono); font-size: 7px; letter-spacing: .12em; }
+.home-page .profile-card { border-radius: 12px; background-image: linear-gradient(150deg, color-mix(in srgb, var(--butter) 13%, transparent), transparent 55%); }
+.home-page .profile-avatar { border-width: 4px; box-shadow: 0 5px 0 color-mix(in srgb, var(--forest) 9%, transparent), 0 10px 25px rgba(48,92,67,.11); }
+.home-page .quick-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; margin-bottom: 24px; border-top: 1px solid var(--card-border); }
+.home-page .quick-links > a { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 9px 12px; padding: 19px 0 16px; border-bottom: 1px solid var(--card-border); }
+.home-page .quick-links > a > span { grid-column: 1; color: var(--soft-ink); font-family: var(--mono); font-size: 9px; letter-spacing: .07em; }
+.home-page .quick-links > a > strong { grid-column: 1; color: var(--deep-forest); font-family: var(--serif); font-size: 19px; font-weight: 600; }
+.home-page .quick-links > a > i { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--soft-ink); font-size: 20px; font-style: normal; }
+.home-page .quick-links > a:focus-visible { outline: 2px solid var(--selection-accent); outline-offset: 5px; }
+.home-page .quick-links > a::before { content: ""; position: absolute; top: -3px; left: 0; width: 5px; height: 5px; border: 1px solid var(--forest); border-radius: 50%; background: var(--dashboard-bg); }
+.home-page .newsletter { position: relative; isolation: isolate; overflow: hidden; border-radius: 12px; }
+.home-page .newsletter::after { content: ""; position: absolute; z-index: -1; right: -70px; bottom: -160px; width: 450px; height: 260px; border: 1px solid rgba(255,253,247,.12); border-radius: 50%; box-shadow: 0 -16px 0 0 rgba(255,253,247,.035), 0 -35px 0 0 rgba(255,253,247,.025); transform: rotate(-12deg); pointer-events: none; }
+
+body.dark .houseboat-welcome { color: var(--soft-ink); }
+body.dark.home-page .quote-card::before { background: linear-gradient(135deg, rgba(24,44,36,.86), rgba(28,50,40,.74)); }
+body.dark .houseboat-vignette { opacity: .64; }
+body.dark .houseboat-vignette__sail { fill: var(--mint); fill-opacity: .18; }
+body.dark .houseboat-vignette__hull { fill-opacity: .17; }
+body.dark.home-page .profile-card { background-image: linear-gradient(150deg, rgba(239,209,139,.05), transparent 55%); }
+
+/* The existing motion setting and OS preference control this small sway. */
+body.wind-on .houseboat-vignette__boat { animation: houseboat-sway 7s ease-in-out infinite; }
+@keyframes houseboat-sway { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-2px) rotate(1.5deg); } }
+:root[data-motion="reduced"] .houseboat-vignette__boat { animation: none; }
+@media (prefers-reduced-motion: reduce) { .houseboat-vignette__boat { animation: none !important; } }
+
+@media (max-width: 940px) {
+  .houseboat-welcome__route { gap: 8px; font-size: 8px; }
+  .houseboat-vignette { width: 155px; right: 6px; }
+  .home-page .home-article-toolbar { flex-wrap: wrap; gap: 7px; }
+  .home-page .home-article-toolbar .content-tabs { flex-basis: 100%; }
+  .home-page .article-layout-options { margin-left: auto; padding: 4px 0 0; border-left: 0; }
+}
+@media (max-width: 720px) {
+  .houseboat-welcome { min-height: 42px; padding-top: 2px; }
+  .houseboat-welcome__note { font-size: 12px; }
+  .houseboat-welcome__route i { width: 20px; }
+  .houseboat-vignette { width: 162px; }
+  .houseboat-postmark { top: 18px; right: 18px; width: 61px; height: 61px; }
+}
+@media (max-width: 480px) {
+  .houseboat-welcome { gap: 8px; }
+  .houseboat-welcome__note { gap: 7px; font-size: 11px; letter-spacing: .03em; }
+  .houseboat-welcome__leaf { flex-basis: 21px; width: 21px; height: 21px; }
+  .houseboat-welcome__route { gap: 6px; font-size: 8px; letter-spacing: .04em; }
+  .houseboat-welcome__route i { display: none; }
+  .houseboat-vignette { width: 142px; right: 3px; }
+  .houseboat-postmark { right: auto; left: 18px; }
+  .home-page .quick-links { grid-template-columns: 1fr; gap: 0; }
+  .home-page .quick-links > a { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 18px; align-items: center; gap: 10px; padding: 16px 0; }
+  .home-page .quick-links > a > span, .home-page .quick-links > a > strong, .home-page .quick-links > a > i { grid-column: auto; grid-row: 1; }
+  .home-page .quick-links > a > strong { font-size: 17px; }
+}
