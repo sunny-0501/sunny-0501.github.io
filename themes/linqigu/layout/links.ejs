@@ -6,46 +6,44 @@
 %>
 <%- partial('_partial/document-start', { friendsView: true }) %>
 <main class="inner-page friends-page harbor-page" id="top">
-  <div class="harbor-location"><a href="<%- url_for('/') %>">画舫首页</a><span aria-hidden="true">/</span><span>友邻码头</span><span class="harbor-location__weather">风向正好 · 宜串门</span></div>
+  <div class="harbor-location"><a href="<%- url_for('/') %>">首页</a><span aria-hidden="true">/</span><span>友链</span></div>
   <section class="harbor-intro" aria-labelledby="harborTitle">
     <div class="harbor-intro__copy">
-      <p class="eyebrow">PORT OF FRIENDS <span aria-hidden="true">―</span> 友邻码头</p>
-      <h1 id="harborTitle">山海有相逢，<br />来往皆是<em>风。</em></h1>
-      <p class="harbor-intro__description">互联网很大，还好有这些小小的灯火。<br />停一会儿，去朋友的世界里散散步。</p>
-      <nav class="harbor-intro__anchors" aria-label="友链页内容"><a href="#neighbors">拜访邻岸 <span aria-hidden="true">↓</span></a><a href="#guestbook">留一封信 <span aria-hidden="true">↗</span></a></nav>
-      <p class="harbor-intro__footnote" lang="ja">遠くにいても、同じ風の中。</p>
+      <h1 id="harborTitle">友链</h1>
+      <p class="harbor-intro__description">我平时会看的几个博客。也欢迎来交换链接。</p>
+      <nav class="harbor-intro__anchors" aria-label="友链页内容"><a href="#neighbors">博客列表 <span aria-hidden="true">↓</span></a><a href="#guestbook">留言 <span aria-hidden="true">↗</span></a></nav>
     </div>
     <figure class="harbor-intro__picture">
       <img src="<%- url_for('/images/links-cottage.jpg') %>" alt="绿树掩映下的乡间小屋，阳光洒在通往院子的路上" width="960" height="640" fetchpriority="high" />
-      <figcaption><span>POSTCARD NO. 02</span><span>寄自一个有风的地方</span></figcaption>
+      <figcaption><span>GHIBLI HOUSEBOAT</span><span>友链与留言</span></figcaption>
       <span class="harbor-postmark" aria-hidden="true"><span>風の便り</span><small>HELLO, NEIGHBOR</small></span>
     </figure>
   </section>
-  <div class="harbor-voyage" id="voyage"><%- partial('_partial/voyage') %></div>
   <section class="harbor-neighbors" id="neighbors" aria-labelledby="neighborsTitle">
-    <div class="harbor-section-heading"><div><p class="eyebrow">01 / NEIGHBORING SHORES</p><h2 id="neighborsTitle">邻岸的灯火<span aria-hidden="true">✳</span></h2></div><p><%= neighbors.length %> 处停靠点 · 在新窗口拜访</p></div>
+    <div class="harbor-section-heading"><div><h2 id="neighborsTitle">推荐博客</h2></div><p><%= neighbors.length %> 个站点 · 点击打开</p></div>
     <div class="harbor-friends">
       <% neighbors.forEach(function(friend, index) { %>
         <a class="harbor-friend" href="<%= friend.url %>" target="_blank" rel="noopener noreferrer">
-          <span class="harbor-friend__number">PORT <%= String(index + 1).padStart(2, '0') %></span>
+          <span class="harbor-friend__number"><%= String(index + 1).padStart(2, '0') %></span>
           <span class="harbor-friend__identity"><span class="harbor-friend__avatar"><span aria-hidden="true"><%= friend.name.slice(0, 1) %></span><% if (friend.avatar) { %><img src="<%= friend.avatar %>" alt="" loading="lazy" width="48" height="48" /><% } %></span><span><strong><%= friend.name %></strong><small><%= friend.note || '个人博客' %></small></span></span>
           <p><%= friend.description %></p>
-          <span class="harbor-friend__visit">去串个门 <span aria-hidden="true">↗</span></span>
+          <span class="harbor-friend__visit">访问博客 <span aria-hidden="true">↗</span></span>
         </a>
       <% }); %>
     </div>
-    <% if (!neighbors.length) { %><p class="harbor-empty">码头正在整理中，欢迎在下方留下你的站点。</p><% } %>
+    <% if (!neighbors.length) { %><p class="harbor-empty">还在整理，欢迎在下方留下你的博客。</p><% } %>
   </section>
+  <div class="harbor-voyage" id="voyage"><%- partial('_partial/voyage') %></div>
   <% if (inspirations.length) { %>
   <section class="harbor-inspirations" aria-labelledby="inspirationTitle">
-    <div class="harbor-section-heading"><div><p class="eyebrow">02 / POCKET COLLECTION</p><h2 id="inspirationTitle">口袋里的灵感</h2></div><p>写字、创作，和生活的补给站</p></div>
+    <div class="harbor-section-heading"><div><h2 id="inspirationTitle">常用网站</h2></div><p>工具和内容收藏</p></div>
     <div class="harbor-bookmarks"><% inspirations.forEach(function(friend, index) { %><a href="<%= friend.url %>" target="_blank" rel="noopener noreferrer"><span class="harbor-bookmark__index"><%= String(index + 1).padStart(2, '0') %></span><span><strong><%= friend.name %></strong><small><%= friend.description %></small></span><span aria-hidden="true">↗</span></a><% }); %></div>
   </section>
   <% } %>
   <section class="harbor-exchange" aria-labelledby="friendsApplyTitle">
-    <div class="harbor-exchange__copy"><p class="eyebrow">LET'S BE NEIGHBORS</p><h2 id="friendsApplyTitle">给你的岛屿，<br />留一个船位。</h2><p>如果你也在认真记录生活，欢迎交换链接。<br />一份站点信息，就是一封初次见面的来信。</p><a class="harbor-email" href="mailto:2522015679@qq.com?subject=%E5%8F%8B%E9%93%BE%E7%94%B3%E8%AF%B7%20%C2%B7%20%E5%90%89%E5%8D%9C%E5%8A%9B%E7%94%BB%E8%88%AB">邮件交换友链 <span aria-hidden="true">↗</span></a><span class="harbor-exchange__or">也可以在下方信箱留下站点资料</span></div>
-    <div class="harbor-sitecard"><span class="harbor-sitecard__tag">本站名片 / CONTACT CARD</span><div class="harbor-sitecard__brand"><img src="<%- url_for('/images/ghibli-houseboat-logo.svg') %>" alt="" width="48" height="48" /><div><strong><%= config.title %></strong><span>慢慢写，慢慢航行。</span></div></div><pre id="friendSiteInfo"><%= siteInfo %></pre><button class="harbor-copy" type="button" data-copy-site aria-describedby="siteCopyStatus">复制本站信息 <span aria-hidden="true">⧉</span></button><p id="siteCopyStatus" role="status" aria-live="polite">申请请附：名称、网址、简介与头像。</p></div>
-    <p class="harbor-exchange__note">请先添加本站，再寄来你的站点资料。希望遇见持续更新、以原创为主的个人博客；确认后会在这里点亮一盏灯。</p>
+    <div class="harbor-exchange__copy"><h2 id="friendsApplyTitle">交换友链</h2><p>先添加本站，再把你的站名、网址、简介和头像发给我。</p><a class="harbor-email" href="mailto:2522015679@qq.com?subject=%E5%8F%8B%E9%93%BE%E7%94%B3%E8%AF%B7%20%C2%B7%20%E5%90%89%E5%8D%9C%E5%8A%9B%E7%94%BB%E8%88%AB">邮件申请 <span aria-hidden="true">↗</span></a><span class="harbor-exchange__or">也可以在下方留言申请。</span></div>
+    <div class="harbor-sitecard"><span class="harbor-sitecard__tag">本站信息</span><div class="harbor-sitecard__brand"><img src="<%- url_for('/images/ghibli-houseboat-logo.svg') %>" alt="" width="48" height="48" /><div><strong><%= config.title %></strong><span>sunny 的个人博客</span></div></div><pre id="friendSiteInfo"><%= siteInfo %></pre><button class="harbor-copy" type="button" data-copy-site aria-describedby="siteCopyStatus">复制本站信息 <span aria-hidden="true">⧉</span></button><p id="siteCopyStatus" role="status" aria-live="polite">申请请附：名称、网址、简介与头像。</p></div>
+    <p class="harbor-exchange__note">欢迎以原创为主、还在更新的个人博客。我会确认网站能正常访问后添加。</p>
   </section>
   <%- partial('_partial/guestbook-note') %>
 </main>

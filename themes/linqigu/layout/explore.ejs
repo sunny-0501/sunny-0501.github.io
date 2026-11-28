@@ -2,36 +2,31 @@
 <main class="inner-page explore-page" id="top">
   <section class="explore-hero" aria-labelledby="exploreHeroTitle">
     <div class="explore-hero__content">
-      <p class="eyebrow">A LITTLE ABOUT THIS SPACE</p>
       <h1 id="exploreHeroTitle">我的</h1>
-      <p>文章之外，也留一些位置给自己。</p>
+      <p>关于我和这个博客。</p>
     </div>
   </section>
   <section class="explore-content" aria-label="作者介绍与个人收藏">
     <section class="explore-introduction" aria-labelledby="exploreAuthorTitle">
       <div class="explore-author-avatar"><img src="<%- url_for('/images/avatar.png') %>" alt="sunny 的头像" width="152" height="152" /></div>
       <div class="explore-author-copy">
-        <p class="eyebrow">ABOUT THE AUTHOR</p>
         <h2 id="exploreAuthorTitle">你好，我是 sunny。</h2>
-        <p class="explore-author-tagline">一个在下班后写字的人，持续收集生活里的微小灵感</p>
-        <p>白天做互联网产品，晚上写一点东西。这个博客是我的慢速工作台，用来放下思考、阅读和生活碎片。</p>
+        <p>在互联网行业工作。这里写项目、读书笔记，还有一些日常。</p>
       </div>
     </section>
     <%- partial('_partial/explore-portals') %>
     <div class="explore-about-grid">
       <article class="explore-writing" aria-labelledby="exploreWritingTitle">
-        <p class="mini-heading">WHY I WRITE</p>
-        <h2 id="exploreWritingTitle">记录不是为了证明，<br />只是想让时间留下形状。</h2>
+        <h2 id="exploreWritingTitle">关于这个博客</h2>
         <div class="explore-writing-copy"><%- page.content %></div>
-        <a class="explore-guestbook-link" href="<%- url_for('/links/#guestbook') %>">到码头信箱打个招呼 <span aria-hidden="true">↗</span></a>
+        <a class="explore-guestbook-link" href="<%- url_for('/links/#guestbook') %>">给我留言 <span aria-hidden="true">↗</span></a>
       </article>
       <aside class="explore-principles" aria-labelledby="explorePrinciplesTitle">
-        <p class="mini-heading">WHAT MATTERS TO ME</p>
-        <h2 id="explorePrinciplesTitle">我在关注</h2>
+        <h2 id="explorePrinciplesTitle">博客分类</h2>
         <ol>
-          <li><span aria-hidden="true">01</span><p>把复杂的事说简单。</p></li>
-          <li><span aria-hidden="true">02</span><p>给注意力留一点空白。</p></li>
-          <li><span aria-hidden="true">03</span><p>长期做值得回看的事。</p></li>
+          <li><span aria-hidden="true">01</span><p>项目</p></li>
+          <li><span aria-hidden="true">02</span><p>阅读</p></li>
+          <li><span aria-hidden="true">03</span><p>随笔</p></li>
         </ol>
       </aside>
     </div>

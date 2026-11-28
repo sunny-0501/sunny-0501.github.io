@@ -1,10 +1,9 @@
 <section class="explore-portals" aria-labelledby="explorePortalsTitle">
   <header class="explore-portals-heading">
-    <div><p class="eyebrow">A SMALL DETOUR</p><h2 id="explorePortalsTitle">推开小门，去喜欢的地方。</h2></div>
-    <p>一些画面，一些文字，慢慢收藏。</p>
+    <div><h2 id="explorePortalsTitle">相册与订阅</h2></div>
   </header>
   <div class="explore-portals-grid">
-    <a class="explore-portal explore-portal--gallery" href="<%- url_for('/gallery/') %>" aria-label="打开相册，走进森林放映室">
+    <a class="explore-portal explore-portal--gallery" href="<%- url_for('/gallery/') %>" aria-label="打开相册">
       <div class="portal-art portal-art--gallery" aria-hidden="true">
         <span class="portal-ticket">01 <i></i> FOREST CINEMA</span>
         <svg class="portal-landscape" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -19,18 +18,17 @@
           <g class="portal-fern" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M28 281q25-69 81-87M49 240l-8-26m16 12 2-27m12 17 10-27m-31 54 28 1m-11-18 29 1m-13-18 28-3M553 280q-4-48-47-79m39 53 22-13m-26 1 20-17m-32 3 15-22m-1 50-26-5m17-13-25-9"/></g>
           <g class="portal-mushroom"><path d="M117 273v-15h9v15Z" fill="#f5e9c9"/><path d="M104 259q16-26 34 0Z" fill="#b67155"/><circle cx="118" cy="252" r="2" fill="#f6e4c5"/><circle cx="128" cy="256" r="2" fill="#f6e4c5"/></g>
         </svg>
-        <span class="portal-photo portal-photo--back"><img src="<%- url_for('/images/forest-rest.png') %>" alt="" loading="lazy" /><span>林间的片刻</span></span>
-        <span class="portal-photo portal-photo--front"><img src="<%- url_for('/images/header-landscape.png') %>" alt="" loading="lazy" /><span>晴日，放映中</span></span>
+        <span class="portal-photo portal-photo--back"><img src="<%- url_for('/images/forest-rest.png') %>" alt="" loading="lazy" /><span>林间休憩</span></span>
+        <span class="portal-photo portal-photo--front"><img src="<%- url_for('/images/header-landscape.png') %>" alt="" loading="lazy" /><span>晴日的草坡</span></span>
         <svg class="portal-gallery-leaf" viewBox="0 0 64 64" fill="none" focusable="false"><path d="M53 10C19 6 7 28 15 44 33 55 54 41 53 10Z" fill="currentColor"/><path d="m12 53 31-31m-17 17-3-13m10 6 12 1" stroke="#dce4b4" stroke-width="2" stroke-linecap="round"/></svg>
-        <span class="portal-art-note"><i></i> 今日放映：沿途的风景</span>
       </div>
       <div class="portal-content">
-        <div class="portal-content-heading"><h3>相册 <span>森林放映室</span></h3><span class="portal-route-label">GALLERY</span></div>
-        <p>把喜欢的画面，装进森林里的小影院。</p>
-        <span class="portal-invitation">推门看看 <span class="portal-arrow" aria-hidden="true">↗</span></span>
+        <div class="portal-content-heading"><h3>相册</h3><span class="portal-route-label">GALLERY</span></div>
+        <p>插画、壁纸和博客素材。</p>
+        <span class="portal-invitation">查看相册 <span class="portal-arrow" aria-hidden="true">↗</span></span>
       </div>
     </a>
-    <a class="explore-portal explore-portal--rss" href="<%- url_for('/rss/') %>" aria-label="通过 RSS 订阅，前往风之邮局">
+    <a class="explore-portal explore-portal--rss" href="<%- url_for('/rss/') %>" aria-label="通过 RSS 订阅博客">
       <div class="portal-art portal-art--rss" aria-hidden="true">
         <span class="portal-ticket">02 <i></i> WIND POST OFFICE</span>
         <svg class="portal-postal-scene" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -48,12 +46,11 @@
           <g fill="#f7f0cf"><circle cx="64" cy="246" r="4"/><circle cx="94" cy="229" r="4"/><circle cx="66" cy="226" r="4"/></g>
         </svg>
         <span class="portal-postmark"><b>吉卜力画舫</b><span>LETTERS · RSS</span></span>
-        <span class="portal-art-note"><i></i> 下一封来信，等风也等你</span>
       </div>
       <div class="portal-content">
-        <div class="portal-content-heading"><h3>订阅 <span>风之邮局</span></h3><span class="portal-route-label">RSS FEED</span></div>
-        <p>把下一篇文字，托付给一阵刚刚好的风。</p>
-        <span class="portal-invitation">收下这封信 <span class="portal-arrow" aria-hidden="true">↗</span></span>
+        <div class="portal-content-heading"><h3>订阅</h3><span class="portal-route-label">RSS FEED</span></div>
+        <p>在 RSS 阅读器里接收更新。</p>
+        <span class="portal-invitation">查看订阅地址 <span class="portal-arrow" aria-hidden="true">↗</span></span>
       </div>
     </a>
   </div>

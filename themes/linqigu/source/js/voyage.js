@@ -39,7 +39,7 @@
       link.href = destination.url;
       lastDestination = destination.url;
       try { sessionStorage.setItem(storageKey, lastDestination); } catch {}
-      if (status) status.textContent = `这次靠岸 · ${destination.name}。愿你在那里遇见好故事。`;
+      if (status) status.textContent = `已打开：${destination.name}`;
     };
     link.addEventListener('click', depart);
     link.addEventListener('auxclick', depart);

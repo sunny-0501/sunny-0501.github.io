@@ -3,25 +3,25 @@
 - name: 狐言
   url: https://blog.dukefox.com/
   avatar: https://blog.dukefox.com/favicon.ico
-  description: 折腾技术，也收藏生活里闪闪发光的片刻。
+  description: 技术教程、软件工具和日常记录。
   note: 技术与日常
   kind: blog
 - name: DIYgod
   url: https://diygod.me/
   avatar: https://diygod.me/favicon.ico
-  description: 写代码、做有趣的东西，把热爱慢慢变成生活。
+  description: 开源项目、开发记录和个人生活。
   note: 开源与创造
   kind: blog
 - name: 云游君
   url: https://www.yunyoujun.cn/
   avatar: https://www.yunyoujun.cn/favicon.svg
-  description: 一位程序员的云端小屋，装着技术、动画和奇思妙想。
-  note: 云端小屋
+  description: 编程、动画，以及个人项目。
+  note: 编程与动画
   kind: blog
 - name: 安知鱼
   url: https://blog.anheyu.com/
   avatar: https://blog.anheyu.com/favicon.ico
-  description: 生活明朗，万物可爱。沿着好奇心，记录新的发现。
+  description: 博客搭建、主题开发和日常分享。
   note: 生活与折腾
   kind: blog
 - name: 少数派
@@ -33,7 +33,7 @@
 - name: Figma
   url: https://www.figma.com/
   avatar: https://www.figma.com/favicon.ico
-  description: 把想法画出来，再和别人一起做。
+  description: 界面设计与协作工具。
   note: 设计工具
   kind: inspiration
 - name: Are.na

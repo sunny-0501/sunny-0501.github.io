@@ -11,7 +11,7 @@
 %>
 <%- partial('_partial/document-start') %>
 <main class="inner-page article-detail-page" id="top">
-  <div class="status-bar"><span>文章详情</span><strong>慢慢读完一篇文章，也是一种抵达</strong><a class="status-bar__back" href="<%- url_for('/archives/') %>">← 返回文章列表</a></div>
+  <div class="status-bar"><span>文章详情</span><strong><%= category %></strong><a class="status-bar__back" href="<%- url_for('/archives/') %>">← 返回文章列表</a></div>
   <div class="article-detail-layout">
       <section class="article-cover" style="--article-cover: url('<%- url_for(page.cover || '/images/header-landscape.png') %>')" aria-label="文章封面">
         <div class="article-cover__copy"><div class="article-detail-meta"><a class="tag" href="<%- url_for('/categories/' + category + '/') %>"><%= category %></a><time datetime="<%= date(page.date, 'YYYY-MM-DD') %>"><%= date(page.date, 'YYYY.MM.DD') %></time><span><%= readingMinutes %> MIN READ</span></div><h1><%= page.title %></h1><% if (page.description) { %><p><%= page.description %></p><% } %></div>
@@ -27,18 +27,17 @@
     </article>
     <aside class="article-rail" aria-label="文章辅助信息">
       <div class="article-rail-card">
-        <p class="mini-heading">READING NOTES</p>
+        <p class="mini-heading">阅读时间</p>
         <div class="reading-stat"><strong><%= readingMinutes %></strong><span>分钟阅读</span></div>
-        <p>把注意力留给眼前这一段，不急着抵达结论。</p>
       </div>
       <% if (tocHtml && tocHtml.trim()) { %>
         <nav class="article-rail-card article-toc" aria-label="文章目录">
-          <p class="mini-heading">ON THIS PAGE</p>
+          <p class="mini-heading">文章目录</p>
           <%- tocHtml %>
         </nav>
       <% } %>
       <a class="article-rail-card article-rss" href="<%- url_for('/atom.xml') %>">
-        <span>订阅后续文字</span><strong>RSS ↗</strong>
+        <span>订阅更新</span><strong>RSS ↗</strong>
       </a>
     </aside>
   </div>
@@ -52,6 +51,6 @@
       <% } %>
     </nav>
   <% } %>
-  <section class="article-endnote"><div><p class="eyebrow">READING COMPLETE</p><h2>读到这里，谢谢你。</h2><p>文字是缓慢的交流。如果这篇文章留下了什么，欢迎继续在归档里散步。</p></div><a class="read-link" href="<%- url_for('/archives/') %>">浏览全部文章 <span>↗</span></a></section>
+  <section class="article-endnote"><div><h2>更多文章</h2></div><a class="read-link" href="<%- url_for('/archives/') %>">浏览全部文章 <span>↗</span></a></section>
 </main>
 <%- partial('_partial/document-end') %>

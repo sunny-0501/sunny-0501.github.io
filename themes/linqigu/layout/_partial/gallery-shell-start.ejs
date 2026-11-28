@@ -1,6 +1,6 @@
 <%
   const galleryShellTitle = typeof title === 'string' ? title : '相册';
-  const galleryShellDescription = typeof description === 'string' ? description : '记录生活中的美好瞬间';
+  const galleryShellDescription = typeof description === 'string' ? description : '插画、壁纸和博客素材。';
   const albumView = typeof isAlbum !== 'undefined' && isAlbum;
   const galleryAlbums = (site.data.gallery && site.data.gallery.albums) || [];
   const publicPostCount = site.posts.toArray().filter((post) => post.archived !== true).length;
@@ -8,7 +8,6 @@
 <main class="inner-page gallery-page" id="top">
   <section class="gallery-hero" aria-labelledby="galleryHeroTitle">
     <div class="gallery-hero__content">
-      <p class="eyebrow"><%= albumView ? 'MOMENTS IN THE JOURNAL' : 'A LITTLE COLLECTION OF LIFE' %></p>
       <h1 id="galleryHeroTitle"><%= galleryShellTitle %></h1>
       <p><%= galleryShellDescription %></p>
     </div>
@@ -17,10 +16,10 @@
     <aside class="gallery-author" aria-label="关于作者">
       <section class="gallery-side-card profile-card gallery-profile-card">
         <div class="profile-avatar"><img src="<%- url_for('/images/avatar.png') %>" alt="sunny 的头像" loading="lazy" /></div>
-        <div class="profile-identity"><p class="mini-heading">ABOUT THE AUTHOR</p><h2>sunny</h2><i></i><span>INFJ · 吉卜力画舫</span><p>一个在互联网行业工作、下班后写字的人。相信好奇心、长期主义，还有一杯热茶。</p></div>
-        <a class="gallery-profile-link" href="<%- url_for('/explore/') %>">认识我更多 <span aria-hidden="true">↗</span></a>
+        <div class="profile-identity"><h2>sunny</h2><i></i><span>INFJ · 吉卜力画舫</span><p>在互联网行业工作，下班后写一点东西。</p></div>
+        <a class="gallery-profile-link" href="<%- url_for('/explore/') %>">关于我 <span aria-hidden="true">↗</span></a>
       </section>
-      <section class="gallery-side-card gallery-side-note"><p class="mini-heading">SLOW DOWN &amp; LOOK AROUND</p><p>让目光停留片刻，<br />总有一些美好值得收藏。</p></section>
+      <section class="gallery-side-card gallery-side-note"><p><%= albumView ? '点击图片查看大图。' : '选择相册查看图片。' %></p></section>
     </aside>
     <div class="gallery-main">
       <nav class="gallery-breadcrumb" aria-label="相册导航">

@@ -47,19 +47,18 @@
   <script type="application/json" id="archiveRoutes"><%- JSON.stringify(archiveRoutes).replace(/</g, '\\u003c') %></script>
   <section class="page-hero archive-hero" aria-labelledby="archiveTitle">
     <div class="archive-hero__content">
-      <p class="eyebrow">ARCHIVE · <%= allPosts.length %> NOTES</p>
-      <h1 id="archiveTitle" data-typewriter>把想法写下来，<br />就有了回声。</h1>
-      <p data-typewriter>这里记录项目、阅读和日常里的片段。慢慢更新，也慢慢把自己说清楚。</p>
-      <a class="archive-hero__link" href="#articles">开始浏览 <span aria-hidden="true">↓</span></a>
+      <h1 id="archiveTitle" data-typewriter>文章</h1>
+      <p data-typewriter>项目、阅读，还有一些日常。</p>
+      <a class="archive-hero__link" href="#articles">查看文章 <span aria-hidden="true">↓</span></a>
     </div>
   </section>
   <section class="page-content article-page-grid archive-content" id="articles">
     <aside class="sidebar archive-author" aria-label="关于作者">
       <section class="sidebar-card profile-card archive-profile-card">
         <div class="profile-avatar"><img src="<%- url_for('/images/avatar.png') %>" alt="sunny 的头像" loading="lazy" /></div>
-        <div class="profile-identity"><p class="mini-heading">ABOUT THE AUTHOR</p><h2>sunny</h2><i></i><span>INFJ · 吉卜力画舫</span><p>一个在互联网行业工作、下班后写字的人。相信好奇心、长期主义，还有一杯热茶。</p></div>
+        <div class="profile-identity"><h2>sunny</h2><i></i><span>INFJ · 吉卜力画舫</span><p>在互联网行业工作，下班后写一点东西。</p></div>
         <div class="profile-socials"><a href="https://github.com/sunny-0501" target="_blank" rel="noopener noreferrer" aria-label="sunny 的 GitHub"><span aria-hidden="true">&lt;/&gt;</span></a></div>
-        <a class="profile-more" href="<%- url_for('/explore/') %>">认识我更多 <span aria-hidden="true">↗</span></a>
+        <a class="profile-more" href="<%- url_for('/explore/') %>">关于我 <span aria-hidden="true">↗</span></a>
       </section>
     </aside>
     <div class="articles-column archive-main">
@@ -120,7 +119,7 @@
         </div>
         <div class="archive-index-links"><a href="<%- url_for('/categories/') %>">浏览所有分类 <span aria-hidden="true">↗</span></a><a href="<%- url_for('/tags/') %>">浏览所有标签 <span aria-hidden="true">↗</span></a></div>
       </nav>
-      <div class="sidebar-card archive-aside-note"><p class="mini-heading">KEEP IN TOUCH</p><p>如果你喜欢这里的文字，可以订阅 RSS，在下一次更新时再相遇。</p><a class="side-link" href="<%- url_for('/rss/') %>">订阅更新 ↗</a></div>
+      <div class="sidebar-card archive-aside-note"><p>用 RSS 阅读器订阅新文章。</p><a class="side-link" href="<%- url_for('/rss/') %>">订阅更新 ↗</a></div>
     </aside>
   </section>
 </main>

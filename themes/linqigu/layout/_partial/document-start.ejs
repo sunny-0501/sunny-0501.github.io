@@ -16,11 +16,11 @@
     <% if (typeof galleryView !== 'undefined' && galleryView) { %><link rel="stylesheet" href="<%- url_for('/css/gallery.css') %>?v=gallery-backdrop-v1" /><% } %>
     <% if (typeof isAlbum !== 'undefined' && isAlbum) { %><link rel="stylesheet" href="<%- url_for('/css/gallery-album.css') %>?v=gallery-album-v1" /><% } %>
     <link rel="stylesheet" href="<%- url_for('/css/houseboat.css') %>?v=houseboat-japanese-breeze-v2" />
-    <link rel="stylesheet" href="<%- url_for('/css/journal.css') %>?v=slow-voyage-v1" />
-    <link rel="stylesheet" href="<%- url_for('/css/journal-inner.css') %>?v=slow-voyage-v1" />
-    <link rel="stylesheet" href="<%- url_for('/css/voyage.css') %>?v=slow-voyage-v1" />
-    <link rel="stylesheet" href="<%- url_for('/css/friends.css') %>?v=slow-voyage-v1" />
-    <link rel="stylesheet" href="<%- url_for('/css/boarding.css') %>?v=slow-voyage-v1" />
+    <link rel="stylesheet" href="<%- url_for('/css/journal.css') %>?v=compact-v2" />
+    <link rel="stylesheet" href="<%- url_for('/css/journal-inner.css') %>?v=compact-v2" />
+    <link rel="stylesheet" href="<%- url_for('/css/voyage.css') %>?v=compact-v2" />
+    <link rel="stylesheet" href="<%- url_for('/css/friends.css') %>?v=compact-v2" />
+    <link rel="stylesheet" href="<%- url_for('/css/boarding.css') %>?v=compact-v2" />
     <link rel="alternate" type="application/atom+xml" title="吉卜力画舫" href="<%- url_for('/atom.xml') %>" />
   </head>
   <body class="<%= is_home() ? 'home-page' : typeof archiveView !== 'undefined' && archiveView ? 'archive-view' : typeof galleryView !== 'undefined' && galleryView ? 'gallery-view' : typeof exploreView !== 'undefined' && exploreView ? 'explore-view' : '' %>">
@@ -35,7 +35,6 @@
       <div class="search-dialog__panel">
         <header class="search-dialog__header">
           <div>
-            <p class="eyebrow">SEARCH THE JOURNAL</p>
             <h2 id="siteSearchTitle">搜索吉卜力画舫</h2>
           </div>
           <button class="search-dialog__close" type="button" data-search-close aria-label="关闭搜索">×</button>
