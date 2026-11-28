@@ -1,0 +1,7 @@
+<section class="photo-pile" data-photo-pile aria-label="翻翻相册">
+  <div class="photo-pile__stack">
+    <% [{image:'/images/hat-shop.jpg', title:'帽子店'}, {image:'/images/meadow-afternoon.jpg', title:'午后'}, {image:'/images/sea-train.jpg', title:'海上电车'}].forEach((photo, index) => { %><a class="photo-pile__print" data-pile-print href="<%- url_for('/gallery/scenes/') %>" style="--pile-position:<%= index %>"<%- index === 2 ? '' : ' tabindex="-1" aria-hidden="true"' %>><img src="<%- url_for(photo.image) %>" alt="<%= photo.title %>" loading="lazy" width="240" height="150" /><span><%= photo.title %><i aria-hidden="true">↗</i></span></a><% }); %>
+  </div>
+  <div class="photo-pile__tools"><a href="<%- url_for('/gallery/scenes/') %>">几张喜欢的画面 ↗</a><button type="button" data-pile-next hidden aria-label="翻下一张照片"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 8h10l-3-3m3 3-3 3M19 16H9l3 3m-3-3 3-3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>翻一张</span></button></div>
+  <span class="sr-only" data-pile-status role="status" aria-live="polite"></span>
+</section>

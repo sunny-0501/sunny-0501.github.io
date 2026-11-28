@@ -23,6 +23,7 @@
     </div>
     <div class="gallery-display-toolbar">
       <p class="gallery-photo-count" id="galleryPhotoCount" role="status" aria-live="polite">共 <%= album.photos.length %> 张照片</p>
+      <div class="gallery-play-tools" data-gallery-play-tools hidden><button type="button" data-gallery-develop aria-controls="galleryGrid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 5h16v14H4zM8 3v4m8-4v4M7 16l4-5 3 3 2-2 3 4" stroke-linecap="round" stroke-linejoin="round"/></svg>重新显影</button><button type="button" data-gallery-shuffle aria-controls="galleryGrid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h4l10 12h4M17 15l4 3-4 3M3 18h4L17 6h4M17 3l4 3-4 3" stroke-linecap="round" stroke-linejoin="round"/></svg>打乱顺序</button></div>
       <div class="gallery-view-options" role="group" aria-label="图片排列方式">
         <button type="button" data-gallery-view="grid" aria-pressed="true" aria-controls="galleryGrid"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>网格</span></button>
         <button type="button" data-gallery-view="list" aria-pressed="false" aria-controls="galleryGrid"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M9 5h12M9 12h12M9 19h12"/><rect x="3" y="3" width="2" height="4" rx=".5"/><rect x="3" y="10" width="2" height="4" rx=".5"/><rect x="3" y="17" width="2" height="4" rx=".5"/></svg><span>列表</span></button>
@@ -39,6 +40,7 @@
         </figure>
       <% }); %>
     </div>
+    <p class="gallery-play-status" data-gallery-play-status role="status" aria-live="polite" hidden></p>
     <p class="gallery-empty" id="galleryEmpty" role="status" hidden>没有找到符合条件的图片，试试其他关键词或分类。</p>
   </section>
 <%- partial('_partial/gallery-shell-end') %>

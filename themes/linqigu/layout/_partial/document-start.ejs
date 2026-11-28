@@ -18,9 +18,11 @@
     <link rel="stylesheet" href="<%- url_for('/css/houseboat.css') %>?v=houseboat-japanese-breeze-v2" />
     <link rel="stylesheet" href="<%- url_for('/css/journal.css') %>?v=compact-v2" />
     <link rel="stylesheet" href="<%- url_for('/css/journal-inner.css') %>?v=compact-v2" />
-    <link rel="stylesheet" href="<%- url_for('/css/voyage.css') %>?v=compact-v2" />
-    <link rel="stylesheet" href="<%- url_for('/css/friends.css') %>?v=compact-v2" />
-    <link rel="stylesheet" href="<%- url_for('/css/boarding.css') %>?v=compact-v2" />
+    <link rel="stylesheet" href="<%- url_for('/css/voyage.css') %>?v=playful-v1" />
+    <link rel="stylesheet" href="<%- url_for('/css/friends.css') %>?v=playful-v1" />
+    <link rel="stylesheet" href="<%- url_for('/css/boarding.css') %>?v=playful-v1" />
+    <link rel="stylesheet" href="<%- url_for('/css/playful.css') %>?v=playful-v1" />
+    <link rel="stylesheet" href="<%- url_for('/css/gallery-play.css') %>?v=playful-v1" />
     <link rel="alternate" type="application/atom+xml" title="吉卜力画舫" href="<%- url_for('/atom.xml') %>" />
   </head>
   <body class="<%= is_home() ? 'home-page' : typeof archiveView !== 'undefined' && archiveView ? 'archive-view' : typeof galleryView !== 'undefined' && galleryView ? 'gallery-view' : typeof exploreView !== 'undefined' && exploreView ? 'explore-view' : '' %>">

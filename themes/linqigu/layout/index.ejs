@@ -2,6 +2,13 @@
   const posts = site.posts.sort('date', -1).toArray().filter((post) => post.archived !== true);
   const categoryCount = (name) => posts.filter((post) => post.categories.toArray().some((category) => category.name === name)).length;
   const totalWords = posts.reduce((sum, post) => sum + (post.content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, '').length, 0);
+  const scenes = [
+    { image: '/images/header-landscape.png', title: '草坡', alt: '蓝天下，少女撑着阳伞在草坡上作画', tone: 'day' },
+    { image: '/images/meadow-afternoon.jpg', title: '午后', alt: '琪琪躺在草地上，身旁放着收音机', tone: 'meadow' },
+    { image: '/images/sea-flight.jpg', title: '海上', alt: '白龙掠过晴朗的海面', tone: 'sea' },
+    { image: '/images/sea-train.jpg', title: '电车', alt: '千寻和无脸男坐在驶过海面的电车里', tone: 'train' },
+    { image: '/images/hat-shop.jpg', title: '小店', alt: '苏菲坐在摆满帽子的店里', tone: 'shop' }
+  ];
 %>
 <%- partial('_partial/document-start') %>
 <main class="journal-home" id="top" tabindex="-1">
@@ -9,14 +16,22 @@
     <div class="voyage-hero__copy">
       <h1 id="homeTitle">你好，我是 sunny。</h1>
       <p class="voyage-hero__description">白天做产品，下班后写点东西。<br />这里有读书笔记、工作记录，也有一些日常。</p>
-      <div class="voyage-hero__actions"><a class="journal-button" href="#articles">看文章 <span aria-hidden="true">↓</span></a><button class="journal-text-button" type="button" data-boarding-open hidden>登船画面 <span aria-hidden="true">→</span></button></div>
+      <div class="voyage-hero__actions"><a class="journal-button" href="#articles">看文章 <span aria-hidden="true">↓</span></a><button class="journal-text-button" type="button" data-boarding-open hidden>登船画面 <span aria-hidden="true">→</span></button><button class="gust-button" type="button" data-gust hidden aria-label="吹阵风" title="吹阵风"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9h11a3 3 0 1 0-3-3M2 13h16a3 3 0 1 1-3 3M5 17h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button></div>
+      <div class="desk-photos" aria-label="相册预览"><a class="desk-photo desk-photo--back" href="<%- url_for('/gallery/scenes/') %>" aria-label="查看午后草地插画"><img src="<%- url_for('/images/meadow-afternoon.jpg') %>" alt="草地上的琪琪" width="180" height="110" loading="lazy" /><span>午后</span></a><a class="desk-photo desk-photo--front" href="<%- url_for('/gallery/scenes/') %>" aria-label="查看海上电车插画"><img src="<%- url_for('/images/sea-train.jpg') %>" alt="驶过海面的电车" width="180" height="110" loading="lazy" /><span>电车</span></a><span class="desk-photos__pencil" aria-hidden="true"></span></div>
     </div>
-    <div class="voyage-hero__window">
-      <img class="voyage-hero__art" src="<%- url_for('/images/header-landscape.png') %>" alt="蓝天下，少女撑着阳伞在开满野花的草坡上作画" width="1536" height="1024" fetchpriority="high" />
+    <div class="voyage-hero__window" data-scene-window>
+      <% scenes.forEach((scene, index) => { %><img class="voyage-hero__art<%= index === 0 ? ' is-current' : '' %>" data-scene-image="<%= index %>" data-scene-tone="<%= scene.tone %>" src="<%- url_for(scene.image) %>" alt="<%= scene.alt %>" width="1280" height="720" loading="<%= index === 0 ? 'eager' : 'lazy' %>" fetchpriority="<%= index === 0 ? 'high' : 'low' %>"<%- index === 0 ? '' : ' aria-hidden="true"' %> /><% }); %>
       <div class="voyage-hero__wash" aria-hidden="true"></div>
+      <svg class="scene-swallow" viewBox="0 0 80 40" aria-hidden="true"><path d="M40 27C30 7 7 8 1 5c13 15 23 23 39 22C50 7 73 8 79 5 66 20 56 28 40 27l-7 11 7-5 7 5-7-11Z" fill="currentColor"/></svg>
+      <div class="scene-fireflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="scene-water" aria-hidden="true"><i></i><i></i><i></i></div>
       <span class="journal-stamp" aria-hidden="true">風の便り<small>GHIBLI HOUSEBOAT</small></span>
       <span class="houseboat-breeze" aria-hidden="true"><i></i><i></i><i></i></span>
+      <div class="scene-controls" role="group" aria-label="换一张风景" hidden><span class="scene-controls__name" data-scene-name aria-live="polite">草坡</span><div class="scene-controls__frames"><% scenes.forEach((scene, index) => { %><button type="button" data-scene-select="<%= index %>" aria-label="看<%= scene.title %>" aria-pressed="<%= index === 0 ? 'true' : 'false' %>"><img src="<%- url_for(scene.image) %>" alt="" width="44" height="32" loading="lazy" /></button><% }); %></div><button class="scene-controls__shuffle" type="button" data-scene-shuffle aria-label="随机换一张风景" title="随机换一张"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h3c5 0 7 10 12 10h3M17 13l4 4-4 4M3 17h3c2 0 4-3 6-5m3-4 3-1h3m-4-4 4 4-4 4"/></svg></button></div>
     </div>
+    <div class="gust-leaves" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <svg class="gust-plane" viewBox="0 0 80 60" aria-hidden="true"><path d="m4 27 70-23-22 50-14-21Z" fill="#fff9dd" stroke="#8f9e7a" stroke-width="1.4" stroke-linejoin="round"/><path d="M38 33 74 4 29 29m9 4-4 19 11-13" fill="none" stroke="#8f9e7a" stroke-width="1.2"/></svg>
+    <span class="sr-only" data-scene-status role="status"></span>
     <div class="voyage-hero__ticket" aria-hidden="true"><img src="<%- url_for('/images/ghibli-houseboat-logo.svg') %>" alt="" width="44" height="44" /><span>吉卜力画舫<small>GHIBLI HOUSEBOAT</small></span><i>〰</i></div>
   </section>
   <section class="content-layout journal-content" id="articles">
@@ -37,7 +52,7 @@
         <a class="profile-more" href="<%- url_for('/explore/') %>">关于我 <span aria-hidden="true">↗</span></a>
         <div class="site-stats"><div><strong><%= posts.length %></strong><span>篇文章</span></div><div><strong><%= totalWords.toLocaleString('zh-CN') %></strong><span>字</span></div></div>
       </section>
-      <a class="journal-small-world" href="<%- url_for('/gallery/') %>"><img src="<%- url_for('/images/forest-rest.png') %>" alt="树影里的休息时光" loading="lazy" width="480" height="360" /><span><strong>相册</strong><i aria-hidden="true">↗</i></span></a>
+      <%- partial('_partial/photo-pile') %>
     </aside>
   </section>
   <section class="journal-wander" id="voyage" aria-label="随风漫游"><%- partial('_partial/voyage') %></section>

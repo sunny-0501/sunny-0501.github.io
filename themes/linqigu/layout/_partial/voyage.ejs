@@ -5,6 +5,8 @@
   const voyageFallback = voyageBlogs.length ? voyageBlogs[0].url : 'https://www.travellings.cn/go.html';
 %>
 <section class="voyage-ticket" data-voyage data-voyage-destinations="<%= JSON.stringify(voyageBlogs) %>" aria-label="随风漫游，随机访问其他博客">
+  <span class="voyage-ticket__fold" aria-hidden="true"></span>
+  <svg class="voyage-ticket__wake" viewBox="0 0 240 36" fill="none" aria-hidden="true"><path d="M2 21c25-12 35 12 60 0s35 12 60 0 35 12 60 0 35 12 55 0" stroke="currentColor" stroke-width="1"/><path d="M37 31h55m23 0h30m20 0h26" stroke="currentColor" stroke-width=".7" stroke-linecap="round"/></svg>
   <div class="voyage-ticket__illustration" aria-hidden="true">
     <svg viewBox="0 0 156 116" fill="none">
       <circle cx="118" cy="24" r="15" fill="currentColor" opacity=".19" />

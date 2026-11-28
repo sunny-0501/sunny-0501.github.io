@@ -23,6 +23,15 @@
 }
 .voyage-ticket::before { top: -1px; border-top: 0; border-radius: 0 0 12px 12px; }
 .voyage-ticket::after { bottom: -1px; border-bottom: 0; border-radius: 12px 12px 0 0; }
+.voyage-ticket__fold { position: absolute; top: -1px; right: -1px; width: 20px; height: 20px; overflow: hidden; border-radius: 0 5px 0 3px; background: linear-gradient(45deg, color-mix(in srgb, var(--selection-accent, #a78c4d) 23%, var(--card)) 48%, var(--dashboard-bg, #f5f3e9) 50%); box-shadow: -2px 2px 4px #344e2410; transform-origin: 100% 0; transition: width .3s, height .3s; pointer-events: none; }
+.voyage-ticket__wake { position: absolute; left: 15px; bottom: 5px; width: 190px; height: 26px; color: var(--forest, #385944); opacity: 0; transform: translateX(-8px); pointer-events: none; }
+.voyage-ticket:focus-within .voyage-ticket__wake { animation: voyage-wake 1.3s ease-out both; }
+.voyage-ticket:focus-within .voyage-ticket__fold { width: 27px; height: 27px; }
+.voyage-ticket__illustration { position: relative; }
+.voyage-ticket__illustration::after { content: ''; position: absolute; right: 0; bottom: 1px; left: 0; height: 15px; border: 1px solid currentColor; border-radius: 50%; opacity: 0; transform: scale(.35); pointer-events: none; }
+.voyage-ticket:focus-within .voyage-ticket__illustration::after { animation: voyage-ripple 1.2s ease-out both; }
+.voyage-ticket.is-departing .voyage-ticket__wake { animation: voyage-sailing-wake 850ms ease-out both; }
+.voyage-ticket.is-departing .voyage-ticket__boat { animation: voyage-boat-depart 850ms ease-in-out both; }
 .voyage-ticket__illustration { padding-right: 8px; color: var(--forest, #385944); text-align: center; }
 .voyage-ticket__illustration svg { display: block; width: 82px; max-width: 100%; margin: 0 auto; }
 .voyage-ticket__copy { position: relative; padding-left: 20px; border-left: 1px dashed color-mix(in srgb, var(--forest, #385944) 25%, transparent); }
@@ -36,18 +45,24 @@
 .voyage-ticket__further { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 10px 0; font-size: 11px; white-space: nowrap; }
 .voyage-ticket a:focus-visible { outline: 2px solid var(--peach, #c8906f); outline-offset: 5px; }
 @media (hover: hover) and (pointer: fine) {
+  .voyage-ticket:hover .voyage-ticket__fold { width: 27px; height: 27px; }
+  .voyage-ticket:hover .voyage-ticket__wake { animation: voyage-wake 1.3s ease-out both; }
+  .voyage-ticket:hover .voyage-ticket__illustration::after { animation: voyage-ripple 1.2s ease-out both; }
   .voyage-ticket__depart:hover { transform: translateY(-2px); box-shadow: 0 5px 0 color-mix(in srgb, var(--forest, #385944) 15%, transparent); }
   .voyage-ticket__depart:hover svg { transform: translate(3px, -3px); }
   .voyage-ticket__further:hover { color: var(--forest, #385944); border-bottom-style: dashed; }
 }
 body.wind-on .voyage-ticket__boat { transform-origin: 80px 83px; animation: voyage-boat-rock 5s ease-in-out infinite; }
 @keyframes voyage-boat-rock { 0%, 100% { transform: rotate(-2deg) translateY(0); } 50% { transform: rotate(2deg) translateY(-3px); } }
+@keyframes voyage-wake { 0% { opacity: 0; transform: translateX(-8px); } 35% { opacity: .23; } 100% { opacity: 0; transform: translateX(20px); } }
+@keyframes voyage-sailing-wake { 0% { opacity: 0; transform: translateX(-8px); } 35% { opacity: .4; } 100% { opacity: 0; transform: translateX(43px); } }
+@keyframes voyage-ripple { 0% { opacity: .3; transform: scale(.35); } 100% { opacity: 0; transform: scale(1.35); } }
+@keyframes voyage-boat-depart { 0% { transform: translateX(0); opacity: 1; } 70% { transform: translateX(29px) translateY(-4px); opacity: 0; } 71% { transform: translateX(-17px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
 body.dark .voyage-ticket { background: color-mix(in srgb, var(--card, #243b30) 92%, #8a814c); }
 body.dark .voyage-ticket__depart { color: #142a20; }
 @media (max-width: 940px) {
   .voyage-ticket { grid-template-columns: minmax(0, 1fr) auto; gap: 20px; padding: 20px 23px; }
   .voyage-ticket::before, .voyage-ticket::after { display: none; }
-  .voyage-ticket__illustration { padding-right: 0; }
   .voyage-ticket__illustration { display: none; }
   .voyage-ticket__copy { padding-left: 0; border-left: 0; }
   .voyage-ticket__actions { grid-column: 2; }
@@ -58,9 +73,7 @@ body.dark .voyage-ticket__depart { color: #142a20; }
   .voyage-ticket__actions { grid-column: 1; gap: 24px; }
   .voyage-ticket__depart { gap: 18px; padding: 11px 16px; }
 }
-:root[data-motion="reduced"] .voyage-ticket__boat { animation: none; }
-:root[data-motion="reduced"] .voyage-ticket a, :root[data-motion="reduced"] .voyage-ticket svg { transition: none; }
+:root[data-motion="reduced"] .voyage-ticket *, :root[data-motion="reduced"] .voyage-ticket *::after { animation: none !important; transition: none !important; }
 @media (prefers-reduced-motion: reduce) {
-  .voyage-ticket__boat { animation: none !important; }
-  .voyage-ticket a, .voyage-ticket svg { transition: none; }
+  .voyage-ticket *, .voyage-ticket *::after { animation: none !important; transition: none !important; }
 }

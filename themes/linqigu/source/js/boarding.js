@@ -13,6 +13,14 @@
   let openedAutomatically = false;
   let sessionAvailable = true;
   let alreadySeen = false;
+  let departureTimer = null;
+  const motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const prefersReducedMotion = () => motionMedia.matches || document.documentElement.dataset.motion === 'reduced';
+  const clearDeparture = () => {
+    if (departureTimer !== null) window.clearTimeout(departureTimer);
+    departureTimer = null;
+    dialog.classList.remove('is-boarding');
+  };
   try {
     alreadySeen = sessionStorage.getItem(sessionKey) === 'true';
     const probe = `${sessionKey}-probe`;
@@ -31,6 +39,7 @@
     returnFocus = trigger || document.activeElement;
     openedAutomatically = !trigger;
     try {
+      clearDeparture();
       dialog.showModal();
       document.body.classList.add('boarding-open');
       rememberVisit();
@@ -41,19 +50,32 @@
   };
 
   const closeBoarding = () => {
+    clearDeparture();
     if (!dialog.open) return;
     rememberVisit();
     dialog.close();
   };
 
+  const board = () => {
+    if (!dialog.open || dialog.classList.contains('is-boarding')) return;
+    if (prefersReducedMotion()) {
+      closeBoarding();
+      return;
+    }
+    dialog.classList.add('is-boarding');
+    // A short paper-stamp sequence; Escape and Skip always finish immediately.
+    departureTimer = window.setTimeout(closeBoarding, 620);
+  };
+
   dialog.querySelectorAll('[data-boarding-close]').forEach((button) => {
-    button.addEventListener('click', closeBoarding);
+    button.addEventListener('click', button.classList.contains('boarding__enter') ? board : closeBoarding);
   });
   dialog.addEventListener('cancel', (event) => {
     event.preventDefault();
     closeBoarding();
   });
   dialog.addEventListener('close', () => {
+    clearDeparture();
     document.body.classList.remove('boarding-open');
     const target = openedAutomatically ? document.querySelector('#top') : returnFocus;
     if (target instanceof HTMLElement && target.isConnected) {
@@ -61,6 +83,15 @@
       target.focus({ preventScroll: true });
     }
     returnFocus = null;
+  });
+
+  const applyMotionPreference = () => {
+    if (prefersReducedMotion() && dialog.classList.contains('is-boarding')) closeBoarding();
+  };
+  motionMedia.addEventListener('change', applyMotionPreference);
+  new MutationObserver(applyMotionPreference).observe(document.documentElement, { attributes: true, attributeFilter: ['data-motion'] });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && dialog.classList.contains('is-boarding')) closeBoarding();
   });
 
   document.addEventListener('click', (event) => {

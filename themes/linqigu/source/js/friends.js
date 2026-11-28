@@ -42,4 +42,50 @@
     avatar.addEventListener('error', hideBrokenAvatar, { once: true });
     if (avatar.complete && !avatar.naturalWidth) hideBrokenAvatar();
   });
+
+  const cards = [...document.querySelectorAll('.harbor-friend')];
+  if (!cards.length) return;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const precisePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const motionAllowed = () => !reduceMotion.matches && document.documentElement.dataset.motion !== 'reduced' && precisePointer.matches;
+  let activeCard = null;
+  let activeBounds = null;
+  let pointerFrame = 0;
+  let pendingPointer = null;
+  const resetCard = () => {
+    if (pointerFrame) cancelAnimationFrame(pointerFrame);
+    pointerFrame = 0;
+    activeCard?.style.removeProperty('--friend-tilt-x');
+    activeCard?.style.removeProperty('--friend-tilt-y');
+    activeCard = null;
+    activeBounds = null;
+  };
+  cards.forEach((card) => {
+    card.addEventListener('pointerenter', () => {
+      resetCard();
+      if (!motionAllowed()) return;
+      activeCard = card;
+      activeBounds = card.getBoundingClientRect();
+    });
+    card.addEventListener('pointermove', (event) => {
+      if (activeCard !== card || !activeBounds || !motionAllowed()) return;
+      pendingPointer = { x: event.clientX, y: event.clientY };
+      if (pointerFrame) return;
+      pointerFrame = requestAnimationFrame(() => {
+        pointerFrame = 0;
+        if (!activeCard || !activeBounds || !pendingPointer) return;
+        const x = Math.max(-.5, Math.min(.5, (pendingPointer.x - activeBounds.left) / activeBounds.width - .5));
+        const y = Math.max(-.5, Math.min(.5, (pendingPointer.y - activeBounds.top) / activeBounds.height - .5));
+        activeCard.style.setProperty('--friend-tilt-x', `${(-y * 5).toFixed(2)}deg`);
+        activeCard.style.setProperty('--friend-tilt-y', `${(x * 5).toFixed(2)}deg`);
+      });
+    });
+    card.addEventListener('pointerleave', resetCard);
+    card.addEventListener('pointercancel', resetCard);
+  });
+  window.addEventListener('resize', resetCard, { passive: true });
+  window.addEventListener('scroll', resetCard, { passive: true });
+  reduceMotion.addEventListener('change', resetCard);
+  precisePointer.addEventListener('change', resetCard);
+  new MutationObserver(resetCard).observe(document.documentElement, { attributes: true, attributeFilter: ['data-motion'] });
 })();

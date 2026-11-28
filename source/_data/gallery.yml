@@ -1,4 +1,30 @@
 albums:
+  - slug: scenes
+    title: 几张喜欢的画面
+    description: 草地、海面、电车和一家帽子店
+    cover: /images/sea-train.jpg
+    tags: [电影, 插画]
+    photos:
+      - src: /images/meadow-afternoon.jpg
+        title: 草地上的午后
+        alt: 琪琪躺在草地上，身旁放着收音机
+        categories: [wallpaper, illustration]
+        search: 魔女宅急便 琪琪 草地 午后 动漫 电影
+      - src: /images/sea-flight.jpg
+        title: 飞过海面
+        alt: 白龙掠过晴朗的海面
+        categories: [wallpaper, illustration]
+        search: 千与千寻 白龙 海 蓝天 动漫 电影
+      - src: /images/sea-train.jpg
+        title: 海上电车
+        alt: 千寻和无脸男坐在驶过海面的电车里
+        categories: [wallpaper, illustration]
+        search: 千与千寻 千寻 无脸男 电车 海 动漫 电影
+      - src: /images/hat-shop.jpg
+        title: 帽子店
+        alt: 苏菲坐在摆满帽子的店里
+        categories: [wallpaper, illustration]
+        search: 哈尔的移动城堡 苏菲 帽子 店 动漫 电影
   - slug: site-assets
     title: 博客内置图片
     description: 收录站点页面使用的插画、壁纸与标识

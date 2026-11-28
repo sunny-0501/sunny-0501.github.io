@@ -33,6 +33,13 @@
           </span>
           <span class="gallery-album-meta"><% (album.tags || []).forEach(function (tag) { %><span><%= tag %></span><% }); %></span>
         </a>
+        <% if (photos.length) { %>
+          <div class="gallery-proof" data-gallery-proof hidden>
+            <div class="gallery-proof__heading"><span>挑一张封面</span><button type="button" data-gallery-cover-cycle aria-label="随机更换《<%= album.title %>》的封面">换一张 <span aria-hidden="true">⤨</span></button></div>
+            <div class="gallery-proof__frames" role="group" aria-label="选择《<%= album.title %>》的封面"><% photos.slice(0, 4).forEach(function(photo, index) { %><button type="button" data-gallery-cover-src="<%- url_for(photo.src) %>" data-gallery-cover-alt="<%= photo.alt %>" aria-label="封面：<%= photo.title %>" aria-pressed="<%= album.cover === photo.src ? 'true' : 'false' %>"><img src="<%- url_for(photo.src) %>" alt="" loading="lazy" /><span aria-hidden="true"><%= String(index + 1).padStart(2, '0') %></span></button><% }); %></div>
+            <span class="sr-only" data-gallery-proof-status role="status" aria-live="polite"></span>
+          </div>
+        <% } %>
       </article>
     <% }); %>
   </div>

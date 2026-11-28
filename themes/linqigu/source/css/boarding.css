@@ -34,7 +34,22 @@ body.boarding-open { overflow: hidden; }
 .boarding__route > svg { flex: 1 1 60px; min-width: 24px; width: 60px; color: #9d9d79; }
 .boarding__ticket-stub { padding: 20px 25px; border-top: 1px dashed #35584466; }
 .boarding__enter { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 48px; padding: 13px 18px; border: 1px solid #345641; border-radius: 0; background: #345641; color: #fff8df; font-family: var(--serif); font-size: 15px; letter-spacing: .1em; transition: background .2s, transform .2s; }
-.boarding__enter svg { width: 24px; height: 24px; transition: transform .25s; }
+.boarding__enter svg { width: 28px; height: 24px; transition: transform .25s; }
+.boarding__validation { position: absolute; z-index: 5; top: -23px; right: -19px; width: 72px; height: 72px; color: #a15641; opacity: 0; transform: rotate(-18deg) scale(1.7); pointer-events: none; }
+.boarding__punch { position: absolute; top: 17px; left: 50%; width: 24px; height: 24px; opacity: 0; transform: translateY(-4px) scale(.2); pointer-events: none; }
+.boarding__ticket-stub { transform-origin: 0 0; }
+.boarding__paper-plane { position: absolute; right: 5%; bottom: 7%; width: clamp(105px, 11vw, 160px); color: #fff8dc; opacity: .85; pointer-events: none; }
+.boarding__plane { transform-origin: 116px 24px; animation: boarding-plane-float 6s ease-in-out infinite; }
+.boarding__plane-trail { stroke-dashoffset: 0; animation: boarding-trail 8s linear infinite; }
+.boarding__ticket:focus-within .boarding__button-boat { transform: translateX(3px); }
+.boarding.is-boarding { animation: boarding-depart 620ms ease-in both; }
+.boarding.is-boarding .boarding__landscape { animation: boarding-push 620ms cubic-bezier(.3, 0, .5, 1) both; }
+.boarding.is-boarding .boarding__validation { animation: boarding-stamp 340ms cubic-bezier(.2, .7, .3, 1) both; }
+.boarding.is-boarding .boarding__punch { animation: boarding-punch 250ms 100ms ease-out both; }
+.boarding.is-boarding .boarding__ticket-stub { animation: boarding-stub 620ms ease-in both; }
+.boarding.is-boarding .boarding__button-boat { animation: boarding-boat-depart 560ms ease-in both; }
+.boarding.is-boarding .boarding__paper-plane { animation: boarding-plane-depart 620ms ease-in both; }
+.boarding.is-boarding .boarding__poem { animation: boarding-copy-depart 620ms ease-in both; }
 .boarding__leaves { position: absolute; z-index: -1; inset: 0; overflow: hidden; pointer-events: none; }
 .boarding__leaves > i { position: absolute; top: 3%; left: 32%; width: 17px; height: 8px; border-radius: 1px 95% 1px 95%; background: #e3dba7; opacity: 0; animation: boarding-leaf 16s linear infinite; }
 .boarding__leaves > i:nth-child(2) { left: 61%; top: -10%; width: 12px; height: 7px; background: #adc99b; animation-delay: -4s; animation-duration: 21s; }
@@ -46,6 +61,16 @@ body.boarding-open { overflow: hidden; }
 @keyframes boarding-arrive { from { opacity: 0; } to { opacity: 1; } }
 @keyframes boarding-landscape { from { transform: scale(1.01); } to { transform: scale(1.055); } }
 @keyframes boarding-leaf { 0% { opacity: 0; transform: translate3d(0, -20px, 0) rotate(-30deg); } 8% { opacity: .65; } 80% { opacity: .65; } 100% { opacity: 0; transform: translate3d(150px, 100vh, 0) rotate(380deg); } }
+@keyframes boarding-stamp { 0% { opacity: 0; transform: rotate(-32deg) scale(1.7); } 48% { opacity: .95; transform: rotate(-18deg) scale(.94); } 70% { transform: rotate(-18deg) scale(1.04); } 100% { opacity: .9; transform: rotate(-18deg) scale(1); } }
+@keyframes boarding-punch { to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes boarding-stub { 0%, 32% { transform: none; } 60% { transform: translateY(3px) rotate(1deg); } 100% { transform: translate(11px, 30px) rotate(4deg); opacity: .3; } }
+@keyframes boarding-push { from { transform: scale(1.035); } to { transform: scale(1.11); filter: saturate(.85) brightness(1.1); } }
+@keyframes boarding-depart { 0%, 48% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes boarding-copy-depart { 0%, 38% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateX(-13px); } }
+@keyframes boarding-boat-depart { 0%, 32% { transform: none; } 100% { transform: translateX(36px); opacity: 0; } }
+@keyframes boarding-plane-float { 0%, 100% { transform: translate(0, 0) rotate(-2deg); } 50% { transform: translate(3px, -6px) rotate(2deg); } }
+@keyframes boarding-trail { to { stroke-dashoffset: -28; } }
+@keyframes boarding-plane-depart { 0%, 15% { transform: none; } 100% { transform: translate(100px, -65px); opacity: 0; } }
 @media (max-width: 900px) { .boarding__content { gap: 26px; } .boarding__ticket { flex-basis: 290px; margin-top: 70px; } .boarding__ticket-main { padding: 22px 21px 18px; } .boarding__ticket-stub { padding: 19px 21px; } .boarding__poem > p { font-size: 12px; } .boarding .boarding__poem h2 { font-size: clamp(36px, 5.3vw, 49px); } }
 @media (max-width: 680px) {
   .boarding__scene { padding: 24px 24px 19px; }
@@ -67,8 +92,10 @@ body.boarding-open { overflow: hidden; }
   .boarding__route strong { font-size: 21px; }
   .boarding__ticket-stub { padding: 18px 23px 16px; }
   .boarding__enter { min-height: 46px; padding: 12px 16px; font-size: 14px; }
+  .boarding__paper-plane { right: auto; left: 19px; bottom: 21px; width: 97px; opacity: .65; }
+  .boarding__validation { right: -10px; top: -22px; width: 63px; height: 63px; }
 }
 @media (max-height: 750px) and (min-width: 681px) { .boarding__scene { padding-top: 28px; padding-bottom: 20px; } .boarding__content { padding: 25px 0; } .boarding__ticket { margin-top: 40px; } }
-:root[data-motion="reduced"] .boarding *, :root[data-motion="reduced"] .boarding[open] { animation: none; transition: none; }
 :root[data-motion="reduced"] .boarding__leaves { display: none; }
+:root[data-motion="reduced"] .boarding *, :root[data-motion="reduced"] .boarding[open] { animation: none !important; transition: none !important; }
 @media (prefers-reduced-motion: reduce) { .boarding[open], .boarding * { animation: none !important; transition: none !important; } .boarding__leaves { display: none; } }
